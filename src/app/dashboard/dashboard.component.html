@@ -1,17 +1,58 @@
 <div class="grid-container">
-  <h1 class="mat-h1">Dashboard</h1>
-  <mat-grid-list cols="2" rowHeight="275px">
-    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
-      <mat-card class="dashboard-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{card.title}}
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <div>Card Content Here</div>
-        </mat-card-content>
-      </mat-card>
+  <mat-grid-list cols="2" rowHeight="250px">
+
+    <mat-grid-tile [colspan]="2" [rowspan]="1" class="tile">
+      <a>
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>
+              Header Card
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <div>Card Content Here</div>
+          </mat-card-content>
+        </mat-card>
+      </a>
     </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <a routerLink='/saved-games'>
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>
+              Saved Games
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <div>Card Content Here</div>
+          </mat-card-content>
+        </mat-card>
+      </a>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="2">
+      <a routerLink='/board'>
+      <mat-card class="dashboard-card">
+          <img src="../../assets/board-page.png" alt="Chess Board Page Image" class="responsive">
+      </mat-card>
+      </a>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan]="1" [rowspan]="1">
+      <a routerLink='/information'>
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>
+              Information
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <div>Card Content Here</div>
+          </mat-card-content>
+        </mat-card>
+      </a>
+    </mat-grid-tile>
+
   </mat-grid-list>
 </div>

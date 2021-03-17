@@ -1,0 +1,16 @@
+<p>
+  <mat-toolbar color="primary">
+    <button *ngIf="routeData.showBackButton" style="bottom: 1px;" mat-icon-button (click)="this.location.back();">
+    <span class="material-icons">
+      arrow_back
+      </span>
+    </button> 
+    <span>{{this.routeData.name}}</span>
+    <span style="flex: 1 1 auto"></span>
+    <button mat-icon-button>
+      <span class="material-icons">
+        account_circle
+        </span>
+      </button> 
+  </mat-toolbar>
+</p>
