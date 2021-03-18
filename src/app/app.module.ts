@@ -23,6 +23,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { InformationComponent } from './information/information.component';
 import { SavedGamesComponent } from './saved-games/saved-games.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,7 @@ import { SavedGamesComponent } from './saved-games/saved-games.component';
     BoardComponent,
     LoginSignupComponent,
     InformationComponent,
-    SavedGamesComponent
+    SavedGamesComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +54,8 @@ import { SavedGamesComponent } from './saved-games/saved-games.component';
     MatInputModule,
     MatTabsModule,
     MatFormFieldModule,
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

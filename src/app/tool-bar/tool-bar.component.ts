@@ -24,7 +24,6 @@ export class ToolBarComponent implements OnInit {
       if (data instanceof RoutesRecognized) {
         
         if (data.state.root.firstChild) this.routeData = data.state.root.firstChild.data;
-        console.log(this.routeData);
         this.showBackArrow(this.routeData)
 
       }
@@ -32,9 +31,7 @@ export class ToolBarComponent implements OnInit {
   }
 
   showBackArrow(routeData: any) {
-    console.log(routeData)
     this.showBackArrowVar = (routeData.pathname === 'Login/Signup' || routeData.pathname === 'Dashboard') ? true : false;
-    // if (pathname == 'Login/Signup' || pathname == 'Dashboard') this.showBackArrowVar = false;
   }
 
 }
