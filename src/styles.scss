@@ -6,17 +6,11 @@ html, body { height: 100%; }
 body { margin: 0;  }
 
 
-// Login Component Tab Title Widths
+// Chrome auto-fill fix
 
-// .mat-tab-labels div {
-//   width: 49%;
-//   float: left;
-// }
-// mat-ink-bar {
-//   width: 49%;
-//   float: left;
-// }
-
-// mat-tab-body div {
-//   overflow: hidden !important;
-// }
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}

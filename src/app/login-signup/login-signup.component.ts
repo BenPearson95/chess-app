@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthUser } from '../_models/user/auth-user';
 import { UserLogin } from '../_models/user/user-login';
 import { UserSignup } from '../_models/user/user-signup';
 import { UserService } from '../_services/user.service';
@@ -24,7 +25,8 @@ export class LoginSignupComponent implements OnInit {
     password: new FormControl('', Validators.required),
   })
 
-  hide = true;
+  showHidePassword = true;
+  userAlreadyExists = false;
 
   constructor(
     private userService: UserService,
@@ -36,16 +38,13 @@ export class LoginSignupComponent implements OnInit {
   }
 
   loginSubmit() {
-    console.log(this.loginForm.value);
     const userLogin = new UserLogin(
       this.loginForm.value.email,
       this.loginForm.value.password,
     );
-    console.log(userLogin);
 
-    this.userService.loginUser(userLogin).subscribe(result => {
-      console.log(result);
-      if(Object.keys(result).length!== 0) this.router.navigate(['dashboard']);
+    this.userService.loginUser(userLogin).subscribe((result: AuthUser) => {
+      
     }, error => {
       console.log(error);
     });
@@ -63,6 +62,7 @@ export class LoginSignupComponent implements OnInit {
     this.userService.signupUser(userSignup).subscribe(result => {
       console.log(result);
     }, error => {
+      this.userAlreadyExists = true;
       console.log(error);
     })
   }

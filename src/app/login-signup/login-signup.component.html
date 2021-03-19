@@ -15,9 +15,9 @@
             <p>
               <mat-form-field appearance="outline">
                 <mat-label>Password</mat-label>
-                <input matInput formControlName="password" [type]=" hide ? 'password' : 'text'">
-                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <input matInput formControlName="password" [type]=" showHidePassword ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="showHidePassword = !showHidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showHidePassword">
+                  <mat-icon>{{showHidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
               </mat-form-field>
             </p>
@@ -58,20 +58,24 @@
             <p>
               <mat-form-field appearance="outline">
                 <mat-label>Password</mat-label>
-                <input formControlName="password" matInput [type]="hide ? 'password' : 'text'">
-                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <input formControlName="password" matInput [type]="showHidePassword ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="showHidePassword = !showHidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showHidePassword">
+                  <mat-icon>{{showHidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
               </mat-form-field>
             </p>
             <p>
               <mat-form-field appearance="outline">
                 <mat-label>Confirm Password</mat-label>
-                <input matInput [type]="hide ? 'password' : 'text'">
-                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <input matInput [type]="showHidePassword ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="showHidePassword = !showHidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showHidePassword">
+                  <mat-icon>{{showHidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
               </mat-form-field>
+            </p>
+
+            <p *ngIf="userAlreadyExists">
+              This email address is already signed up.
             </p>
           </mat-card-content>
         

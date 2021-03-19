@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatSlider, MatSliderChange } from '@angular/material/slider';
 import { NgxChessBoardService, NgxChessBoardView } from 'ngx-chess-board';
 
@@ -15,6 +16,12 @@ export class BoardComponent implements OnInit {
 
   boardSizeLocal: number = this.boardSize;
   freeModeLocal: boolean = this.freeMode;
+  showCoordsLocal: boolean = false;
+
+  colourFormGroup: FormGroup = new FormGroup({
+    darkColour: new FormControl('#1565c0'),
+    lightColour: new FormControl('#ffa000'),
+  })
 
   constructor(
     private ngxChessBoardService: NgxChessBoardService,
