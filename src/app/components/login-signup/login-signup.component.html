@@ -3,13 +3,18 @@
     <mat-tab-group dynamicHeight>
       <mat-tab label="Login"> 
         <form [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
-          <mat-card-content style="text-align: center; margin-top: 25px;">
-            
+          <mat-card-content class="card-content-container">
             <p>
               <mat-form-field appearance="outline">
                 <mat-label>Email</mat-label>
                 <input formControlName="email" matInput>
                 <mat-icon matSuffix>email</mat-icon>
+                <mat-error class="input-error-fix" *ngIf="loginForm.controls.email.hasError('required')">
+                  Please enter your email.
+                </mat-error>
+                <mat-error class="input-error-fix" *ngIf="loginForm.controls.email.hasError('email')">
+                  Please enter a valid email.
+                </mat-error>
               </mat-form-field>
             </p>
             <p>
@@ -19,26 +24,32 @@
                 <button mat-icon-button matSuffix (click)="showHidePassword = !showHidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showHidePassword">
                   <mat-icon>{{showHidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
+                <mat-error class="input-error-fix" *ngIf="loginForm.controls.password.hasError('required')">
+                  Please enter a password.
+                </mat-error>
               </mat-form-field>
             </p>
-            
+            <mat-error *ngIf="loginError.length > 0">
+              {{loginError}}
+            </mat-error>
           </mat-card-content>
-          <mat-card-actions style="margin: auto; text-align: center;">
-
-            <button type="submit" mat-raised-button color="primary">Login</button>
-
+          <mat-card-actions class="button-container">
+            <button [disabled]="loginForm.invalid" type="submit" mat-raised-button color="primary">Login</button>
           </mat-card-actions>
         </form>
       </mat-tab>
 
       <mat-tab label="Signup"> 
         <form [formGroup]="signupForm" (ngSubmit)="signupSubmit()">
-          <mat-card-content style="text-align: center; margin-top: 25px;">
+          <mat-card-content class="card-content-container">
             <p>
               <mat-form-field appearance="outline">
                 <mat-label>Firstname</mat-label>
                 <input formControlName="firstname" matInput>
                 <mat-icon matSuffix>local_offer</mat-icon>
+                <mat-error class="input-error-fix" *ngIf="signupForm.controls.firstname.hasError('required')">
+                  Please enter your first name.
+                </mat-error>
               </mat-form-field>
             </p>
             <p>
@@ -46,6 +57,9 @@
                 <mat-label>Surname</mat-label>
                 <input formControlName="surname" matInput>
                 <mat-icon matSuffix>local_offer</mat-icon>
+                <mat-error class="input-error-fix" *ngIf="signupForm.controls.surname.hasError('required')">
+                  Please enter your surname name.
+                </mat-error>
               </mat-form-field>
             </p>
             <p>
@@ -53,6 +67,12 @@
                 <mat-label>Email</mat-label>
                 <input formControlName="email" matInput>
                 <mat-icon matSuffix>email</mat-icon>
+                <mat-error class="input-error-fix" *ngIf="signupForm.controls.email.hasError('required')">
+                  Please enter your email.
+                </mat-error>
+                <mat-error class="input-error-fix" *ngIf="signupForm.controls.email.hasError('email')">
+                  Please enter a valid email.
+                </mat-error>
               </mat-form-field>
             </p>
             <p>
@@ -62,25 +82,36 @@
                 <button mat-icon-button matSuffix (click)="showHidePassword = !showHidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showHidePassword">
                   <mat-icon>{{showHidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
+                <mat-error class="input-error-fix" *ngIf="signupForm.controls.password.hasError('required')">
+                  Please enter a password.
+                </mat-error>
+                <mat-error class="input-error-fix" *ngIf="signupForm.controls.password.hasError('minlength')">
+                  Password must be atleast 6 characters.
+                </mat-error>
               </mat-form-field>
             </p>
             <p>
               <mat-form-field appearance="outline">
                 <mat-label>Confirm Password</mat-label>
-                <input matInput [type]="showHidePassword ? 'password' : 'text'">
+                <input formControlName="confirmPassword" matInput [type]="showHidePassword ? 'password' : 'text'">
                 <button mat-icon-button matSuffix (click)="showHidePassword = !showHidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showHidePassword">
                   <mat-icon>{{showHidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
+                <mat-error class="input-error-fix" *ngIf="signupForm.controls.confirmPassword.hasError('required')">
+                  Please enter your password again.
+                </mat-error>
+                <mat-error class="input-error-fix" *ngIf="signupForm.controls.confirmPassword.hasError('isMatching')">
+                  Passwords must match exactly.
+                </mat-error>
               </mat-form-field>
             </p>
-
-            <p *ngIf="userAlreadyExists">
-              This email address is already signed up.
-            </p>
+            <mat-error *ngIf="signupError.length > 0">
+              {{signupError}}
+            </mat-error>
           </mat-card-content>
         
-          <mat-card-actions style="margin: auto; text-align: center;">
-            <button type="submit" mat-raised-button color="primary">Signup</button>
+          <mat-card-actions class="button-container">
+            <button [disabled]="this.signupForm.invalid" type="submit" mat-raised-button color="primary">Signup</button>
           </mat-card-actions>
         </form>
       </mat-tab>

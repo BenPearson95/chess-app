@@ -1,21 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BoardComponent } from './board/board.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { InformationComponent } from './information/information.component';
-import { LoginSignupComponent } from './login-signup/login-signup.component';
-import { SavedGamesComponent } from './saved-games/saved-games.component';
+import { BoardComponent } from './components/board/board.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { InformationComponent } from './components/information/information.component';
+import { LoginSignupComponent } from './components/login-signup/login-signup.component';
+import { SavedGamesComponent } from './components/saved-games/saved-games.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { LoggedInGuard } from './_guards/logged-in.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: LoginSignupComponent,
+    canActivate: [LoggedInGuard],
     data: {
       name: 'Login/Signup',
       showBackButton: false,
       animation: 'isLeft',
     }
+  },
+  {
+    path: 'login',
+    redirectTo: '',
+    pathMatch: 'full',
   },
   {
     path: '',

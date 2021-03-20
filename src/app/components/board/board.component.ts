@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatSlider, MatSliderChange } from '@angular/material/slider';
 import { NgxChessBoardService, NgxChessBoardView } from 'ngx-chess-board';
 
 @Component({
@@ -27,30 +26,30 @@ export class BoardComponent implements OnInit {
     private ngxChessBoardService: NgxChessBoardService,
   ) { }
 
-  ngOnInit() {
+  ngOnInit() {}
 
-      
-  }
-
+  // Called from the Slider HTML, updates the Chessboard size.
   updateBoardSize(event: any) {
     this.boardSize = event.value;
-    console.log(event);
   }
 
+  // Resets the board.
   reset() {
     this.board?.reset();
   }
 
+  // Swaps the orientation of the board 180 degrees.
   reverse() {
     this.board?.reverse();
   }
 
+  // Undos 1 move.
   undo() {
     this.board?.undo();
   }
 
+  // Toggles on 'FreeMode'.
   freeModeToggle(event: any) {
-    console.log(event.checked);
     this.freeMode = event.checked;
   }
 

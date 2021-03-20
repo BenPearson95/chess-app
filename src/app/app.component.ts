@@ -9,9 +9,7 @@ import { UserService } from './_services/user.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [
-    // slideInAnimation
     slider
-    // animation triggers go here
   ]
 })
 export class AppComponent {
@@ -29,6 +27,7 @@ export class AppComponent {
     return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
   }
 
+  // Sets the currently logged in User for the App.
   setCurrentUser() {
     const user: AuthUser = JSON.parse(localStorage.getItem('user'));
     if (user) this.userService.setCurrentUser(user);

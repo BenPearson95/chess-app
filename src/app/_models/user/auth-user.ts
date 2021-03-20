@@ -4,7 +4,5 @@ export class AuthUser {
     public surname: string,
     public email: string,
     public token: string,
-  ) {
-
-  }
+  ) {}
 }

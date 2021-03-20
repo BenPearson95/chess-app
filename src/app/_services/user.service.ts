@@ -5,7 +5,7 @@ import { UserLogin } from '../_models/user/user-login';
 import { UserSignup } from '../_models/user/user-signup';
 import { map } from 'rxjs/operators';
 import { AuthUser } from '../_models/user/auth-user';
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class UserService {
 
   apiPath = environment.apiPath;
   authRoute = 'auth-user/';
-  private currentUserSource = new ReplaySubject<AuthUser>(1);
+  private currentUserSource = new BehaviorSubject<AuthUser>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(

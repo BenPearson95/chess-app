@@ -1,5 +1,6 @@
-import { animate, animateChild, group, query, style, transition, trigger } from "@angular/animations";
+import { animate, group, query, style, transition, trigger } from "@angular/animations";
 
+// Top right welcome text when logged in.
 export const welcomeAnimation =
   trigger('welcomeAnimation', [
     transition(':enter', [
@@ -12,7 +13,8 @@ export const welcomeAnimation =
     ])
   ]);
 
-  export const slider =
+// The page slide animation.
+export const slider =
   trigger('routeAnimations', [
     transition('* => isLeft', slideTo('left') ),
     transition('* => isRight', slideTo('right') ),
@@ -20,6 +22,7 @@ export const welcomeAnimation =
     transition('isLeft => *', slideTo('right') )
   ]);
 
+  // This function is utilised in the slider export.
 function slideTo(direction: any) {
   const optional = { optional: true };
   return [
@@ -42,10 +45,5 @@ function slideTo(direction: any) {
         animate('1000ms ease', style({ [direction]: '0%'}))
       ])
     ]),
-    // Normalize the page style... Might not be necessary
-
-    // Required only if you have child animations on the page
-    // query(':leave', animateChild()),
-    // query(':enter', animateChild()),
   ];
 }

@@ -1,8 +1,8 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, NavigationEnd, Router } from '@angular/router';
-import { welcomeAnimation } from '../_animations/animations';
-import { UserService } from '../_services/user.service';
+import { welcomeAnimation } from '../../_animations/animations';
+import { UserService } from '../../_services/user.service';
 import { filter } from 'rxjs/operators';
 
 
@@ -29,6 +29,7 @@ export class ToolBarComponent implements OnInit {
   ) { }  
 
   ngOnInit() {
+    // This function gets the Page Title and Boolean to display back button.
     this.router.events.pipe(  
       filter(event => event instanceof NavigationEnd),  
     ).subscribe(() => {  
@@ -42,6 +43,7 @@ export class ToolBarComponent implements OnInit {
     this.timeOfDayMessage();
   }
 
+  // Used in the retrieval of page title. Gets child routes.
   getChild(activatedRoute: ActivatedRoute): any {  
     if (activatedRoute.firstChild) {  
       return this.getChild(activatedRoute.firstChild);  
@@ -50,6 +52,7 @@ export class ToolBarComponent implements OnInit {
     }  
   } 
 
+  // Works out and returns a string based on the time of day.
   timeOfDayMessage() {
     const hour: number = +new Date().toString().split(' ')[4].substring(0,2);
     if (hour >= 4 && hour <= 11) this.welcomePrefix = 'Good Morning,'
@@ -57,6 +60,7 @@ export class ToolBarComponent implements OnInit {
     if (hour >= 17 && hour <= 23 || hour >= 0 && hour <= 3) this.welcomePrefix = 'Good Evening,'
   }
 
+  // Calls the User Service to logout.
   logout() {
     this.userService.logout();
   }
