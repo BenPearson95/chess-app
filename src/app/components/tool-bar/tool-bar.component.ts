@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, NavigationEnd, Router } from '@angular/router';
 import { welcomeAnimation } from '../../_animations/animations';
-import { UserService } from '../../_services/user.service';
+import { AuthService } from '../../_services/auth.service';
 import { filter } from 'rxjs/operators';
 
 
@@ -25,7 +25,7 @@ export class ToolBarComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public location: Location,
-    public userService: UserService,
+    public AuthService: AuthService,
   ) { }  
 
   ngOnInit() {
@@ -41,6 +41,12 @@ export class ToolBarComponent implements OnInit {
     });
 
     this.timeOfDayMessage();
+
+    // Checks every minute for the time of day to update automatically, 
+    // not requiring a browser refresh (Toolbar is never init twice).
+    setInterval(() => {
+      this.timeOfDayMessage();
+    }, 60000);
   }
 
   // Used in the retrieval of page title. Gets child routes.
@@ -62,7 +68,7 @@ export class ToolBarComponent implements OnInit {
 
   // Calls the User Service to logout.
   logout() {
-    this.userService.logout();
+    this.AuthService.logout();
   }
 
 }

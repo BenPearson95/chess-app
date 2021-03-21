@@ -25,6 +25,8 @@ import { InformationComponent } from './components/information/information.compo
 import { SavedGamesComponent } from './components/saved-games/saved-games.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AccountComponent } from './components/account/account.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { HttpClientModule } from '@angular/common/http';
     LoginSignupComponent,
     InformationComponent,
     SavedGamesComponent,
+    AccountComponent,
+    AdminDashboardComponent,
   ],
   imports: [
     BrowserModule,

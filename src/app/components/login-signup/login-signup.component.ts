@@ -3,7 +3,7 @@ import { AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, Va
 import { AuthUser } from '../../_models/user/auth-user';
 import { UserLogin } from '../../_models/user/user-login';
 import { UserSignup } from '../../_models/user/user-signup';
-import { UserService } from '../../_services/user.service';
+import { AuthService } from '../../_services/auth.service';
 
 @Component({
   selector: 'app-login-signup',
@@ -31,7 +31,7 @@ export class LoginSignupComponent implements OnInit {
   userAlreadyExists = false;
 
   constructor(
-    private userService: UserService,
+    private AuthService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +57,7 @@ export class LoginSignupComponent implements OnInit {
     );
 
     // Call to the User Service.
-    this.userService.loginUser(userLogin).subscribe((result: AuthUser) => {
+    this.AuthService.loginUser(userLogin).subscribe((result: AuthUser) => {
     }, error => {
       this.loginError = error.error;
     });
@@ -73,7 +73,7 @@ export class LoginSignupComponent implements OnInit {
     );
     
     // Call to the User Service.
-    this.userService.signupUser(userSignup).subscribe(result => {
+    this.AuthService.signupUser(userSignup).subscribe(result => {
     }, error => {
       this.signupError = error.error;
     });

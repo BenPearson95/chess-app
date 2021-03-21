@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AccountComponent } from './components/account/account.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { BoardComponent } from './components/board/board.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { InformationComponent } from './components/information/information.component';
@@ -7,6 +9,7 @@ import { LoginSignupComponent } from './components/login-signup/login-signup.com
 import { SavedGamesComponent } from './components/saved-games/saved-games.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { LoggedInGuard } from './_guards/logged-in.guard';
+import { AccountResolver } from './_resolvers/account.resolver';
 
 const routes: Routes = [
   {
@@ -64,6 +67,29 @@ const routes: Routes = [
           animation: 'isRight',
         },
       },
+      {
+        path: 'account',
+        component: AccountComponent,
+        resolve: {
+          resolvedData: AccountResolver,
+        },
+        data: {
+          name: 'Information',
+          showBackButton: true,
+          animation: 'isRight',
+          
+        },
+      },
+      {
+        path: 'admin-dashboard',
+        component: AdminDashboardComponent,
+        data: {
+          name: 'Admin Dashboard',
+          showBackButton: true,
+          animation: 'isRight',
+        },
+      },
+      
       {
         path: '**',
         component: DashboardComponent, 

@@ -10,7 +10,7 @@ import { NgxChessBoardService, NgxChessBoardView } from 'ngx-chess-board';
 export class BoardComponent implements OnInit {
   @ViewChild('board', {static: false}) board: NgxChessBoardView | undefined;
 
-  @Input() boardSize: number = 500;
+  @Input() boardSize: number = 650;
   @Input() freeMode: boolean = false;
 
   boardSizeLocal: number = this.boardSize;

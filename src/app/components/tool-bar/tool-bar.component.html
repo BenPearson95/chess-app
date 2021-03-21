@@ -7,13 +7,14 @@
     </button> 
     <span>{{this.pathName}}</span>
     <span style="flex: 1 1 auto"></span>
-    <div *ngIf="(userService.currentUser$ | async) as authUser" [@welcomeAnimation]>
+    <div *ngIf="(AuthService.currentUser$ | async) as authUser" [@welcomeAnimation]>
       <button class="user-button" mat-button [matMenuTriggerFor]="userMenu">
         <span>{{welcomePrefix}} {{authUser.firstname}}! </span>
         <mat-icon>account_circle</mat-icon>
       </button>
       <mat-menu #userMenu="matMenu" xPosition="before">
-        <button mat-menu-item>Account Information</button>
+        <button mat-menu-item *ngIf="authUser.accountType === 'Admin'" [routerLink]="['/admin-dashboard']" >Admin Dashboard</button>
+        <button mat-menu-item [routerLink]="[ '/account']">Account Information</button>
         <button mat-menu-item (click)="logout()">Log Out</button>
       </mat-menu>
     </div>

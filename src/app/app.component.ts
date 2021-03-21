@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { slider } from './_animations/animations';
 import { AuthUser } from './_models/user/auth-user';
-import { UserService } from './_services/user.service';
+import { AuthService } from './_services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ export class AppComponent {
   title = 'chess-app';
 
   constructor(
-    private userService: UserService,
+    private AuthService: AuthService,
     ) {}
 
     ngOnInit() {
@@ -30,7 +30,7 @@ export class AppComponent {
   // Sets the currently logged in User for the App.
   setCurrentUser() {
     const user: AuthUser = JSON.parse(localStorage.getItem('user'));
-    if (user) this.userService.setCurrentUser(user);
+    if (user) this.AuthService.setCurrentUser(user);
   }
 }
 

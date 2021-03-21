@@ -7,7 +7,7 @@
             <p>
               <mat-form-field appearance="outline">
                 <mat-label>Email</mat-label>
-                <input formControlName="email" matInput>
+                <input formControlName="email" type="email" matInput>
                 <mat-icon matSuffix>email</mat-icon>
                 <mat-error class="input-error-fix" *ngIf="loginForm.controls.email.hasError('required')">
                   Please enter your email.
@@ -45,7 +45,7 @@
             <p>
               <mat-form-field appearance="outline">
                 <mat-label>Firstname</mat-label>
-                <input formControlName="firstname" matInput>
+                <input formControlName="firstname" type="text" matInput>
                 <mat-icon matSuffix>local_offer</mat-icon>
                 <mat-error class="input-error-fix" *ngIf="signupForm.controls.firstname.hasError('required')">
                   Please enter your first name.
@@ -55,7 +55,7 @@
             <p>
               <mat-form-field appearance="outline">
                 <mat-label>Surname</mat-label>
-                <input formControlName="surname" matInput>
+                <input formControlName="surname" type="text" matInput>
                 <mat-icon matSuffix>local_offer</mat-icon>
                 <mat-error class="input-error-fix" *ngIf="signupForm.controls.surname.hasError('required')">
                   Please enter your surname name.
@@ -65,7 +65,7 @@
             <p>
               <mat-form-field appearance="outline">
                 <mat-label>Email</mat-label>
-                <input formControlName="email" matInput>
+                <input formControlName="email" type="email" matInput>
                 <mat-icon matSuffix>email</mat-icon>
                 <mat-error class="input-error-fix" *ngIf="signupForm.controls.email.hasError('required')">
                   Please enter your email.

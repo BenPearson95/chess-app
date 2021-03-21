@@ -1,74 +1,74 @@
-<div class="page-container">
-  <div class="sizing-container">
-    <h2 style="text-align: center; margin: 0;">Board Size</h2>
-    <mat-slider #boardSizeLocal (input)="updateBoardSize($event)" 
-      class="board-size-slider"
-      thumbLabel
-      min="300" 
-      max="750" 
-      step="1" 
-      [value]="boardSize">
-    </mat-slider>
-  </div>
-  <div class="free-mode-container">
-    <mat-slide-toggle (change)="freeModeToggle($event)">Free mode</mat-slide-toggle>
-  </div>
-  <div class="board-container">
-    <ngx-chess-board 
-      #board style="line-height: normal;"
-      [size]="boardSize"
-      [freeMode]="freeMode"
-      [showCoords]="showCoordsLocal"
-      [lightTileColor]="colourFormGroup.value.darkColour"
-      [darkTileColor]="colourFormGroup.value.lightColour"
-    >
-    </ngx-chess-board>
-  </div>
-  <div class="button-container">
-    <div>
-      <button class="button-margin" mat-raised-button color="primary" (click)="this.reset()">Reset</button>
-      <button class="button-margin" mat-raised-button color="primary" (click)="this.reverse()">Reverse</button>
-      <button class="button-margin" mat-raised-button color="primary" (click)="this.undo()">Undo</button>
+<mat-grid-list [rowHeight]="(boardSize + 20)" cols="4" ng-style="{height: (boardSizeLocal) + 'px'">
+  <mat-grid-tile
+    [colspan]="1">
+    
+  </mat-grid-tile>
+  <mat-grid-tile
+    [colspan]="2">
+
+    <div class="board-container">
+      <ngx-chess-board 
+        #board style="line-height: normal;"
+        [size]="boardSize"
+        [freeMode]="freeMode"
+        [showCoords]="showCoordsLocal"
+        [lightTileColor]="colourFormGroup.value.darkColour"
+        [darkTileColor]="colourFormGroup.value.lightColour">
+      </ngx-chess-board>
     </div>
-    <div style="margin-bottom: 5px;">
-      <button class="button-margin" mat-raised-button color="accent">Set FEN</button>
-      <button class="button-margin" mat-raised-button color="accent">Move History</button>
-      <button class="button-margin" mat-raised-button color="accent">Get Fen</button>
-    </div>
-    <mat-card class="colour-picker-card">
-      <form [formGroup]="colourFormGroup">
-        <mat-form-field>
-          <mat-label style="font-size: 20px; font-weight: 500; color: black;">Dark Tile Colour</mat-label>
-          <input formControlName="darkColour" type="color" matInput >
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label style="font-size: 20px; font-weight: 500; color: black;">Light Tile Colour</mat-label>
-          <input formControlName="lightColour" type="color" matInput >
-        </mat-form-field>
-      </form>
-    </mat-card>
-  </div>
-</div>
 
+  </mat-grid-tile>
+  <mat-grid-tile
+    [colspan]="1"
+    class="custom-col-container">
 
+      <mat-list>
+        <mat-list-item class="custom-list-item">
+          <div class="sizing-container">
+            <h2 style="text-align: center; margin: 0;">Board Size</h2>
+            <mat-slider #boardSizeLocal (input)="updateBoardSize($event)" 
+              class="board-size-slider"
+              thumbLabel
+              min="550" 
+              max="900" 
+              step="1" 
+              [value]="boardSize">
+            </mat-slider>
+          </div>
+        </mat-list-item>
+        <mat-list-item class="custom-list-item">
+          <div class="free-mode-container">
+            <mat-slide-toggle (change)="freeModeToggle($event)">Free mode</mat-slide-toggle>
+          </div>
+        </mat-list-item>
+        <mat-list-item class="custom-list-item">
+          <div class="button-container">
+            <div>
+              <button class="button-margin" mat-raised-button color="primary" (click)="this.reset()">Reset</button>
+              <button class="button-margin" mat-raised-button color="primary" (click)="this.reverse()">Reverse</button>
+              <button class="button-margin" mat-raised-button color="primary" (click)="this.undo()">Undo</button>
+            </div>
+            <div style="margin-bottom: 5px;">
+              <button class="button-margin" mat-raised-button color="accent">Set FEN</button>
+              <button class="button-margin" mat-raised-button color="accent">Move History</button>
+              <button class="button-margin" mat-raised-button color="accent">Get Fen</button>
+            </div>
+            <mat-card class="colour-picker-card">
+              <form [formGroup]="colourFormGroup">
+                <mat-form-field>
+                  <mat-label style="font-size: 20px; font-weight: 500; color: black;">Dark Tile Colour</mat-label>
+                  <input formControlName="darkColour" type="color" matInput >
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label style="font-size: 20px; font-weight: 500; color: black;">Light Tile Colour</mat-label>
+                  <input formControlName="lightColour" type="color" matInput >
+                </mat-form-field>
+              </form>
+            </mat-card>
+          </div>
+        </mat-list-item>
+      </mat-list>
 
-
-
-
-
-
-<div class="board-size-slider-container">
-  
-</div>
-
-<div style="margin: 0px 10px 0px;">
-    <div style="text-align: center;">
-      <div>
-        
-      </div>
-    </div>
-    <div style="text-align: center; margin: 10px;">
-      
-    </div>
-  </div>
+  </mat-grid-tile>
+</mat-grid-list>
 

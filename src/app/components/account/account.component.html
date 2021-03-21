@@ -1,0 +1,15 @@
+<mat-card style="width: 25%; margin: auto;">
+  <mat-card-header>
+    <mat-card-title>Account</mat-card-title>
+    <mat-card-subtitle>{{account.firstname}} {{account.surname}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>Email: {{account.email}}</p>
+    <p>Signup date: {{account.signupDate | date:'dd MMMM yyyy'}}</p>
+    <p>Account type: {{account.accountType}}</p>
+  </mat-card-content>
+  <mat-card-actions style="text-align: right;">
+    <button color="accent" mat-raised-button>Upgrade</button>
+  </mat-card-actions>
+</mat-card>
+
