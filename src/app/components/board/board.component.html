@@ -1,74 +1,151 @@
-<mat-grid-list [rowHeight]="(boardSize + 20)" cols="4" ng-style="{height: (boardSizeLocal) + 'px'">
+<mat-grid-list [rowHeight]="(this.boardSize + (this.outsideCoordDiameter * 2) + 10)" cols="4">
   <mat-grid-tile
     [colspan]="1">
     
   </mat-grid-tile>
   <mat-grid-tile
     [colspan]="2">
-
+    
     <div class="board-container">
-      <ngx-chess-board 
-        #board style="line-height: normal;"
-        [size]="boardSize"
-        [freeMode]="freeMode"
-        [showCoords]="showCoordsLocal"
-        [lightTileColor]="colourFormGroup.value.darkColour"
-        [darkTileColor]="colourFormGroup.value.lightColour">
-      </ngx-chess-board>
+
+      <div *ngIf="showCoordsOutside" [@slideFromBottom] class="letter-coord-container" [ngStyle]="{'height.px': (outsideCoordDiameter / 1.75), 'margin-left.px': (outsideCoordDiameter / 2)}">
+        <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters" [ngStyle]="{'width.px': outsideCoordDiameter}">
+          <span
+          [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': coordFontSize}"> {{coord}} </span>
+        </div>
+      </div>
+      <div class="board-inner-container">
+        <div *ngIf="showCoordsOutside" [@slideFromRight] class="number-coord-container">
+          <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers" [ngStyle]="{'height.px': outsideCoordDiameter, 'width.px': (outsideCoordDiameter / 2)}">
+            <span style="margin: 10px" 
+            [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': coordFontSize}"> {{coord}} </span>
+          </div>
+        </div>
+        <ngx-chess-board 
+          #board style="line-height: normal;"
+          [size]="boardSize"
+          [freeMode]="freeMode"
+          [showCoords]="!showCoordsOutside && showCoordsInside"
+          [lightTileColor]="colourFormGroup.value.darkColour"
+          [darkTileColor]="colourFormGroup.value.lightColour">
+        </ngx-chess-board>
+        <div *ngIf="showCoordsOutside" [@slideFromLeft] class="number-coord-container">
+          <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers" [ngStyle]="{'height.px': outsideCoordDiameter,'width.px': (outsideCoordDiameter / 2)}">
+            <span style="margin: 10px" 
+            [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': coordFontSize}"> {{coord}} </span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="showCoordsOutside" [@slideFromTop] class="letter-coord-container" [ngStyle]="{'height.px': (outsideCoordDiameter / 1.75), 'margin-left.px': (outsideCoordDiameter / 2)}">
+        <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters" [ngStyle]="{'width.px': outsideCoordDiameter}">
+          <span
+          [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': coordFontSize}"> {{coord}} </span>
+        </div>
+      </div>
     </div>
 
   </mat-grid-tile>
   <mat-grid-tile
     [colspan]="1"
     class="custom-col-container">
+    <div style="padding: 10px" class="board-controls-container">
 
-      <mat-list>
-        <mat-list-item class="custom-list-item">
-          <div class="sizing-container">
-            <h2 style="text-align: center; margin: 0;">Board Size</h2>
-            <mat-slider #boardSizeLocal (input)="updateBoardSize($event)" 
-              class="board-size-slider"
-              thumbLabel
-              min="550" 
-              max="900" 
-              step="1" 
-              [value]="boardSize">
-            </mat-slider>
-          </div>
-        </mat-list-item>
-        <mat-list-item class="custom-list-item">
-          <div class="free-mode-container">
-            <mat-slide-toggle (change)="freeModeToggle($event)">Free mode</mat-slide-toggle>
-          </div>
-        </mat-list-item>
-        <mat-list-item class="custom-list-item">
-          <div class="button-container">
-            <div>
-              <button class="button-margin" mat-raised-button color="primary" (click)="this.reset()">Reset</button>
-              <button class="button-margin" mat-raised-button color="primary" (click)="this.reverse()">Reverse</button>
-              <button class="button-margin" mat-raised-button color="primary" (click)="this.undo()">Undo</button>
-            </div>
-            <div style="margin-bottom: 5px;">
-              <button class="button-margin" mat-raised-button color="accent">Set FEN</button>
-              <button class="button-margin" mat-raised-button color="accent">Move History</button>
-              <button class="button-margin" mat-raised-button color="accent">Get Fen</button>
-            </div>
-            <mat-card class="colour-picker-card">
-              <form [formGroup]="colourFormGroup">
-                <mat-form-field>
-                  <mat-label style="font-size: 20px; font-weight: 500; color: black;">Dark Tile Colour</mat-label>
-                  <input formControlName="darkColour" type="color" matInput >
+    
+      <mat-card >
+        <mat-card-header style="justify-content: center;">
+          <mat-card-title>Board Controls</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item class="custom-list-item">
+              <div class="sizing-container">
+                <p style="text-align: center; margin: 0;">Board Size</p>
+                <mat-slider #boardSizeLocal (input)="updateBoardSize($event)" 
+                  class="board-size-slider"
+                  thumbLabel
+                  min="550" 
+                  max="900" 
+                  step="1" 
+                  [value]="boardSize">
+                </mat-slider>
+              </div>
+            </mat-list-item>
+            <mat-list-item class="custom-list-item">
+                <mat-slide-toggle style="padding-bottom: 20px" (change)="freeModeToggle($event)">Free mode</mat-slide-toggle>
+            </mat-list-item>
+            <mat-list-item class="custom-list-item">
+              <div class="button-container">
+                <mat-form-field appearance="outline" style="margin-right: 5px;">
+                  <mat-label class="custom-labels">Coordinate Labels</mat-label>
+                  <mat-select (selectionChange)="coordLabelChange($event)" [value]="coordPositions[0].value">
+                    <mat-option *ngFor="let coordPosition of coordPositions" [value]="coordPosition.value">
+                      {{coordPosition.viewValue}}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
-                <mat-form-field>
-                  <mat-label style="font-size: 20px; font-weight: 500; color: black;">Light Tile Colour</mat-label>
-                  <input formControlName="lightColour" type="color" matInput >
+                <mat-form-field appearance="outline" *ngIf="showCoordsOutside" [@slideFromLeft] style="margin-left: 5px; width: 60px;">
+                  <mat-label class="custom-labels">Size</mat-label>
+                  <mat-select (selectionChange)="labelSizeChange($event)" [value]="coordFontSizes[3]">
+                    <mat-option *ngFor="let coordsize of coordFontSizes" [value]="coordsize">
+                      {{coordsize}}
+                    </mat-option>
+                  </mat-select>
                 </mat-form-field>
-              </form>
-            </mat-card>
-          </div>
-        </mat-list-item>
-      </mat-list>
+                <div>
+                  <button class="interact-buttons" mat-button color="primary" (click)="this.reset()">Reset</button>
+                  <button class="interact-buttons" mat-button color="primary" (click)="this.reverse()">Reverse</button>
+                  <button class="interact-buttons" mat-button color="primary" (click)="this.undo()">Undo</button>
+                </div>
+                <div>
+                  <button class="interact-buttons" mat-button color="accent" (click)="this.openManageFenDialog()">Manage Fens</button>
+                  <button class="interact-buttons" mat-button color="accent">Move History</button>
+                </div>
 
+                <ng-container *ngIf="this.collection">
+                  <div *ngIf="this.collection.fens.length > 0" style="width: 100%; display: flex; justify-content: center;">
+                    <span>Navigate your Fens</span>
+                  </div>
+                  <div *ngIf="this.collection.fens.length > 0" style="margin-bottom: 5px;">
+                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                      <mat-icon (click)="navigateFen('first')">first_page</mat-icon>
+                    </button>
+                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                      <mat-icon (click)="navigateFen('previous')">chevron_left</mat-icon>
+                    </button>
+                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                      <mat-icon (click)="navigateFen('next')">chevron_right</mat-icon>
+                    </button>
+                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                      <mat-icon (click)="navigateFen('last')">last_page</mat-icon>
+                    </button>
+                  </div>
+                  <div *ngIf="this.collection.fens.length > 0 && this.activeFenPosition" style="width: 100%; display: flex; justify-content: center;">
+                    <span>{{this.activeFenPosition}} / {{this.collection.fens.length}}</span>
+                  </div>
+                  <div *ngIf="this.collection.fens.length > 0 && !this.activeFenPosition" style="width: 100%; display: flex; justify-content: center;">
+                    <span> 0 / {{this.collection.fens.length}}</span>
+                  </div>
+                </ng-container>
+
+                <mat-card class="colour-picker-card">
+                  <form [formGroup]="colourFormGroup" class="colour-picker-form">
+                    <mat-form-field>
+                      <mat-label class="custom-labels">Dark Tile Colour</mat-label>
+                      <input formControlName="darkColour" type="color" matInput >
+                    </mat-form-field>
+                    <mat-form-field>
+                      <mat-label class="custom-labels">Light Tile Colour</mat-label>
+                      <input formControlName="lightColour" type="color" matInput >
+                    </mat-form-field>
+                  </form>
+                </mat-card>
+              </div>
+            </mat-list-item>
+          </mat-list>
+          <button mat-button (click)="test()">Test</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </mat-grid-tile>
 </mat-grid-list>
 

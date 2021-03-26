@@ -16,6 +16,7 @@ input:-webkit-autofill:active  {
 }
 
 .custom-col-container {
+  overflow: unset !important;
     figure {
       display:block !important;
     }

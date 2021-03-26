@@ -1,0 +1,86 @@
+<h2 mat-dialog-title>Manage your Fen</h2>
+
+
+
+<form style="width: fit-content; display: flex; float: left;"
+[formGroup]="saveCollectionForm" [@slideFromLeft]> 
+  <mat-form-field appearance="outline">
+    <mat-label>Collection Title</mat-label>
+    <input matInput formControlName="collectionTitle">
+    <mat-error class="input-error-fix" 
+    *ngIf="saveCollectionForm.controls.collectionTitle.hasError('required') && 
+    saveCollectionForm.controls.collectionTitle.touched">
+      A Title is required.
+    </mat-error>
+    <mat-error class="input-error-fix" 
+    *ngIf="saveCollectionForm.controls.collectionTitle.hasError('maxLength') && 
+    saveCollectionForm.controls.collectionTitle.touched">
+      Title is too long.
+    </mat-error>
+  </mat-form-field>
+</form>
+
+<ng-container *ngIf="this.collection.fens">
+  <div style="float: left; height: 63.5px; line-height: 4; margin-left: 10px;" *ngIf="collection.fens.length === 1" [@slideFromRight]>
+    <span>Add more to create a </span><span matTooltip="You can load collections back in later!" class="text-highlight-primary"> collection</span>
+  </div>
+</ng-container>
+
+  <form [formGroup]="addFenForm">
+    <mat-form-field appearance="outline" style="width: -webkit-fill-available">
+    <mat-label>Fen</mat-label>
+    <textarea matInput formControlName="fenString" placeholder="And 'fen I moved..."></textarea>
+    <mat-error class="input-error-fix" *ngIf="addFenForm.controls.fenString.hasError('required') && addFenForm.controls.fenString.touched">
+      A FEN is required.
+    </mat-error>
+    <mat-error class="input-error-fix" *ngIf="addFenForm.controls.fenString.hasError('maxLength')">
+      That FEN looks pretty long! 
+    </mat-error>
+    </mat-form-field>
+  </form>
+<!-- </div> -->
+<div>
+  <button [disabled]="addFenForm.invalid" mat-button color="primary" (click)="this.addFen()">Add</button>
+  <button mat-button color="primary" *ngIf="data.parent === 'board'" (click)="loadCollection()">Load Collection</button>
+</div>
+
+<ng-container *ngIf="this.collection.fens">
+  <div *ngIf="this.collection.fens.length > 0" [@slideFromBottom]>
+    <hr>
+    <div style="width: fit-content" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+      <form [formGroup]="activeFenForm">
+        <mat-radio-group formControlName="activeFen" aria-label="Select an option">
+          <div cdkDrag class="example-box" *ngFor="let fen of collection.fens; let i = index">
+            <mat-radio-button  matTooltip="Check this to set this Fen as active." value="{{i}}">
+              {{fen}}
+            </mat-radio-button>
+            <button mat-icon-button color="warn" aria-label="Delete Icon for Deleting Fen">
+              <mat-icon (click)="removeFen(i); $event.preventDefault()">delete</mat-icon>
+            </button>
+          </div>
+          
+        </mat-radio-group>
+      </form>
+      <!-- </div> -->
+    </div>
+    <div style="display: flex; justify-content: left;">
+      <button mat-raised-button color="primary" class="save-buttons" 
+      *ngIf="data.parent === 'board'" (click)="save()">
+        Import
+      </button>
+      <button mat-raised-button color="primary" class="save-buttons"
+      (click)="saveCollection()" *ngIf="this.collection.fens.length > 1 && !data.collection" 
+      [disabled]="saveCollectionForm.controls.collectionTitle.hasError('required')" 
+      [@slideFromLeft]>
+        Save Collection
+      </button>
+      <button mat-raised-button color="primary" class="save-buttons"
+      (click)="updateCollection()" *ngIf="this.collection.fens.length > 1 && data.collection" 
+      [disabled]="saveCollectionForm.controls.collectionTitle.hasError('required')" 
+      [@slideFromLeft]>
+        Update Collection
+      </button>
+    </div>
+  </div>
+</ng-container>
+
