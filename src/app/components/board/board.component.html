@@ -1,14 +1,51 @@
-<mat-grid-list [rowHeight]="(this.boardSize + (this.outsideCoordDiameter * 2) + 10)" cols="4">
+<mat-grid-list [rowHeight]="(this.boardSize + ((this.outsideCoordDiameter / 2) * 2))" cols="4">
+  
   <mat-grid-tile
     [colspan]="1">
+
+    <div cdkDropList *ngIf="freeMode" [@slideFromLeft]>
+      <div 
+      cdkDrag
+      *ngFor="let piece of additionalWhitePieces; let i = index" 
+      (cdkDragStarted)="dragStarted(piece)" 
+      (cdkDragDropped)="dragStopped()"  
+      class="example-box"
+      [ngStyle]="{
+        'width.px': outsideCoordDiameter, 
+        'height.px': outsideCoordDiameter,
+        'font-size.px': ((outsideCoordDiameter / 5) * 4)
+      }">
+        {{piece.pieceImgSrc}}
+      </div>
+    </div>
+    <div cdkDropList *ngIf="freeMode" [@slideFromLeft]>
+      <div 
+      cdkDrag
+      *ngFor="let piece of additionalBlackPieces; let i = index" 
+      (cdkDragStarted)="dragStarted(piece)" 
+      (cdkDragDropped)="dragStopped()"  
+      class="example-box"
+      [ngStyle]="{
+        'width.px': outsideCoordDiameter, 
+        'height.px': outsideCoordDiameter,
+        'font-size.px': ((outsideCoordDiameter / 5) * 4)
+      }">
+        {{piece.pieceImgSrc}}
+      </div>
+    </div>
     
   </mat-grid-tile>
   <mat-grid-tile
     [colspan]="2">
-    
+    <!-- <div style="width: 33%;">
+      <div class="example-box" cdkDrag>
+        Drag me around
+      </div>
+    </div> -->
     <div class="board-container">
 
-      <div *ngIf="showCoordsOutside" [@slideFromBottom] class="letter-coord-container" [ngStyle]="{'height.px': (outsideCoordDiameter / 1.75), 'margin-left.px': (outsideCoordDiameter / 2)}">
+      <div *ngIf="showCoordsOutside" [@slideFromBottom] class="letter-coord-container" [ngStyle]="{'height.px': (outsideCoordDiameter / 1.75)}">
+        <!-- 'margin-left.px': (outsideCoordDiameter / 2)}" -->
         <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters" [ngStyle]="{'width.px': outsideCoordDiameter}">
           <span
           [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': coordFontSize}"> {{coord}} </span>
@@ -21,14 +58,29 @@
             [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': coordFontSize}"> {{coord}} </span>
           </div>
         </div>
-        <ngx-chess-board 
-          #board style="line-height: normal;"
-          [size]="boardSize"
-          [freeMode]="freeMode"
-          [showCoords]="!showCoordsOutside && showCoordsInside"
-          [lightTileColor]="colourFormGroup.value.darkColour"
-          [darkTileColor]="colourFormGroup.value.lightColour">
-        </ngx-chess-board>
+        <div class="container" [ngStyle]="{'height.px': boardSize, 'width.px': boardSize }">
+          <div class="box" [ngStyle]="{'height.px': boardSize, 'width.px': boardSize }">
+            <ngx-chess-board 
+              #board style="line-height: normal;"
+              [size]="boardSize"
+              [freeMode]="freeMode"
+              [showCoords]="!showCoordsOutside && showCoordsInside"
+              [lightTileColor]="colourFormGroup.value.darkColour"
+              [darkTileColor]="colourFormGroup.value.lightColour">
+            </ngx-chess-board>
+          </div>
+          <div *ngIf="dragging" class="overlay" [ngStyle]="{'height.px': boardSize, 'width.px': boardSize }">
+
+            <mat-grid-list *ngIf="dragging" cols="8" rowHeight="8:8">
+              <mat-grid-tile 
+                *ngFor="let grid of this.boardService.grids" 
+                (mouseup)="mouseUpEvent($event)" 
+                id="{{grid.coord}}">
+              </mat-grid-tile>
+            </mat-grid-list>
+          </div>
+        </div>
+        
         <div *ngIf="showCoordsOutside" [@slideFromLeft] class="number-coord-container">
           <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers" [ngStyle]="{'height.px': outsideCoordDiameter,'width.px': (outsideCoordDiameter / 2)}">
             <span style="margin: 10px" 
@@ -36,7 +88,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="showCoordsOutside" [@slideFromTop] class="letter-coord-container" [ngStyle]="{'height.px': (outsideCoordDiameter / 1.75), 'margin-left.px': (outsideCoordDiameter / 2)}">
+      <div *ngIf="showCoordsOutside" [@slideFromTop] class="letter-coord-container" [ngStyle]="{'height.px': (outsideCoordDiameter / 1.75)}">
         <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters" [ngStyle]="{'width.px': outsideCoordDiameter}">
           <span
           [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': coordFontSize}"> {{coord}} </span>
@@ -57,6 +109,7 @@
         </mat-card-header>
         <mat-card-content>
           <mat-list>
+            <!-- Board Size Controls -->
             <mat-list-item class="custom-list-item">
               <div class="sizing-container">
                 <p style="text-align: center; margin: 0;">Board Size</p>
@@ -64,15 +117,17 @@
                   class="board-size-slider"
                   thumbLabel
                   min="550" 
-                  max="900" 
+                  max="1100" 
                   step="1" 
                   [value]="boardSize">
                 </mat-slider>
               </div>
             </mat-list-item>
+            <!-- Free Mode Controls -->
             <mat-list-item class="custom-list-item">
                 <mat-slide-toggle style="padding-bottom: 20px" (change)="freeModeToggle($event)">Free mode</mat-slide-toggle>
             </mat-list-item>
+
             <mat-list-item class="custom-list-item">
               <div class="button-container">
                 <mat-form-field appearance="outline" style="margin-right: 5px;">
@@ -128,6 +183,7 @@
                 </ng-container>
 
                 <mat-card class="colour-picker-card">
+                  <p style="text-align: center;">Square Colours</p>
                   <form [formGroup]="colourFormGroup" class="colour-picker-form">
                     <mat-form-field>
                       <mat-label class="custom-labels">Dark Tile Colour</mat-label>
@@ -141,8 +197,8 @@
                 </mat-card>
               </div>
             </mat-list-item>
+
           </mat-list>
-          <button mat-button (click)="test()">Test</button>
         </mat-card-content>
       </mat-card>
     </div>

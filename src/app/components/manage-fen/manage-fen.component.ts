@@ -47,7 +47,11 @@ export class ManageFenComponent implements OnInit {
     private snackBar: MatSnackBar,
     private collectionsDialog: MatDialog,
   ) { 
-      if (data.parent === 'board') this.collection.fens = data.fens;
+      if (data.parent === 'board') {
+        if (data.collection) {
+          this.collection = data.collection;
+        }
+      } 
       if (data.collection) {
         this.collection = data.collection;
         this.saveCollectionForm.controls.collectionTitle.setValue(this.collection.fenTitle);
@@ -86,10 +90,10 @@ export class ManageFenComponent implements OnInit {
     console.log(this.collection.fens);
   }
 
-  save() {
+  import() {
     let activeIndex = this.activeFenForm.controls.activeFen.value;
     this.dialogRef.close({
-      fens: this.collection.fens,
+      collection: this.collection,
       fenActiveIndex: activeIndex
     });
   }

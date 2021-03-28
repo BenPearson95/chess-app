@@ -1,10 +1,13 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { NgxChessBoardService, NgxChessBoardView } from 'ngx-chess-board';
 import { slideFromBottom, slideFromLeft, slideFromRight, slideFromTop } from 'src/app/_animations/animations';
 import { FenCollection } from 'src/app/_models/board/fen-collection';
+import { AdditionalPiece } from 'src/app/_models/board/additional-piece';
 import { ManageFenComponent } from '../manage-fen/manage-fen.component';
+import { CdkDragStart } from '@angular/cdk/drag-drop';
+import { BoardService } from 'src/app/_services/board.service';
 
 @Component({
   selector: 'app-board',
@@ -17,8 +20,12 @@ import { ManageFenComponent } from '../manage-fen/manage-fen.component';
     slideFromRight,
   ],
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, AfterViewInit {
+
+  @Output('cdkDragStarted') started: EventEmitter<CdkDragStart>
+
   @ViewChild('board', {static: false}) board: NgxChessBoardView | undefined;
+  @ViewChild('boardRef', {static: true}) boardRef: ElementRef;
   @Input() boardSize: number = 650;
   @Input() freeMode: boolean = false;
 
@@ -48,23 +55,62 @@ export class BoardComponent implements OnInit {
     lightColour: new FormControl('#ffffff'),
   })
 
-  show: boolean = false;
+  piece: AdditionalPiece = {
+    piece: null, colour: null, pieceImgSrc: ''
+  }
+
+  
+
+  // boardPieces: Array<PieceIconInputManager>
+
+
+  grids: Array<number> = [];
+  additionalPieces: Array<AdditionalPiece> = [
+    {piece: 1, colour: 1, pieceImgSrc: '♔'},
+    {piece: 2, colour: 1, pieceImgSrc: '♕'},
+    {piece: 3, colour: 1, pieceImgSrc: '♗'},
+    {piece: 4, colour: 1, pieceImgSrc: '♘'},
+    {piece: 5, colour: 1, pieceImgSrc: '♖'},
+    {piece: 6, colour: 1, pieceImgSrc: '♙'}
+  ];
+  additionalWhitePieces: Array<AdditionalPiece> = [
+    {piece: 1, colour: 1, pieceImgSrc: '♔'},
+    {piece: 2, colour: 1, pieceImgSrc: '♕'},
+    {piece: 3, colour: 1, pieceImgSrc: '♗'},
+    {piece: 4, colour: 1, pieceImgSrc: '♘'},
+    {piece: 5, colour: 1, pieceImgSrc: '♖'},
+    {piece: 6, colour: 1, pieceImgSrc: '♙'}
+  ];
+  additionalBlackPieces: Array<AdditionalPiece> = [
+    {piece: 1, colour: 2, pieceImgSrc: '♚'},
+    {piece: 2, colour: 2, pieceImgSrc: '♛'},
+    {piece: 3, colour: 2, pieceImgSrc: '♝'},
+    {piece: 4, colour: 2, pieceImgSrc: '♞'},
+    {piece: 5, colour: 2, pieceImgSrc: '♜'},
+    {piece: 6, colour: 2, pieceImgSrc: '♟'},
+  ];
+
+  dragging: boolean;
 
   constructor(
     private ngxChessBoardService: NgxChessBoardService,
     public ManageFenDialog: MatDialog,
+    public boardService: BoardService,
   ) {
+    this.boardService.initGrids();
   }
 
   ngOnInit() {
-    // this.outsideCoordDiameter = this.boardSize / 8;
+    
+  }
+
+  ngAfterViewInit() {
   }
   
   // Called from the Slider HTML, updates the Chessboard size.
   updateBoardSize(event: any) {
     this.boardSize = event.value;
     this.outsideCoordDiameter = (this.boardSize / 8);
-    console.log(this.outsideCoordDiameter);
   }
 
   // Resets the board.
@@ -117,6 +163,7 @@ export class BoardComponent implements OnInit {
   }
 
   openManageFenDialog() {
+    console.log(this.collection);
     const dialogRef = this.ManageFenDialog.open(ManageFenComponent, {
       minWidth: 700,
       data: {
@@ -136,9 +183,9 @@ export class BoardComponent implements OnInit {
       if(!this.collection || !this.collection.fens) {
         this.collection = new FenCollection;
         this.collection.fens = [];
-        this.show = true;
+        // this.show = true;
       } 
-      this.collection.fens = result.fens
+      this.collection = result.collection
       if (this.collection.fens.length > 0) this.activeFen = this.collection.fens[result.fenActiveIndex];
       this.setFen();
 
@@ -173,7 +220,32 @@ export class BoardComponent implements OnInit {
     
   }
 
-  test() {
-    console.log(this.collection);
+  mouseUpEvent(event) {
+    console.log(event);
+    console.log(event.path[1].id);
+    console.log(this.freeMode);
+    if (this.freeMode) {
+      console.log(this.piece.piece);
+      console.log(this.piece.colour);
+      console.log(event.path[1].id);
+
+      this.board?.addPiece(this.piece.piece, this.piece.colour, event.path[1].id);
+    }
   }
+
+  dragStarted(piece: AdditionalPiece) {
+    this.dragging = true;
+    console.log('started dragging', piece);
+    this.piece.piece = piece.piece;
+    this.piece.colour = piece.colour;
+  }
+
+  dragStopped() {
+    console.log('drag stopped');
+    setTimeout(() => {
+      this.dragging = false;
+    }, 50);
+  }
+
+  
 }
