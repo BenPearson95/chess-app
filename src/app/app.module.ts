@@ -22,11 +22,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { InformationComponent } from './components/information/information.component';
-import { SavedGamesComponent } from './components/saved-games/saved-games.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AccountComponent } from './components/account/account.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { MatSelectModule } from '@angular/material/select';
+import { ManageFenComponent } from './components/manage-fen/manage-fen.component';
+import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CollectionsComponent } from './components/collections/collections.component';
+import { MatTableModule } from '@angular/material/table';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -36,9 +45,10 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
     BoardComponent,
     LoginSignupComponent,
     InformationComponent,
-    SavedGamesComponent,
     AccountComponent,
     AdminDashboardComponent,
+    ManageFenComponent,
+    CollectionsComponent
   ],
   imports: [
     BrowserModule,
@@ -60,6 +70,14 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
     MatFormFieldModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatSelectModule,
+    MatDialogModule,
+    MatCheckboxModule,
+    MatTooltipModule,
+    MatRadioModule,
+    MatSnackBarModule,
+    MatTableModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent],

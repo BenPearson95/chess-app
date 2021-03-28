@@ -47,3 +47,50 @@ function slideTo(direction: any) {
     ]),
   ];
 }
+
+export const slideFromBottom = 
+trigger('slideFromBottom', [
+  transition(':enter', [
+    style({transform: 'translateY(100%)'}),
+    animate('500ms ease-in', style({transform: 'translateY(0%)'}))
+  ]),
+  transition(':leave', [
+    animate('500ms ease-in', style({transform: 'translateY(100%)'}))
+  ])
+]);
+
+export const slideFromTop = 
+trigger('slideFromTop', [
+  transition(':enter', [
+    style({transform: 'translateY(-100%)'}),
+    animate('500ms ease-in', style({transform: 'translateY(0%)'}))
+  ]),
+  transition(':leave', [
+    animate('500ms ease-in', style({transform: 'translateY(-100%)'}))
+  ])
+])
+
+export const slideFromRight = 
+trigger('slideFromRight', [
+  transition(':enter', [
+    style({transform: 'translateX(100%)'}),
+    animate('500ms ease-in', style({transform: 'translateX(0%)'}))
+  ]),
+  transition(':leave', [
+    animate('500ms ease-in', style({transform: 'translateX(100%)'}))
+  ])
+])
+
+export const slideFromLeft  = 
+trigger('slideFromLeft', [
+  transition(':enter', [
+    style({transform: 'translateX(-100%)'}),
+    animate('500ms ease-in', style({transform: 'translateX(0%)'}))
+  ]),
+  transition(':leave', [
+    animate('500ms ease-in', style({transform: 'translateX(-100%)'}))
+  ])
+])
+
+
+

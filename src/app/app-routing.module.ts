@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CollectionsComponent } from './components/collections/collections.component';
 import { AccountComponent } from './components/account/account.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { BoardComponent } from './components/board/board.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { InformationComponent } from './components/information/information.component';
 import { LoginSignupComponent } from './components/login-signup/login-signup.component';
-import { SavedGamesComponent } from './components/saved-games/saved-games.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { LoggedInGuard } from './_guards/logged-in.guard';
 import { AccountResolver } from './_resolvers/account.resolver';
+import { CollectionsResolver } from './_resolvers/collections.resolver';
 
 const routes: Routes = [
   {
@@ -41,10 +42,13 @@ const routes: Routes = [
         },
       },
       {
-        path: 'saved-games',
-        component: SavedGamesComponent,
+        path: 'collections',
+        component: CollectionsComponent,
+        resolve: {
+          resolvedData: CollectionsResolver,
+        },
         data: {
-          name: 'Saved Games',
+          name: 'Collections',
           showBackButton: true,
           animation: 'isRight',
         },
