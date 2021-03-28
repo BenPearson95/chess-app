@@ -59,11 +59,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     piece: null, colour: null, pieceImgSrc: ''
   }
 
-  
-
-  // boardPieces: Array<PieceIconInputManager>
-
-
   grids: Array<number> = [];
   additionalPieces: Array<AdditionalPiece> = [
     {piece: 1, colour: 1, pieceImgSrc: '♔'},
@@ -177,19 +172,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('result: ', result);
-      let test = this.collection;
-      console.log('collection: ', test);
       if(!this.collection || !this.collection.fens) {
         this.collection = new FenCollection;
         this.collection.fens = [];
-        // this.show = true;
       } 
       this.collection = result.collection
       if (this.collection.fens.length > 0) this.activeFen = this.collection.fens[result.fenActiveIndex];
       this.setFen();
-
-      console.log(this.collection);
     });
   }
 
@@ -235,13 +224,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
   dragStarted(piece: AdditionalPiece) {
     this.dragging = true;
-    console.log('started dragging', piece);
     this.piece.piece = piece.piece;
     this.piece.colour = piece.colour;
   }
 
   dragStopped() {
-    console.log('drag stopped');
     setTimeout(() => {
       this.dragging = false;
     }, 50);

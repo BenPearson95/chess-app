@@ -102,7 +102,6 @@ export class ManageFenComponent implements OnInit {
     let userId;
     let userAccountType;
     this.authService.currentUser$.subscribe((user) => {
-      console.log('user', user);
       userId = user._id;
       userAccountType = user.accountType;
     });
@@ -111,7 +110,6 @@ export class ManageFenComponent implements OnInit {
     } else {
       this.collection.userId = userId;
       this.collection.fenTitle = this.saveCollectionForm.controls.collectionTitle.value;
-      console.log('the collection: ', this.collection);
       this.fenCollectionsService.saveCollection(this.collection).subscribe(result => {
         this.snackBar.open('Success!', null, {duration: 2000,});
         this.dialogRef.close({

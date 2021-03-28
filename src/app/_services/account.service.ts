@@ -11,7 +11,6 @@ export class AccountService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService,
   ) { }
 
   apiPath = environment.apiPath;
@@ -23,9 +22,6 @@ export class AccountService {
   }
 
   getUserById(userId: String) {
-    console.log(this.options);
-    console.log(userId);
-    // this.options['params'] = {'userId': userId};
     return this.http.get(
       this.apiPath + 
       this.userRoute +

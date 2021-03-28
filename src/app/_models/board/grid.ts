@@ -3,6 +3,4 @@ import { ColorInput, PieceTypeInput } from "ngx-chess-board/lib/utils/inputs/pie
 export class Grid {
   gridNum: number;
   coord: string;
-  // pieceType: PieceTypeInput;
-  // color: ColorInput;
 }
