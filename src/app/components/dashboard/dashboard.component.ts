@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,7 +6,5 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  constructor(
-    private breakpointObserver: BreakpointObserver
-    ) {}
+  constructor() {}
 }

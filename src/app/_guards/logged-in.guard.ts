@@ -14,6 +14,7 @@ export class LoggedInGuard implements CanActivate {
     private router: Router,
   ) {}
 
+  // Check to see if user is actually logged in.
   canActivate(): Observable<boolean> {
     return this.AuthService.currentUser$.pipe(
       map(user => {

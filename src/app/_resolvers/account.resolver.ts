@@ -14,6 +14,7 @@ export class AccountResolver implements Resolve<Account> {
     private authService: AuthService,
     ) {}
 
+    // Resolve data to the account component.
   resolve(): Observable<Account> {
     let userId: String = '';
     

@@ -21,15 +21,10 @@ export class AccountService {
     })
   }
 
+  // Get User by ID
   getUserById(userId: String) {
-    return this.http.get(
-      this.apiPath + 
-      this.userRoute +
-      '/' + userId,
-      this.options
-      )
-      .pipe(
-      map((response: any) => {
+    return this.http.get(this.apiPath + this.userRoute + '/' + userId, this.options )
+      .pipe( map((response: any) => {
         return response;
       })
     );

@@ -1,0 +1,11 @@
+@import 'my-theme.scss';
+
+// Copy the palettes from your selected theme.
+$app-primary: mat-palette($mat-blue, 800, 700, 900);
+$app-accent:  mat-palette($mat-amber, 700, 500, 900);
+$app-warn:    mat-palette($mat-red);
+
+// Create your Sass color vars.
+$primary: mat-color($app-primary);
+$accent: mat-color($app-accent);
+$warn: mat-color($app-warn);

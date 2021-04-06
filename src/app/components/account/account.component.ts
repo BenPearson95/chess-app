@@ -19,7 +19,7 @@ export class AccountComponent implements OnInit {
     console.log(this.account);
   }
 
-
+  // Get the account data from the route.
   getRouteData(data: Account) {
     this.account = {
       _id: data._id,

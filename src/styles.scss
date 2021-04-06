@@ -17,7 +17,11 @@ input:-webkit-autofill:active  {
 
 .custom-col-container {
   overflow: unset !important;
-    figure {
-      display:block !important;
-    }
+  figure {
+    display:block !important;
   }
+}
+
+.app-background {
+  background-color: #e3e3e3
+}

@@ -23,9 +23,9 @@ import { CollectionsComponent } from '../collections/collections.component';
 })
 export class ManageFenComponent implements OnInit {
 
-  // fens: Array<String> = [];
   collection: FenCollection = new FenCollection;
 
+  // Form Groups for adding a Fen. Could be tidied up, potentially.
   addFenForm = new FormGroup({
     fenString: new FormControl(
       '', [Validators.required, Validators.maxLength(255)]
@@ -47,6 +47,7 @@ export class ManageFenComponent implements OnInit {
     private snackBar: MatSnackBar,
     private collectionsDialog: MatDialog,
   ) { 
+      // How should we load in data, depending on where this modal is being openned.
       if (data.parent === 'board') {
         if (data.collection) {
           this.collection = data.collection;
@@ -62,6 +63,7 @@ export class ManageFenComponent implements OnInit {
 
   ngOnInit() {}
 
+  // Adds a fen to the fenString Array.
   addFen() {
     if (this.addFenForm.valid) {
       if (!this.collection.fens) this.collection.fens = [];
@@ -73,6 +75,7 @@ export class ManageFenComponent implements OnInit {
     
   }
 
+  // Remoives a Fen from the fenString array.
   removeFen(index: number) {
     this.collection.fens.splice(index, 1);
     console.log(this.collection.fens);
@@ -80,6 +83,7 @@ export class ManageFenComponent implements OnInit {
     this.checkfensLength();
   }
 
+  // Handles moving items around in the Array from the Drag/Drop functionality.
   drop(event) {
     console.log(this.collection.fens);
     moveItemInArray(
@@ -90,6 +94,7 @@ export class ManageFenComponent implements OnInit {
     console.log(this.collection.fens);
   }
 
+  // Imports a FenCollection into the board.
   import() {
     let activeIndex = this.activeFenForm.controls.activeFen.value;
     this.dialogRef.close({
@@ -98,6 +103,7 @@ export class ManageFenComponent implements OnInit {
     });
   }
 
+  // Saves a collection to the DB.
   saveCollection() {
     let userId;
     let userAccountType;
@@ -105,9 +111,9 @@ export class ManageFenComponent implements OnInit {
       userId = user._id;
       userAccountType = user.accountType;
     });
-    if(userAccountType === AccountType.Free) {
-      console.log('You need to be a Premium User for this feature!');
-    } else {
+    // if(userAccountType === AccountType.Free) {
+    //   console.log('You need to be a Premium User for this feature!');
+    // } else {
       this.collection.userId = userId;
       this.collection.fenTitle = this.saveCollectionForm.controls.collectionTitle.value;
       this.fenCollectionsService.saveCollection(this.collection).subscribe(result => {
@@ -118,7 +124,7 @@ export class ManageFenComponent implements OnInit {
       }, error => {
         this.snackBar.open('Failure!');
       });
-    }
+    // }
   }
 
   updateCollection() {

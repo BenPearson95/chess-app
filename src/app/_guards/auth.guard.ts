@@ -14,6 +14,7 @@ export class AuthGuard implements CanActivate {
     private router: Router,
   ){ }
 
+  // Check to see if user is authenticated.
   canActivate(): Observable<boolean> {
     return this.AuthService.currentUser$.pipe(
       map(user => {

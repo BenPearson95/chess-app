@@ -10,6 +10,7 @@ export class BoardService {
 
   constructor() { }
 
+  // Init the grids. Ew.
   initGrids() {
     this.grids.push({gridNum: 1, coord: 'a8' });
     this.grids.push({gridNum: 2, coord: 'b8' });

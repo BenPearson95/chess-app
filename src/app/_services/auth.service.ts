@@ -23,6 +23,7 @@ export class AuthService {
     private router: Router,
   ) { }
 
+  // Log the user in.
   loginUser(userLogin: UserLogin) {
     return this.http.post(this.apiPath + this.authRoute + 'login', userLogin).pipe(
       map((response: any) => {
@@ -37,16 +38,19 @@ export class AuthService {
     );
   }
 
+  // Set the currently logged in user.
   setCurrentUser(user: AuthUser) {
     this.currentUserSource.next(user);
   }
 
+  // Log the user out.
   logout() {
     localStorage.removeItem('user');
     this.currentUserSource.next(undefined);
     this.router.navigate(['']);
   }
 
+  // Sign the user up.
   signupUser(userSignup: UserSignup) {
     return this.http.post(this.apiPath + this.authRoute + 'signup', userSignup);
   }

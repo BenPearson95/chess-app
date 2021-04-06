@@ -46,7 +46,7 @@ export class CollectionsComponent implements OnInit {
     }
   }
 
-
+  // Get the Collections data from the route.
   getRouteData(data: Array<FenCollection>) {
     this.fenCollections = [];
     data.forEach(collection => {
@@ -55,6 +55,7 @@ export class CollectionsComponent implements OnInit {
     this.populateTable();
   }
 
+  // Populate the fen table.
   populateTable() {
     this.dataSource = [];
     this.fenCollections.forEach(collection => {
@@ -71,6 +72,7 @@ export class CollectionsComponent implements OnInit {
     })
   }
 
+  // Deletes a Fen Collection.
   removeCollection(element) {
     this.fenCollectionsService.deleteCollectionById(element._id).subscribe(result => {
       const indexToRemove = this.fenCollections.findIndex(collection => collection._id === element._id);
@@ -81,6 +83,7 @@ export class CollectionsComponent implements OnInit {
     })
   }
 
+  // Gets all of collections based on the currently logged in user ID.
   getCollectionsByUserID() {
     let userId;
     this.authService.currentUser$.subscribe(user => {
@@ -97,6 +100,7 @@ export class CollectionsComponent implements OnInit {
     })
   }
 
+  // Opens the Fen Management modal and handles returned data.
   openManageFenDialog(collection?: FenCollection) {
     const dialogRef = this.ManageFenDialog.open(ManageFenComponent, {
       minWidth: 700,
@@ -115,6 +119,7 @@ export class CollectionsComponent implements OnInit {
     });
   }
 
+  // Load the collection in the Board.
   loadCollection(collection) {
     this.dialogRef.close({
       collection: collection,

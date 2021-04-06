@@ -48,6 +48,7 @@ function slideTo(direction: any) {
   ];
 }
 
+// group of generic slide in animations.
 export const slideFromBottom = 
 trigger('slideFromBottom', [
   transition(':enter', [

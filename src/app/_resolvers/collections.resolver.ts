@@ -14,6 +14,7 @@ export class CollectionsResolver implements Resolve<Array<FenCollection>> {
     private fenCollectionsService: FenCollectionsService,
     ) {}
 
+  // Resolve data into the collection component.
   resolve(): Observable<Array<FenCollection>> {
     let userId: String = '';
     

@@ -26,3 +26,7 @@ $custom-typography: mat-typography-config(
 );
 
 @include mat-core($custom-typography);
+
+:root {
+  --primary-color: mat-color($my-theme-primary);
+}

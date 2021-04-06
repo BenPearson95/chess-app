@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  apiPath: 'http://localhost:3000/api/',
+  // apiPath: 'http://localhost:3000/api/',
+  apiPath: 'http://chess-api.crowboroughchess.org/api/',
 };
-
 
 
 /*
