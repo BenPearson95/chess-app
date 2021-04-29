@@ -28,7 +28,7 @@ import { AccountComponent } from './components/account/account.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { MatSelectModule } from '@angular/material/select';
 import { ManageFenComponent } from './components/manage-fen/manage-fen.component';
-import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRadioModule } from '@angular/material/radio';
@@ -36,6 +36,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CollectionsComponent } from './components/collections/collections.component';
 import { MatTableModule } from '@angular/material/table';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { HelpComponent } from './components/help/help.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -48,7 +52,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     AccountComponent,
     AdminDashboardComponent,
     ManageFenComponent,
-    CollectionsComponent
+    CollectionsComponent,
+    HelpComponent,
+    FeedbackComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,9 +83,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatRadioModule,
     MatSnackBarModule,
     MatTableModule,
-    DragDropModule
+    DragDropModule,
+    MatExpansionModule
   ],
-  providers: [],
+  providers: [
+    { provide: LocationStrategy, useClass: PathLocationStrategy }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

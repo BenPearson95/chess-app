@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { RouterOutlet } from '@angular/router';
-import { slider } from './_animations/animations';
+import { FeedbackComponent } from './components/feedback/feedback.component';
+import { slideFromLeft, slider } from './_animations/animations';
 import { AuthUser } from './_models/user/auth-user';
 import { AuthService } from './_services/auth.service';
 
@@ -9,14 +11,16 @@ import { AuthService } from './_services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [
-    slider
+    slider,
+    slideFromLeft
   ]
 })
 export class AppComponent {
   title = 'chess-app';
 
   constructor(
-    private AuthService: AuthService,
+    public AuthService: AuthService,
+    public feedbackDialog: MatDialog,
     ) {}
 
     ngOnInit() {
@@ -31,6 +35,21 @@ export class AppComponent {
   setCurrentUser() {
     const user: AuthUser = JSON.parse(localStorage.getItem('user'));
     if (user) this.AuthService.setCurrentUser(user);
+    
+  }
+
+  
+
+  openFeedback() {
+    const dialogRef = this.feedbackDialog.open(FeedbackComponent, {
+      minWidth: 700,
+    });
+
+    dialogRef.updatePosition({
+      top: '50px'
+    });
+
+    dialogRef.afterClosed().subscribe();
   }
 }
 

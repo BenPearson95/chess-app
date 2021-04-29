@@ -8,6 +8,7 @@ import { AdditionalPiece } from 'src/app/_models/board/additional-piece';
 import { ManageFenComponent } from '../manage-fen/manage-fen.component';
 import { CdkDragStart } from '@angular/cdk/drag-drop';
 import { BoardService } from 'src/app/_services/board.service';
+import { HelpComponent } from '../help/help.component';
 
 @Component({
   selector: 'app-board',
@@ -90,6 +91,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     private ngxChessBoardService: NgxChessBoardService,
     public ManageFenDialog: MatDialog,
     public boardService: BoardService,
+    public helpDialog: MatDialog,
   ) {
     this.boardService.initGrids();
   }
@@ -214,14 +216,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
   // Toggled when a mouse click up event has fired on the overlay grid for piece dragging.
   mouseUpEvent(event) {
-    console.log(event);
-    console.log(event.path[1].id);
-    console.log(this.freeMode);
     if (this.freeMode) {
-      console.log(this.piece.piece);
-      console.log(this.piece.colour);
-      console.log(event.path[1].id);
-
       this.board?.addPiece(this.piece.piece, this.piece.colour, event.path[1].id);
     }
   }
@@ -239,5 +234,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.dragging = false;
     }, 50);
+  }
+
+  openHelp() {
+    const dialogRef = this.helpDialog.open(HelpComponent, {
+      minWidth: 700,
+      minHeight: 700
+    });
+
+    dialogRef.updatePosition({
+      top: '50px',
+    });
+
+    dialogRef.afterClosed().subscribe();
   }
 }

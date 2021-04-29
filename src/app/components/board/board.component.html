@@ -1,8 +1,7 @@
 <mat-grid-list [rowHeight]="(this.boardSize + ((this.outsideCoordDiameter / 2) * 2))" cols="4">
-  
+
   <mat-grid-tile
     [colspan]="1">
-
     <div cdkDropList *ngIf="freeMode" [@slideFromLeft]>
       <div 
       cdkDrag
@@ -18,7 +17,7 @@
         {{piece.pieceImgSrc}}
       </div>
     </div>
-    <div cdkDropList *ngIf="freeMode" [@slideFromLeft]>
+    <div cdkDropListSortingDisabled *ngIf="freeMode" [@slideFromLeft]>
       <div 
       cdkDrag
       *ngFor="let piece of additionalBlackPieces; let i = index" 
@@ -37,15 +36,9 @@
   </mat-grid-tile>
   <mat-grid-tile
     [colspan]="2">
-    <!-- <div style="width: 33%;">
-      <div class="example-box" cdkDrag>
-        Drag me around
-      </div>
-    </div> -->
     <div class="board-container">
 
       <div *ngIf="showCoordsOutside" [@slideFromBottom] class="letter-coord-container" [ngStyle]="{'height.px': (outsideCoordDiameter / 1.75)}">
-        <!-- 'margin-left.px': (outsideCoordDiameter / 2)}" -->
         <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters" [ngStyle]="{'width.px': outsideCoordDiameter}">
           <span
           [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': coordFontSize}"> {{coord}} </span>
@@ -102,7 +95,6 @@
     class="custom-col-container">
     <div style="padding: 10px" class="board-controls-container">
 
-    
       <mat-card >
         <mat-card-header style="justify-content: center;">
           <mat-card-title>Board Controls</mat-card-title>
@@ -195,6 +187,9 @@
                     </mat-form-field>
                   </form>
                 </mat-card>
+                <div>
+                  <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.openHelp()">Help</button>
+                </div>
               </div>
             </mat-list-item>
 

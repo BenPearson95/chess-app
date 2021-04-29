@@ -1,4 +1,12 @@
 <app-tool-bar></app-tool-bar>
+<div *ngIf="(AuthService.currentUser$ | async) as authUser" [@slideFromLeft] class="floating-buttons-container">
+  <button (click)="openFeedback()" style="margin: 4px" mat-fab color="primary">
+    <mat-icon>feedback</mat-icon>
+  </button>
+  <!-- <button (click)="openHelp()" style="margin: 4px" mat-fab color="accent">
+    <mat-icon>help_outline</mat-icon>
+  </button> -->
+</div>
 <div [@routeAnimations]="prepareRoute(outlet)">
   <router-outlet #outlet="outlet"></router-outlet>
 </div>

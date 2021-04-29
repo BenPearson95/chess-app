@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthUser } from '../../_models/user/auth-user';
 import { UserLogin } from '../../_models/user/user-login';
 import { UserSignup } from '../../_models/user/user-signup';
@@ -32,6 +33,7 @@ export class LoginSignupComponent implements OnInit {
 
   constructor(
     private AuthService: AuthService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -58,6 +60,8 @@ export class LoginSignupComponent implements OnInit {
 
     // Call to the User Service.
     this.AuthService.loginUser(userLogin).subscribe((result: AuthUser) => {
+      if (result) this.router.navigate(['dashboard']);
+      this.router.navigate(['dashboard']);
     }, error => {
       this.loginError = error.error;
     });
