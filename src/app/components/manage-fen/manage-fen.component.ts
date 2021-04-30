@@ -1,14 +1,12 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA,  } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { slideFromBottom, slideFromLeft, slideFromRight, slideFromTop } from 'src/app/_animations/animations';
 import { FenCollection } from 'src/app/_models/board/fen-collection';
-import { AccountType } from 'src/app/_models/enums/account-type.enum';
 import { AuthService } from 'src/app/_services/auth.service';
 import { FenCollectionsService } from 'src/app/_services/fen-collections.service';
-import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
-import { CollectionsComponent } from '../collections/collections.component';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-manage-fen',
@@ -25,18 +23,10 @@ export class ManageFenComponent implements OnInit {
 
   collection: FenCollection = new FenCollection;
 
-  // Form Groups for adding a Fen. Could be tidied up, potentially.
-  addFenForm = new FormGroup({
-    fenString: new FormControl(
-      '', [Validators.required, Validators.maxLength(255)]
-    ),
-  })
-  activeFenForm = new FormGroup({
-    activeFen: new FormControl(''),
-  });
+  // Saving a Fen Collection Form
   saveCollectionForm = new FormGroup({
-    collectionTitle: new FormControl({value: '', disabled: true}, [Validators.required, Validators.maxLength(255)]
-    ),
+    collectionTitle: new FormControl('', [Validators.required, Validators.maxLength(255)]),
+    fenString: new FormControl('', [Validators.required, Validators.maxLength(255)]),
   })
 
   constructor(
@@ -45,7 +35,6 @@ export class ManageFenComponent implements OnInit {
     private authService: AuthService,
     private fenCollectionsService: FenCollectionsService,
     private snackBar: MatSnackBar,
-    private collectionsDialog: MatDialog,
   ) { 
       // How should we load in data, depending on where this modal is being openned.
       if (data.parent === 'board') {
@@ -65,10 +54,10 @@ export class ManageFenComponent implements OnInit {
 
   // Adds a fen to the fenString Array.
   addFen() {
-    if (this.addFenForm.valid) {
+    if (this.saveCollectionForm.controls.fenString.valid) {
       if (!this.collection.fens) this.collection.fens = [];
-      this.collection.fens.push(this.addFenForm.controls.fenString.value) 
-      this.addFenForm.reset();
+      this.collection.fens.push(this.saveCollectionForm.controls.fenString.value) 
+      this.saveCollectionForm.controls.fenString.reset();
       this.saveCollectionForm.updateValueAndValidity();
       this.checkfensLength();
     }
@@ -96,10 +85,8 @@ export class ManageFenComponent implements OnInit {
 
   // Imports a FenCollection into the board.
   import() {
-    let activeIndex = this.activeFenForm.controls.activeFen.value;
     this.dialogRef.close({
       collection: this.collection,
-      fenActiveIndex: activeIndex
     });
   }
 
@@ -148,32 +135,4 @@ export class ManageFenComponent implements OnInit {
       this.saveCollectionForm.controls.collectionTitle.disable();
     }
   }
-
-  loadCollection() {
-    this.openCollectionsDialog();
-  }
-
-  openCollectionsDialog() {
-    const dialogRef = this.collectionsDialog.open(CollectionsComponent, {
-      minWidth: 700,
-      data: {
-        parent: 'board',
-      },
-    });
-
-    // dialogRef.updatePosition({
-    //   top: '50px'
-    // });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      const collection = result.collection;
-      this.saveCollectionForm.controls.collectionTitle.setValue(collection.fenTitle);
-      this.collection.fens = collection.fens
-      this.saveCollectionForm.updateValueAndValidity();
-      this.checkfensLength();
-    });
-  }
-  
-
 }

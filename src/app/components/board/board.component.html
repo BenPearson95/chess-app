@@ -139,13 +139,13 @@
                   </mat-select>
                 </mat-form-field>
                 <div>
-                  <button class="interact-buttons" mat-button color="primary" (click)="this.reset()">Reset</button>
-                  <button class="interact-buttons" mat-button color="primary" (click)="this.reverse()">Reverse</button>
-                  <button class="interact-buttons" mat-button color="primary" (click)="this.undo()">Undo</button>
+                  <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.reset()">Reset</button>
+                  <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.reverse()">Reverse</button>
+                  <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.undo()">Undo</button>
                 </div>
                 <div>
-                  <button class="interact-buttons" mat-button color="accent" (click)="this.openManageFenDialog()">Manage Fens</button>
-                  <button class="interact-buttons" mat-button color="accent">Move History</button>
+                  <button class="interact-buttons" mat-stroked-button color="accent" (click)="this.openFenCollectionsDialog()">Fen Collections</button>
+                  <button class="interact-buttons" mat-stroked-button color="accent">Move History</button>
                 </div>
 
                 <ng-container *ngIf="this.collection">
