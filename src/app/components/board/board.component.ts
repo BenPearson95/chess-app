@@ -8,6 +8,7 @@ import { AdditionalPiece } from 'src/app/_models/board/additional-piece';
 import { CdkDragStart } from '@angular/cdk/drag-drop';
 import { BoardService } from 'src/app/_services/board.service';
 import { HelpComponent } from '../help/help.component';
+import { CollectionsComponent } from '../collections/collections.component';
 
 @Component({
   selector: 'app-board',
