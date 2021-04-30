@@ -5,9 +5,9 @@ import { NgxChessBoardService, NgxChessBoardView } from 'ngx-chess-board';
 import { slideFromBottom, slideFromLeft, slideFromRight, slideFromTop } from 'src/app/_animations/animations';
 import { FenCollection } from 'src/app/_models/board/fen-collection';
 import { AdditionalPiece } from 'src/app/_models/board/additional-piece';
-import { ManageFenComponent } from '../manage-fen/manage-fen.component';
 import { CdkDragStart } from '@angular/cdk/drag-drop';
 import { BoardService } from 'src/app/_services/board.service';
+import { CollectionsComponent } from '../collections/collections.component';
 
 @Component({
   selector: 'app-board',
@@ -88,7 +88,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
   constructor(
     private ngxChessBoardService: NgxChessBoardService,
-    public ManageFenDialog: MatDialog,
+    public FenCollectionsDialog: MatDialog,
     public boardService: BoardService,
   ) {
     this.boardService.initGrids();
@@ -158,11 +158,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
     this.coordFontSize = event.value;
   }
 
-  // Opens the Fen Management Modal. Manages return data.
-  openManageFenDialog() {
+  // Opens the Fen Collection Modal. Manages return data.
+  openFenCollectionsDialog() {
     console.log(this.collection);
-    const dialogRef = this.ManageFenDialog.open(ManageFenComponent, {
-      minWidth: 700,
+    const dialogRef = this.FenCollectionsDialog.open(CollectionsComponent, {
+      minWidth: 900,
       data: {
         parent: 'board',
         collection: this.collection,
@@ -179,7 +179,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         this.collection.fens = [];
       } 
       this.collection = result.collection
-      if (this.collection.fens.length > 0) this.activeFen = this.collection.fens[result.fenActiveIndex];
+      if (this.collection.fens.length > 0) this.activeFen = this.collection.fens[0];
       this.setFen();
     });
   }

@@ -5,7 +5,7 @@
     </mat-card-header>
     <mat-card-content style="overflow: auto;">
       <div style="margin-bottom: 10px;">
-        <button mat-button color="primary" (click)="openManageFenDialog()">Add Collection</button>
+        <button mat-stroked-button color="primary" (click)="openManageFenDialog()">Add Collection</button>
       </div>
       <table mat-table
        [dataSource]="dataSource" multiTemplateDataRows
@@ -25,7 +25,7 @@
         <ng-container matColumnDef="options" stickyEnd>
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell style="text-align: center;" *matCellDef="let element">
-            <button *ngIf="!(this.parent === 'board')" mat-icon-button color="primary" aria-label="Edit Icon for Editing Collection">
+            <button mat-icon-button color="primary" aria-label="Edit Icon for Editing Collection">
               <mat-icon (click)="openManageFenDialog(element); $event.preventDefault()">
                 edit
               </mat-icon>
