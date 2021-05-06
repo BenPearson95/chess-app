@@ -17,7 +17,7 @@
         {{piece.pieceImgSrc}}
       </div>
     </div>
-    <div cdkDropListSortingDisabled *ngIf="freeMode" [@slideFromLeft]>
+    <div cdkDropList *ngIf="freeMode" [@slideFromLeft]>
       <div 
       cdkDrag
       *ngFor="let piece of additionalBlackPieces; let i = index" 
