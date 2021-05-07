@@ -30,9 +30,26 @@
 .dashboard-card {
   transition: transform .2s;
   text-align: center;
+  
 }
 
 .dashboard-card:hover {
   transform: scale(1.025);
+}
+
+.board-card {
+  background-image: url("../../../assets/board-page.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 40vh;
+  opacity: .75;
+}
+
+.collections-card {
+  background-image: url("../../../assets/collections-page.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 15vh;
+  opacity: .75;
 }
 

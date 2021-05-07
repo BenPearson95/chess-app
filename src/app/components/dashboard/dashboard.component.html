@@ -24,17 +24,24 @@
               Manage your Collections
             </mat-card-title>
           </mat-card-header>
-          <mat-card-content class="dashboard-card-content">
-            <img  src="../../assets/collections-page.png" alt="Chess Board Page Image" class="responsive">
-          </mat-card-content>
+          <div class="collections-card"></div>
+          <!-- <mat-card-content class="dashboard-card-content"> -->
+            <!-- <img  src="../../assets/collections-page.png" alt="Chess Board Page Image" class="responsive"> -->
+          <!-- </mat-card-content> -->
         </mat-card>
       </a>
     </mat-grid-tile>
 
     <mat-grid-tile [colspan]="1" [rowspan]="2">
       <a routerLink='/board'>
-      <mat-card class="dashboard-card">
-          <img src="../../assets/board-page.png" alt="Chess Board Page Image" class="responsive">
+      <mat-card class="dashboard-card ">
+        <mat-card-header>
+          <mat-card-title>
+            The Board
+          </mat-card-title>
+        </mat-card-header>
+        <div class="board-card"></div>
+          <!-- <img src="../../assets/board-page.png" alt="Chess Board Page Image" class="responsive"> -->
       </mat-card>
       </a>
     </mat-grid-tile>
