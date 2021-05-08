@@ -148,9 +148,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
   moveHistory() {
 
     this.moveHistoryArray = this.board?.getMoveHistory();
-    if (this.moveHistoryArray.length < 0) {
+    console.log(this.moveHistoryArray.length);
+    if (this.moveHistoryArray.length > 0) {
       const dialogRef = this.moveHistoryDialog.open(MoveHistoryComponent, {
         maxWidth: 600,
+        minWidth: 300,
+        minHeight: 300,
         data: {
           moveHistoryArray: this.moveHistoryArray
         },
@@ -164,7 +167,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
         console.log('result: ', result);
       });
     } else {
-      this.snackBar.open('No History To Show!')
+      this.snackBar.open('No History To Show!', 'Close' ,{duration: 3000});
     }
     
   }
