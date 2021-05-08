@@ -1,0 +1,32 @@
+.card-container {
+  margin-top: 12.5%;
+  height: auto;
+  justify-content: center;
+  display: flex;
+  // background-color: #ffa000;
+  // background: linear-gradient(90deg, #1565c0, 70%, #ffa000);
+  color: #1565c0;
+  padding: 16px;
+}
+
+.page-card {
+  width: 40%;
+  font-size: 1.8rem;
+  text-align: center;
+  line-height: initial;
+}
+
+.card-content {
+  text-align: center;
+}
+
+.card-actions {
+  text-align: center;
+}
+
+.landing-buttons {
+  margin: 5px;
+  height: 48px;
+  font-size: 18px;
+  width: 180px;
+}

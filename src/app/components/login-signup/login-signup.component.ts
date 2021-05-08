@@ -60,8 +60,8 @@ export class LoginSignupComponent implements OnInit {
 
     // Call to the User Service.
     this.AuthService.loginUser(userLogin).subscribe((result: AuthUser) => {
-      if (result) this.router.navigate(['dashboard']);
-      this.router.navigate(['dashboard']);
+      if (result) this.router.navigate(['landing']);
+      // this.router.navigate(['dashboard']);
     }, error => {
       this.loginError = error.error;
     });

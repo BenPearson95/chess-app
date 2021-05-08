@@ -148,7 +148,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
   moveHistory() {
 
     this.moveHistoryArray = this.board?.getMoveHistory();
-    console.log(this.moveHistoryArray.length);
     if (this.moveHistoryArray.length > 0) {
       const dialogRef = this.moveHistoryDialog.open(MoveHistoryComponent, {
         maxWidth: 600,

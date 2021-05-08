@@ -43,6 +43,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { NgArrayPipesModule } from 'ngx-pipes';
 import { MoveHistoryComponent } from './components/move-history/move-history.component';
 import {MatChipsModule} from '@angular/material/chips';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import {MatChipsModule} from '@angular/material/chips';
     HelpComponent,
     FeedbackComponent,
     MoveHistoryComponent,
+    LandingPageComponent,
   ],
   imports: [
     BrowserModule,

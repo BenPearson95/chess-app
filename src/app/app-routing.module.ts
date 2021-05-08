@@ -11,6 +11,7 @@ import { AuthGuard } from './_guards/auth.guard';
 import { LoggedInGuard } from './_guards/logged-in.guard';
 import { AccountResolver } from './_resolvers/account.resolver';
 import { CollectionsResolver } from './_resolvers/collections.resolver';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 const routes: Routes = [
   {
@@ -33,14 +34,22 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
-      { 
-        path: 'dashboard',
-        component: DashboardComponent,
+      {
+        path: 'landing',
+        component: LandingPageComponent,
         data: {
-          name: 'Dashboard',
+          name: 'Landing Page',
           showBackButton: false,
-        },
+        }
       },
+      // { 
+      //   path: 'dashboard',
+      //   component: DashboardComponent,
+      //   data: {
+      //     name: 'Dashboard',
+      //     showBackButton: false,
+      //   },
+      // },
       {
         path: 'collections',
         component: CollectionsComponent,
