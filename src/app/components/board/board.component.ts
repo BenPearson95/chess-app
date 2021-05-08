@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
-import { NgxChessBoardService, NgxChessBoardView } from 'ngx-chess-board';
+import { HistoryMove, NgxChessBoardService, NgxChessBoardView } from 'ngx-chess-board';
 import { slideFromBottom, slideFromLeft, slideFromRight, slideFromTop } from 'src/app/_animations/animations';
 import { FenCollection } from 'src/app/_models/board/fen-collection';
 import { AdditionalPiece } from 'src/app/_models/board/additional-piece';
@@ -9,6 +9,8 @@ import { CdkDragStart } from '@angular/cdk/drag-drop';
 import { BoardService } from 'src/app/_services/board.service';
 import { HelpComponent } from '../help/help.component';
 import { CollectionsComponent } from '../collections/collections.component';
+import { MoveHistoryComponent } from '../move-history/move-history.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-board',
@@ -33,6 +35,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
   freeModeLocal: boolean = this.freeMode;
   showCoordsOutside: boolean = false;
   showCoordsInside: boolean = false;
+  showLastMove: boolean = false;
+  showLegalMove: boolean = false;
+  reversed: boolean = false;
+  moveHistoryArray: Array<HistoryMove>;
   outsideCoordNumbers: Array<Number> = [8,7,6,5,4,3,2,1];
   outsideCoordLetters: Array<string> = ['a','b','c','d','e','f','g','h'];
   outsideCoordDiameter: number = (this.boardSize / 8);
@@ -83,15 +89,16 @@ export class BoardComponent implements OnInit, AfterViewInit {
   // Form Group for colours.
   colourFormGroup: FormGroup = new FormGroup({
     darkColour: new FormControl('#1565c0'),
-    // lightColour: new FormControl('#ffa000'),
     lightColour: new FormControl('#ffffff'),
   })
 
   constructor(
     private ngxChessBoardService: NgxChessBoardService,
     public FenCollectionsDialog: MatDialog,
+    public moveHistoryDialog: MatDialog,
     public boardService: BoardService,
     public helpDialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) {
     this.boardService.initGrids();
   }
@@ -114,9 +121,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
     this.board?.reset();
   }
 
+  // Clears the board.
+  clear() {
+    this.board?.setFEN('8/8/8/8/8/8/8/8 w - - 0 1');
+  }
+
   // Swaps the orientation of the board 180 degrees.
   reverse() {
     this.board?.reverse();
+    this.reversed = !this.reversed;
   }
 
   // Undos 1 move.
@@ -124,10 +137,36 @@ export class BoardComponent implements OnInit, AfterViewInit {
     this.board?.undo();
   }
 
+  // Sets the board position using the current activeFen variable.
   setFen() {
     if (this.activeFen) {
       this.board?.setFEN(this.activeFen.toString());
     }
+  }
+
+  // Gets & displays Move History
+  moveHistory() {
+
+    this.moveHistoryArray = this.board?.getMoveHistory();
+    if (this.moveHistoryArray.length < 0) {
+      const dialogRef = this.moveHistoryDialog.open(MoveHistoryComponent, {
+        maxWidth: 600,
+        data: {
+          moveHistoryArray: this.moveHistoryArray
+        },
+      });
+  
+      dialogRef.updatePosition({
+        top: '50px'
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('result: ', result);
+      });
+    } else {
+      this.snackBar.open('No History To Show!')
+    }
+    
   }
 
   // Toggles on 'FreeMode'.
@@ -179,9 +218,12 @@ export class BoardComponent implements OnInit, AfterViewInit {
       if(!this.collection || !this.collection.fens) {
         this.collection = new FenCollection;
         this.collection.fens = [];
-      } 
+      }
+
       this.collection = result.collection
+
       if (this.collection.fens.length > 0) this.activeFen = this.collection.fens[0];
+      this.activeFenPosition = 1;
       this.setFen();
     });
   }
@@ -194,13 +236,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
       case 'first':
         this.activeFen = this.collection.fens[0];
         break;
-      case 'previous':   
-        console.log(activeFenIndex);
+      case 'previous':
         if (activeFenIndex > 0) this.activeFen = this.collection.fens[activeFenIndex - 1];
         break;
       case 'next':
-        console.log(activeFenIndex);
-        if(this.collection.fens.length !== (this.activeFenPosition - 1) ) this.activeFen = this.collection.fens[activeFenIndex + 1];
+        if (this.collection.fens.length !== this.activeFenPosition ) this.activeFen = this.collection.fens[activeFenIndex + 1];
         
         break;
       case 'last':

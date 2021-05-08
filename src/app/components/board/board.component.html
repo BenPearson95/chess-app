@@ -39,17 +39,29 @@
     <div class="board-container">
 
       <div *ngIf="showCoordsOutside" [@slideFromBottom] class="letter-coord-container" [ngStyle]="{'height.px': (outsideCoordDiameter / 1.75)}">
-        <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters" [ngStyle]="{'width.px': outsideCoordDiameter}">
-          <span
-          [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': coordFontSize}"> {{coord}} </span>
-        </div>
+        <ng-container *ngIf="!this.reversed">
+          <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters" [ngStyle]="{'width.px': outsideCoordDiameter}">
+            <span [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': coordFontSize}"> {{coord}} </span>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="this.reversed">
+          <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters | reverse" [ngStyle]="{'width.px': outsideCoordDiameter}">
+            <span [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': coordFontSize}"> {{coord}} </span>
+          </div>
+        </ng-container>
       </div>
       <div class="board-inner-container">
         <div *ngIf="showCoordsOutside" [@slideFromRight] class="number-coord-container">
-          <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers" [ngStyle]="{'height.px': outsideCoordDiameter, 'width.px': (outsideCoordDiameter / 2)}">
-            <span style="margin: 10px" 
-            [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': coordFontSize}"> {{coord}} </span>
-          </div>
+          <ng-container *ngIf="!this.reversed">
+            <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers" [ngStyle]="{'height.px': outsideCoordDiameter, 'width.px': (outsideCoordDiameter / 2)}">
+              <span style="margin: 10px" [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': coordFontSize}"> {{coord}} </span>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="this.reversed">
+            <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers | reverse" [ngStyle]="{'height.px': outsideCoordDiameter, 'width.px': (outsideCoordDiameter / 2)}">
+              <span style="margin: 10px" [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': coordFontSize}"> {{coord}} </span>
+            </div>
+          </ng-container>
         </div>
         <div class="container" [ngStyle]="{'height.px': boardSize, 'width.px': boardSize }">
           <div class="box" [ngStyle]="{'height.px': boardSize, 'width.px': boardSize }">
@@ -59,7 +71,11 @@
               [freeMode]="freeMode"
               [showCoords]="!showCoordsOutside && showCoordsInside"
               [lightTileColor]="colourFormGroup.value.darkColour"
-              [darkTileColor]="colourFormGroup.value.lightColour">
+              [darkTileColor]="colourFormGroup.value.lightColour"
+              [sourcePointColor]="'none'"
+              [destinationPointColor]="'none'"
+              [showLastMove]="showLastMove"
+              [showLegalMoves]="showLegalMove">
             </ngx-chess-board>
           </div>
           <div *ngIf="dragging" class="overlay" [ngStyle]="{'height.px': boardSize, 'width.px': boardSize }">
@@ -75,17 +91,29 @@
         </div>
         
         <div *ngIf="showCoordsOutside" [@slideFromLeft] class="number-coord-container">
-          <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers" [ngStyle]="{'height.px': outsideCoordDiameter,'width.px': (outsideCoordDiameter / 2)}">
-            <span style="margin: 10px" 
-            [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': coordFontSize}"> {{coord}} </span>
-          </div>
+          <ng-container *ngIf="!this.reversed">
+            <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers" [ngStyle]="{'height.px': outsideCoordDiameter,'width.px': (outsideCoordDiameter / 2)}">
+              <span style="margin: 10px" [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': coordFontSize}"> {{coord}} </span>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="this.reversed">
+            <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers | reverse" [ngStyle]="{'height.px': outsideCoordDiameter,'width.px': (outsideCoordDiameter / 2)}">
+              <span style="margin: 10px" [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': coordFontSize}"> {{coord}} </span>
+            </div>
+          </ng-container>
         </div>
       </div>
       <div *ngIf="showCoordsOutside" [@slideFromTop] class="letter-coord-container" [ngStyle]="{'height.px': (outsideCoordDiameter / 1.75)}">
-        <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters" [ngStyle]="{'width.px': outsideCoordDiameter}">
-          <span
-          [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': coordFontSize}"> {{coord}} </span>
-        </div>
+        <ng-container *ngIf="!this.reversed">
+          <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters" [ngStyle]="{'width.px': outsideCoordDiameter}">
+            <span [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': coordFontSize}"> {{coord}} </span>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="this.reversed">
+          <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters  | reverse" [ngStyle]="{'width.px': outsideCoordDiameter}">
+            <span [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': coordFontSize}"> {{coord}} </span>
+          </div>
+        </ng-container>
       </div>
     </div>
 
@@ -140,12 +168,13 @@
                 </mat-form-field>
                 <div>
                   <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.reset()">Reset</button>
+                  <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.clear()">Clear</button>
                   <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.reverse()">Reverse</button>
                   <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.undo()">Undo</button>
                 </div>
                 <div>
                   <button class="interact-buttons" mat-stroked-button color="accent" (click)="this.openFenCollectionsDialog()">Fen Collections</button>
-                  <button class="interact-buttons" mat-stroked-button color="accent">Move History</button>
+                  <button class="interact-buttons" mat-stroked-button color="accent" (click)="this.moveHistory()">Move History</button>
                 </div>
 
                 <ng-container *ngIf="this.collection">

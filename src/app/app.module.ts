@@ -40,6 +40,9 @@ import { HelpComponent } from './components/help/help.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { NgArrayPipesModule } from 'ngx-pipes';
+import { MoveHistoryComponent } from './components/move-history/move-history.component';
+import {MatChipsModule} from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -55,6 +58,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     CollectionsComponent,
     HelpComponent,
     FeedbackComponent,
+    MoveHistoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,7 +88,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatSnackBarModule,
     MatTableModule,
     DragDropModule,
-    MatExpansionModule
+    MatExpansionModule,
+    NgArrayPipesModule,
+    MatChipsModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy }
