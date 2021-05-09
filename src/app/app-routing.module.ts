@@ -105,10 +105,10 @@ const routes: Routes = [
       
       {
         path: '**',
-        component: DashboardComponent, 
+        component: LandingPageComponent, 
         pathMatch: 'full',
         data: {
-          name: 'Dashboard',
+          name: 'Landing Page',
           showBackButton: false,
         },
       },
