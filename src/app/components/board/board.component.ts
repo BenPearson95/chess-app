@@ -257,7 +257,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
         
         break;
       case 'last':
-      
+        const lastIndex = this.collection.fens.length - 1;
+        this.activeFen = this.collection.fens[lastIndex];
         break;
       default:
         break;

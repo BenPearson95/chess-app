@@ -114,28 +114,30 @@
           </mat-list-item>
           <mat-list-item class="custom-list-item">
             <ng-container *ngIf="this.collection">
-              <div *ngIf="this.collection.fens.length > 0" style="width: 100%; display: flex; justify-content: center;">
-                <span>Navigate your Fens</span>
-              </div>
-              <div *ngIf="this.collection.fens.length > 0" style="margin-bottom: 5px;">
-                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                  <mat-icon (click)="navigateFen('first')">first_page</mat-icon>
-                </button>
-                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                  <mat-icon (click)="navigateFen('previous')">chevron_left</mat-icon>
-                </button>
-                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                  <mat-icon (click)="navigateFen('next')">chevron_right</mat-icon>
-                </button>
-                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                  <mat-icon (click)="navigateFen('last')">last_page</mat-icon>
-                </button>
-              </div>
-              <div *ngIf="this.collection.fens.length > 0 && this.activeFenPosition" style="width: 100%; display: flex; justify-content: center;">
-                <span>{{this.activeFenPosition}} / {{this.collection.fens.length}}</span>
-              </div>
-              <div *ngIf="this.collection.fens.length > 0 && !this.activeFenPosition" style="width: 100%; display: flex; justify-content: center;">
-                <span> 0 / {{this.collection.fens.length}}</span>
+              <div style="display: block">
+                <div *ngIf="this.collection.fens.length > 0" style="width: 100%; display: flex; justify-content: center;">
+                  <span>Navigate your Fens</span>
+                </div>
+                <div *ngIf="this.collection.fens.length > 0" style="margin-bottom: 5px;">
+                  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                    <mat-icon (click)="navigateFen('first')">first_page</mat-icon>
+                  </button>
+                  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                    <mat-icon (click)="navigateFen('previous')">chevron_left</mat-icon>
+                  </button>
+                  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                    <mat-icon (click)="navigateFen('next')">chevron_right</mat-icon>
+                  </button>
+                  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                    <mat-icon (click)="navigateFen('last')">last_page</mat-icon>
+                  </button>
+                </div>
+                <div *ngIf="this.collection.fens.length > 0 && this.activeFenPosition" style="width: 100%; display: flex; justify-content: center;">
+                  <span>{{this.activeFenPosition}} / {{this.collection.fens.length}}</span>
+                </div>
+                <div *ngIf="this.collection.fens.length > 0 && !this.activeFenPosition" style="width: 100%; display: flex; justify-content: center;">
+                  <span> 0 / {{this.collection.fens.length}}</span>
+                </div>
               </div>
             </ng-container>
           </mat-list-item>
