@@ -10,7 +10,7 @@ body {
   background-attachment: fixed;
   background-size: cover; 
   overflow-x: hidden;
-  /* background by SVGBackgrounds.com */
+  /* background by SVGBackgrounds.com  https://www.svgbackgrounds.com/#pattern-randomized*/
   /* credit when about section is done. */
 }
 
@@ -33,4 +33,13 @@ input:-webkit-autofill:active  {
 
 .app-background {
   background-color: #e3e3e3
+}
+
+::ng-deep .ng-animating div mat-accordion mat-expansion-panel mat-expansion-panel-header {
+  height: 48px;
+}
+
+::ng-deep .ng-animating div mat-accordion mat-expansion-panel div.mat-expansion-panel-content {
+  height: 0px;
+  visibility: hidden;
 }

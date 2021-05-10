@@ -1,4 +1,4 @@
-.card-container {
+.page-container {
   margin-top: 12.5%;
   height: auto;
   justify-content: center;
@@ -9,20 +9,13 @@
   padding: 16px;
 }
 
-.page-card {
+.page-content {
   width: 40%;
   font-size: 1.8rem;
   text-align: center;
   line-height: initial;
   font-weight: bolder;
-}
-
-.card-content {
-  text-align: center;
-}
-
-.card-actions {
-  text-align: center;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .landing-buttons {

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Outp
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { HistoryMove, NgxChessBoardService, NgxChessBoardView } from 'ngx-chess-board';
-import { slideFromBottom, slideFromLeft, slideFromRight, slideFromTop } from 'src/app/_animations/animations';
+import { slideFromBottom, slideFromLeft, slideFromRight, slideFromTop, uncoverFromLeft } from 'src/app/_animations/animations';
 import { FenCollection } from 'src/app/_models/board/fen-collection';
 import { AdditionalPiece } from 'src/app/_models/board/additional-piece';
 import { CdkDragStart } from '@angular/cdk/drag-drop';
@@ -11,6 +11,7 @@ import { HelpComponent } from '../help/help.component';
 import { CollectionsComponent } from '../collections/collections.component';
 import { MoveHistoryComponent } from '../move-history/move-history.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-board',
@@ -21,18 +22,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     slideFromBottom, 
     slideFromLeft,
     slideFromRight,
+    uncoverFromLeft,
   ],
 })
 export class BoardComponent implements OnInit, AfterViewInit {
   @ViewChild('board', {static: false}) board: NgxChessBoardView | undefined;
   @ViewChild('boardRef', {static: true}) boardRef: ElementRef;
+  @ViewChild(MatAccordion) accordion: MatAccordion;
   @Output('cdkDragStarted') started: EventEmitter<CdkDragStart>
-  @Input() boardSize: number = 650;
-  @Input() freeMode: boolean = false;
+  @Input() boardSize: number = 745;
+  @Input() freeMode: boolean = true;
 
   // Board specific variables.
   boardSizeLocal: number = this.boardSize;
-  freeModeLocal: boolean = this.freeMode;
   showCoordsOutside: boolean = false;
   showCoordsInside: boolean = false;
   showLastMove: boolean = false;
@@ -122,8 +124,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
   }
 
   // Clears the board.
-  clear() {
+  clearPieces() {
     this.board?.setFEN('8/8/8/8/8/8/8/8 w - - 0 1');
+  }
+
+  clearMarkers() {
+    const currentFen = this.board?.getFEN();
+    this.board?.reset();
+    this.board?.setFEN(currentFen);
+  }
+
+  startPieces() {
+    this.board?.setFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
   }
 
   // Swaps the orientation of the board 180 degrees.
@@ -163,7 +175,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
       });
   
       dialogRef.afterClosed().subscribe(result => {
-        console.log('result: ', result);
       });
     } else {
       this.snackBar.open('No History To Show!', 'Close' ,{duration: 3000});
@@ -171,7 +182,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     
   }
 
-  // Toggles on 'FreeMode'.
+  // Toggles on/off 'FreeMode'.
   freeModeToggle(event: any) {
     this.freeMode = event.checked;
   }

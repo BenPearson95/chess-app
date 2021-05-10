@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingPageComponent implements OnInit {
 
+  randomNumber: number = 0;
+
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.randomNumber = Math.floor(Math.random() * 2) + 1 
   }
 
 }

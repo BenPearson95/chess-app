@@ -1,35 +1,23 @@
-<div class="card-container">
-  <!-- <mat-card class="page-card">
-    <mat-card-content class="card-content">
-      <p>
-        Chess-App looks to provide you with an environment to help teach, train and demonstrate chess.
-      </p> 
-      <p>
-        Our online demo-board gives you free control, doing away with the pesky movement rules of other online demo-boards. 
-      </p>
-      <p>
-        Check out the FEN Management area.
-        These can be imported into the board, which you can cycle through. This can greatly help plan demonstations
-        in advance, and import them right in with a few clicks.
-      </p>
-    </mat-card-content>
-    <mat-card-actions class="card-actions">
-        <button mat-raised-button class="landing-buttons" color="primary">Fen Management</button>
-        <button mat-raised-button class="landing-buttons" color="primary">Demo Board</button>
-    </mat-card-actions>
-  </mat-card> -->
-  <div class="page-card">
+<div class="page-container">
+  <div class="page-content">
     <p>
       Chess-App looks to provide you with a simplistic App to help teach, train and demonstrate chess.
     </p> 
     <br>
-    <!-- <p>
-      Our online demo-board gives you free control, doing away with the pesky movement rules of other online demo-boards. 
-    </p> -->
-    <p>
-      Add FENs to a Collection, and import them into the Board during a demo. This can greatly help plan demonstations in advance.
-    </p>
+
+    <ng-container [ngSwitch]="this.randomNumber">
+      <p *ngSwitchCase="1">
+        Add FENs to a Collection, and import them into the Board during a demo. This can greatly help plan demonstations in advance.
+      </p>
+      <p *ngSwitchCase="2">
+        PGN Management & Implementation, coming soon!
+      </p>
+      <p *ngSwitchDefault>
+        Welcome! Have you seen our PGN & FEN management areas?
+      </p>
+    </ng-container>
     <br>
+    
     <button routerLink='/collections' mat-raised-button class="landing-buttons" color="primary">FEN Management</button>
     <button routerLink='/board' mat-raised-button class="landing-buttons" color="primary">Demo Board</button>
   </div>

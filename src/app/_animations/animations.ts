@@ -93,5 +93,16 @@ trigger('slideFromLeft', [
   ])
 ])
 
+export const uncoverFromLeft  = 
+trigger('uncoverFromLeft', [
+  transition(':enter', [
+    style({width: '0'}),
+    animate('500ms ease-in', style({width: '*'}))
+  ]),
+  transition(':leave', [
+    animate('500ms ease-in', style({width: '0'}))
+  ])
+])
+
 
 
