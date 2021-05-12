@@ -134,10 +134,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     this.board?.setFEN(currentFen);
   }
 
-  startPieces() {
-    this.board?.setFEN('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
-  }
-
   // Swaps the orientation of the board 180 degrees.
   reverse() {
     this.board?.reverse();
@@ -228,16 +224,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(!this.collection || !this.collection.fens) {
-        this.collection = new FenCollection;
-        this.collection.fens = [];
+      if (result) {
+        if(!this.collection || !this.collection.fens) {
+          this.collection = new FenCollection;
+          this.collection.fens = [];
+        }
+  
+        this.collection = result.collection
+  
+        if (this.collection.fens.length > 0) this.activeFen = this.collection.fens[0];
+        this.activeFenPosition = 1;
+        this.setFen();
       }
-
-      this.collection = result.collection
-
-      if (this.collection.fens.length > 0) this.activeFen = this.collection.fens[0];
-      this.activeFenPosition = 1;
-      this.setFen();
     });
   }
 
@@ -270,6 +268,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
   // Toggled when a mouse click up event has fired on the overlay grid for piece dragging.
   mouseUpEvent(event) {
+    console.log(event);
+    console.log(event.srcElement.offsetParent.id)
     if (this.freeMode) {
       this.board?.addPiece(this.piece.piece, this.piece.colour, event.path[1].id);
     }

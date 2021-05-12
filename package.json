@@ -21,7 +21,7 @@
     "@angular/platform-browser": "~11.2.5",
     "@angular/platform-browser-dynamic": "~11.2.5",
     "@angular/router": "~11.2.5",
-    "ngx-chess-board": "^2.1.8",
+    "ngx-chess-board": "^2.1.9",
     "ngx-pipes": "^2.7.5",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

@@ -91,9 +91,6 @@
             <button class="interact-buttons" mat-stroked-button color="accent" (click)="this.clearPieces()">Clear Pieces</button>
             <button class="interact-buttons" mat-stroked-button color="accent" (click)="this.clearMarkers()">Clear Markers</button>
           </div>
-          <div class="button-container">
-            <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.startPieces()">Start Pieces</button>
-          </div>
         </mat-list-item>
        
       </mat-expansion-panel>
@@ -252,6 +249,7 @@
         </ngx-chess-board>
       </div>
 
+      <!-- <div *ngIf="dragging" class="overlay" [ngStyle]="{'height.px': boardSize, 'width.px': boardSize }"> -->
       <div *ngIf="dragging" class="overlay" [ngStyle]="{'height.px': boardSize, 'width.px': boardSize }">
         <mat-grid-list *ngIf="dragging" cols="8" rowHeight="8:8">
           <mat-grid-tile 
