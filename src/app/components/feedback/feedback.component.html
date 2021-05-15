@@ -1,7 +1,33 @@
 <h2>Feedback</h2>
 <h4>Please send us any Feedback, Bug Reporting or just a Message!</h4>
 
-<mat-form-field appearance="outline" style="width: 100%" class="example-full-width">
-  <mat-label>Leave a comment</mat-label>
-  <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
-</mat-form-field>
+<form [formGroup]="feedbackFormGroup" (ngSubmit)="feedbackSubmit()">
+
+  <mat-radio-group formControlName="feedbackType" class="radio-group">
+    <mat-radio-button class="radio-margin" value="{{feedbackType.Bug}}">Bug</mat-radio-button>
+    <mat-radio-button class="radio-margin" value="{{feedbackType.Feedback}}">Feedback</mat-radio-button>
+    <mat-radio-button class="radio-margin" value="{{feedbackType.Message}}">Message</mat-radio-button>
+  </mat-radio-group>
+
+  <mat-form-field appearance="outline" class="text-field">
+    <mat-label>Leave a comment</mat-label>
+    <textarea formControlName="feedbackText" matInput cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="15" maxlength="1000" placeholder="It's super awesome!"></textarea>
+    <mat-error class="input-error-fix" *ngIf="feedbackFormGroup.controls.feedbackText.hasError('required')">
+      You can't send us an empty message!
+    </mat-error>
+  </mat-form-field>
+
+  <div *ngIf="this.error">
+    {{this.error}}
+  </div>
+
+  <div class="button-container">
+    <button mat-stroked-button color="accent" type="button" (click)="closeFeedback()">Cancel</button>
+    <button [disabled]="feedbackFormGroup.invalid" type="submit" mat-raised-button color="primary">Submit</button>
+  </div>
+  
+
+
+</form>
+
+

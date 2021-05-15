@@ -38,7 +38,7 @@ const routes: Routes = [
         path: 'landing',
         component: LandingPageComponent,
         data: {
-          name: 'Landing Page',
+          name: 'Chess App',
           showBackButton: false,
         }
       },
