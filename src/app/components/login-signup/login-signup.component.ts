@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTabGroup } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { AuthUser } from '../../_models/user/auth-user';
 import { UserLogin } from '../../_models/user/user-login';
@@ -12,6 +14,8 @@ import { AuthService } from '../../_services/auth.service';
   styleUrls: ['./login-signup.component.scss']
 })
 export class LoginSignupComponent implements OnInit {
+
+  @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -28,12 +32,15 @@ export class LoginSignupComponent implements OnInit {
 
   showHidePassword = true;
   loginError = '';
-  signupError= '';
+  signupError = '';
   userAlreadyExists = false;
+  tabIndex: number = 0;
+  disableBtn: boolean = false;
 
   constructor(
     private AuthService: AuthService,
     private router: Router,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +60,7 @@ export class LoginSignupComponent implements OnInit {
 
   // Submit Function.
   loginSubmit() {
+    this.disableBtn = true;
     const userLogin = new UserLogin(
       this.loginForm.value.email,
       this.loginForm.value.password,
@@ -61,14 +69,16 @@ export class LoginSignupComponent implements OnInit {
     // Call to the User Service.
     this.AuthService.loginUser(userLogin).subscribe((result: AuthUser) => {
       if (result) this.router.navigate(['landing']);
-      // this.router.navigate(['dashboard']);
     }, error => {
       this.loginError = error.error;
+    }, () => {
+      this.disableBtn = false;
     });
   }
 
   // Signup Function.
   signupSubmit() {
+    this.disableBtn = true;
     const userSignup = new UserSignup(
       this.signupForm.value.firstname,
       this.signupForm.value.surname,
@@ -78,8 +88,14 @@ export class LoginSignupComponent implements OnInit {
     
     // Call to the User Service.
     this.AuthService.signupUser(userSignup).subscribe(result => {
+      if(result) {
+        this.snackBar.open('Account successfully created', null ,{duration: 3000});
+        this.tabGroup.selectedIndex = 0;
+      }
     }, error => {
       this.signupError = error.error;
+    }, () => {
+      this.disableBtn = false;
     });
   }
 
