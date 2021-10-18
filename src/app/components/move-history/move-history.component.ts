@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HistoryMove } from 'ngx-chess-board';
 
@@ -8,15 +8,20 @@ import { HistoryMove } from 'ngx-chess-board';
   styleUrls: ['./move-history.component.scss']
 })
 export class MoveHistoryComponent implements OnInit {
+  @Input() moveHistoryArray: Array<HistoryMove>;
 
-  public moveHistoryArray: Array<HistoryMove>;
+  // public moveHistoryArray: Array<HistoryMove>;
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
   ngOnInit() {
-    this.moveHistoryArray = this.data.moveHistoryArray;
+    // this.moveHistoryArray = this.data.moveHistoryArray;
+  }
+
+  moveClick(index: number) {
+    
   }
 
 }

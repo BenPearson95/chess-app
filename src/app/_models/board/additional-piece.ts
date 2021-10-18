@@ -3,5 +3,6 @@ import { ColorInput, PieceTypeInput } from "ngx-chess-board/lib/utils/inputs/pie
 export class AdditionalPiece {
   piece: PieceTypeInput;
   colour: ColorInput;
-  pieceImgSrc: String;
+  pieceID: string;
+  pieceImgSrc: string;
 }

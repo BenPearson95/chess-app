@@ -1,5 +1,5 @@
 <mat-chip-list selectable="true">
-  <mat-chip color="primary" selected="true" *ngFor="let move of this.moveHistoryArray, let i = index">
+  <mat-chip (click)="moveClick(i)" color="primary" selected="true" *ngFor="let move of this.moveHistoryArray, let i = index">
     {{i + 1}}. {{move.move}}
   </mat-chip>
 </mat-chip-list>

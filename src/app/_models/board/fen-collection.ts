@@ -1,8 +1,8 @@
 export class FenCollection {
-  _id?:String;
-  userId: String;
-  fenTitle: String;
+  _id?:string;
+  userId: string;
+  fenTitle: string;
   createdDate: Date;
   updatedDate: Date;
-  fens: Array<String>;
+  fens: Array<string>;
 }

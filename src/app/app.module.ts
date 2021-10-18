@@ -42,8 +42,11 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgArrayPipesModule } from 'ngx-pipes';
 import { MoveHistoryComponent } from './components/move-history/move-history.component';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { PgnManagementComponent } from './components/pgn-management/pgn-management.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +64,8 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
     FeedbackComponent,
     MoveHistoryComponent,
     LandingPageComponent,
+    PgnManagementComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,6 +98,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
     MatExpansionModule,
     NgArrayPipesModule,
     MatChipsModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy }

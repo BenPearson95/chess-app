@@ -18,11 +18,11 @@
   
     <mat-form-field appearance="outline" style="width: -webkit-fill-available">
     <mat-label>Fen</mat-label>
-    <textarea matInput formControlName="fenString" placeholder="And 'fen I moved..."></textarea>
-    <mat-error class="input-error-fix" *ngIf="saveCollectionForm.controls.fenString.hasError('required') && saveCollectionForm.controls.fenString.touched">
+    <textarea matInput formControlName="fenstring" placeholder="And 'fen I moved..."></textarea>
+    <mat-error class="input-error-fix" *ngIf="saveCollectionForm.controls.fenstring.hasError('required') && saveCollectionForm.controls.fenstring.touched">
       A FEN is required.
     </mat-error>
-    <mat-error class="input-error-fix" *ngIf="saveCollectionForm.controls.fenString.hasError('maxLength')">
+    <mat-error class="input-error-fix" *ngIf="saveCollectionForm.controls.fenstring.hasError('maxLength')">
       That FEN looks pretty long! 
     </mat-error>
     </mat-form-field>

@@ -1,5 +1,10 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Grid } from '../_models/board/grid';
+import { UserBoardProfile } from '../_models/board/user-board-profile';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +13,18 @@ export class BoardService {
 
   grids: Array<Grid> = [];
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) { }
+
+  apiPath = environment.apiPath;
+  route = 'board/';
+  options = {
+    headers: new HttpHeaders ({
+      'auth-token': JSON.parse(localStorage.getItem('user')).token
+    })
+  }
 
   // Init the grids. Ew.
   initGrids() {
@@ -76,5 +92,24 @@ export class BoardService {
     this.grids.push({gridNum: 62, coord: 'f1' });
     this.grids.push({gridNum: 63, coord: 'g1' });
     this.grids.push({gridNum: 64, coord: 'h1' });
+  }
+
+  saveBoardProfile(userBoardProfile: UserBoardProfile) {
+    let userId = null; 
+    this.authService.currentUser$.subscribe(user => {userId = user._id});
+
+    return this.http.put(this.apiPath + this.route, { userId: userId, userBoardProfile: userBoardProfile }, this.options)
+      .pipe(map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  getBoardProfile(userId: string) {
+    return this.http.get(this.apiPath + this.route + userId, this.options )
+    .pipe( map((response: any) => {
+      return response;
+    })
+    );
   }
 }

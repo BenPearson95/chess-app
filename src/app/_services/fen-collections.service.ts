@@ -23,7 +23,6 @@ export class FenCollectionsService {
 
   // Save a Fen Collection
   saveCollection(collection: FenCollection) {
-    console.log(collection);
     return this.http.post(this.apiPath + this.route, collection, this.options)
       .pipe(map((response: any) => {
         return response;
@@ -32,7 +31,7 @@ export class FenCollectionsService {
   }
 
   // Get a specific collection.
-  getCollectionById(collectionId: String) {
+  getCollectionById(collectionId: string) {
     return this.http.get(this.apiPath + this.route + `/collectionId/${collectionId}`, this.options)
       .pipe(map((response: any) => {
         return response;
@@ -41,7 +40,7 @@ export class FenCollectionsService {
   }
 
   // Get all collections belonging to a user.
-  getCollectionsUserById(userId: String) {
+  getCollectionsUserById(userId: string) {
     return this.http.get(this.apiPath + this.route + `/userId/${userId}`, this.options)
       .pipe(map((response: any) => {
         return response;
@@ -59,7 +58,7 @@ export class FenCollectionsService {
   }
 
   // Delete a collection by ID.
-  deleteCollectionById(collectionId: String) {
+  deleteCollectionById(collectionId: string) {
     return this.http.delete(this.apiPath + this.route + `/collectionId/${collectionId}`, this.options)
       .pipe(map((response: any) => {
         return response;

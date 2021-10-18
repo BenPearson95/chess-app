@@ -1,0 +1,64 @@
+<!-- <mat-grid-list cols="2" rowHeight="1:1">
+  <mat-grid-tile>
+    <div class="grid-tiles-container">
+      <h2>Import a PGN</h2>
+      <div>
+        <form [formGroup]="pgnFormGroup">
+
+          <mat-form-field appearance="outline" width="100" class="text-field">
+          <mat-label>Paste PGN</mat-label>
+          <textarea 
+            formControlName="pgnData" 
+            matInput 
+            cdkTextareaAutosize 
+            cdkAutosizeMinRows="5" 
+            cdkAutosizeMaxRows="15" 
+            maxlength="2000" 
+            placeholder="1. e4 e5 2. Nf3...">
+          </textarea>
+          <mat-error class="input-error-fix" *ngIf="pgnFormGroup.controls.pgnData.hasError('required')">
+            You need to enter in a PGN!
+          </mat-error>
+          </mat-form-field>
+
+          <button [disabled]="this.pgnFormGroup.invalid" type="submit" mat-raised-button color="primary">Import</button>
+
+        </form>
+      </div>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <div class="grid-tiles-container">
+      <h2>Export current PGN</h2>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list> -->
+
+<h2>Import a PGN</h2>
+
+<div>
+  <form [formGroup]="pgnFormGroup" (ngSubmit)="this.pgnImportSubmit()">
+
+    <mat-form-field appearance="outline" width="100" class="text-field">
+    <mat-label>Paste PGN</mat-label>
+    <textarea 
+      formControlName="pgnData" 
+      matInput 
+      cdkTextareaAutosize 
+      cdkAutosizeMinRows="5" 
+      cdkAutosizeMaxRows="15" 
+      maxlength="2000" 
+      placeholder="1. e4 e5 2. Nf3...">
+    </textarea>
+    <mat-error class="input-error-fix" *ngIf="pgnFormGroup.controls.pgnData.hasError('required')">
+      You need to enter in a PGN!
+    </mat-error>
+    </mat-form-field>
+    
+      <button [disabled]="this.pgnFormGroup.invalid" type="submit" class="button" mat-raised-button color="primary">Import</button>
+      <button mat-stroked-button color="accent" class="button" (click)="this.dialogRef.close()">Cancel</button>
+    
+  </form>
+</div>
+

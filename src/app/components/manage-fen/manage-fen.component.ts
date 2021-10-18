@@ -26,7 +26,7 @@ export class ManageFenComponent implements OnInit {
   // Saving a Fen Collection Form
   saveCollectionForm = new FormGroup({
     collectionTitle: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-    fenString: new FormControl('', [Validators.required, Validators.maxLength(255)]),
+    fenstring: new FormControl('', [Validators.required, Validators.maxLength(255)]),
   })
 
   constructor(
@@ -52,19 +52,19 @@ export class ManageFenComponent implements OnInit {
 
   ngOnInit() {}
 
-  // Adds a fen to the fenString Array.
+  // Adds a fen to the fenstring Array.
   addFen() {
-    if (this.saveCollectionForm.controls.fenString.valid) {
+    if (this.saveCollectionForm.controls.fenstring.valid) {
       if (!this.collection.fens) this.collection.fens = [];
-      this.collection.fens.push(this.saveCollectionForm.controls.fenString.value) 
-      this.saveCollectionForm.controls.fenString.reset();
+      this.collection.fens.push(this.saveCollectionForm.controls.fenstring.value) 
+      this.saveCollectionForm.controls.fenstring.reset();
       this.saveCollectionForm.updateValueAndValidity();
       this.checkfensLength();
     }
     
   }
 
-  // Remoives a Fen from the fenString array.
+  // Remoives a Fen from the fenstring array.
   removeFen(index: number) {
     this.collection.fens.splice(index, 1);
     console.log(this.collection.fens);
@@ -98,20 +98,16 @@ export class ManageFenComponent implements OnInit {
       userId = user._id;
       userAccountType = user.accountType;
     });
-    // if(userAccountType === AccountType.Free) {
-    //   console.log('You need to be a Premium User for this feature!');
-    // } else {
-      this.collection.userId = userId;
-      this.collection.fenTitle = this.saveCollectionForm.controls.collectionTitle.value;
-      this.fenCollectionsService.saveCollection(this.collection).subscribe(result => {
-        this.snackBar.open('Success!', null, {duration: 2000,});
-        this.dialogRef.close({
-          collection: this.collection
-        });
-      }, error => {
-        this.snackBar.open('Failure!');
+    this.collection.userId = userId;
+    this.collection.fenTitle = this.saveCollectionForm.controls.collectionTitle.value;
+    this.fenCollectionsService.saveCollection(this.collection).subscribe(result => {
+      this.snackBar.open('Success!', null, {duration: 2000,});
+      this.dialogRef.close({
+        collection: this.collection
       });
-    // }
+    }, error => {
+      this.snackBar.open('Failure!');
+    });
   }
 
   updateCollection() {

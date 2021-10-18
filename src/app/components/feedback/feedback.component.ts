@@ -15,7 +15,7 @@ import { AuthService } from '../../_services/auth.service';
 export class FeedbackComponent implements OnInit {
 
   feedbackType = FeedbackType;
-  error: String = '';
+  error: string = '';
 
   feedbackFormGroup = new FormGroup({
     feedbackType: new FormControl('', Validators.required),

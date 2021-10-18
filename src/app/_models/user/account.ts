@@ -1,10 +1,10 @@
 import { AccountType } from "../enums/account-type.enum";
 
 export class Account {
-  "_id": String;
-  "firstname": String;
-  "surname": String;
-  "email": String;
+  "_id": string;
+  "firstname": string;
+  "surname": string;
+  "email": string;
   "accountType": AccountType;
   "signupDate": Date;
 }

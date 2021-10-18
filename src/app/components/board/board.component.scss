@@ -37,7 +37,7 @@
   padding-left: 10px;
   padding-top: 10px;
   float: left;
-  width: 25%;
+  width: 20%;
   top: 0;
   position: sticky;
 }
@@ -67,14 +67,15 @@
     font-weight: bolder;
     margin: 5px;
   }
-  .colour-picker-card {
-    width: fit-content;
-    padding: 5px;
-    .colour-piker-form {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
+}
+
+.colour-picker-card {
+  max-width: fit-content;
+  padding: 10px;
+  .colour-piker-form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 }
 
@@ -121,5 +122,19 @@ ngx-chess-board::ng-deep .possible-point {
 
 ngx-chess-board::ng-deep .possible-point:hover {
   opacity: 1;
+}
+
+.move-information-container {
+  float: left;
+  width: auto;
+  padding-right: 10px;
+  padding-top: 10px;
+  max-width: 410px;
+}
+
+.move-information-card {
+  max-height: 720px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 

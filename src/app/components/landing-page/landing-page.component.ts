@@ -12,7 +12,7 @@ export class LandingPageComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.randomNumber = Math.floor(Math.random() * 2) + 1 
+    this.randomNumber = Math.floor(Math.random() * 3) + 1 
   }
 
 }
