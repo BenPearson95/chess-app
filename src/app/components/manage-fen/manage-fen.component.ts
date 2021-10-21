@@ -67,20 +67,17 @@ export class ManageFenComponent implements OnInit {
   // Remoives a Fen from the fenstring array.
   removeFen(index: number) {
     this.collection.fens.splice(index, 1);
-    console.log(this.collection.fens);
     this.saveCollectionForm.updateValueAndValidity();
     this.checkfensLength();
   }
 
   // Handles moving items around in the Array from the Drag/Drop functionality.
   drop(event) {
-    console.log(this.collection.fens);
     moveItemInArray(
         this.collection.fens, 
         event.previousIndex, 
         event.currentIndex
     );
-    console.log(this.collection.fens);
   }
 
   // Imports a FenCollection into the board.

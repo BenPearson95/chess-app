@@ -107,10 +107,7 @@ export class BoardService {
   }
 
   saveBoardProfile(userBoardProfile: UserBoardProfile) {
-    let userId = null; 
-    this.authService.currentUser$.subscribe(user => {userId = user._id});
-
-    return this.http.put(this.apiPath + this.route, { userId: userId, userBoardProfile: userBoardProfile }, this.options)
+    return this.http.put(this.apiPath + this.route, { userId: this.authService.getUserId(), userBoardProfile: userBoardProfile }, this.options)
       .pipe(map((response: any) => {
         return response;
       })

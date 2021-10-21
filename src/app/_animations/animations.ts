@@ -29,7 +29,6 @@ export const slider =
   // This function is utilised in the slider export.
 function slideTo(direction: any) {
   const optional = { optional: true };
-  console.log(direction);
   if (direction === 'left' || direction === 'right') {
     return [
       query(':enter, :leave', [

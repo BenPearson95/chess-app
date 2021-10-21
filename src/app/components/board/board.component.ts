@@ -139,7 +139,6 @@ export class BoardComponent implements OnInit {
   initBoard() {
     this.authService.loggedIn().subscribe(result => {
       if (result) {
-        console.log('result: ', result);
         this.isLoggedIn = true;
         this.getBoardProfile();
       } else {
