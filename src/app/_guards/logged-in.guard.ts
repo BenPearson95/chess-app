@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../_services/auth.service';
@@ -14,7 +14,7 @@ export class LoggedInGuard implements CanActivate {
     private router: Router,
   ) {}
 
-  // Check to see if user is actually logged in.
+  // Check to see if user is actually logged in. - Currently not is use.
   canActivate(): Observable<boolean> {
     return this.AuthService.currentUser$.pipe(
       map(user => {

@@ -4,6 +4,9 @@ import { ActivatedRoute, Data, NavigationEnd, Router } from '@angular/router';
 import { welcomeAnimation } from '../../_animations/animations';
 import { AuthService } from '../../_services/auth.service';
 import { filter } from 'rxjs/operators';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginSignupComponent } from '../login-signup/login-signup.component';
 
 
 @Component({
@@ -25,7 +28,8 @@ export class ToolBarComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public location: Location,
-    public AuthService: AuthService,
+    public authService: AuthService,
+    private loginSignupDialog: MatDialog,
   ) { }  
 
   ngOnInit() {
@@ -66,9 +70,24 @@ export class ToolBarComponent implements OnInit {
     if (hour >= 17 && hour <= 23 || hour >= 0 && hour <= 3) this.welcomePrefix = 'Good Evening,'
   }
 
+  openLoginSignupModal() {
+    const dialogRef = this.loginSignupDialog.open(LoginSignupComponent, {
+      maxWidth: 600,
+      minWidth: 300,
+      minHeight: 300,
+    });
+
+    dialogRef.updatePosition({
+      top: '50px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
   // Calls the User Service to logout.
   logout() {
-    this.AuthService.logout();
+    this.authService.logout();
   }
 
 }

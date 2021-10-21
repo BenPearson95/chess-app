@@ -5,7 +5,7 @@ import { UserLogin } from '../_models/user/user-login';
 import { UserSignup } from '../_models/user/user-signup';
 import { map } from 'rxjs/operators';
 import { AuthUser } from '../_models/user/auth-user';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -53,6 +53,28 @@ export class AuthService {
   // Sign the user up.
   signupUser(userSignup: UserSignup) {
     return this.http.post(this.apiPath + this.authRoute + 'signup', userSignup);
+  }
+
+  getUserId() {
+    let userId: string;
+    this.currentUser$.subscribe(user => {
+      if (user) {
+        userId = user._id;
+      } else {
+        userId = null;
+      }
+    });
+    return userId;
+  }
+
+  loggedIn(): Observable<boolean> {
+    return this.currentUser$.pipe(map((authUser: AuthUser) => {
+      if(authUser) {
+        return true;
+      } else {
+        return false;
+      }
+    }));    
   }
 
 }

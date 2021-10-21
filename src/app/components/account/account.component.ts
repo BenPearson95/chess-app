@@ -16,7 +16,6 @@ export class AccountComponent implements OnInit {
   ngOnInit(){
     
     this.getRouteData(this.activatedRoute.snapshot.data.resolvedData);
-    console.log(this.account);
   }
 
   // Get the account data from the route.

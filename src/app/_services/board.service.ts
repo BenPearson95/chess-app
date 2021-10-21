@@ -13,18 +13,30 @@ export class BoardService {
 
   grids: Array<Grid> = [];
 
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-  ) { }
-
   apiPath = environment.apiPath;
   route = 'board/';
   options = {
     headers: new HttpHeaders ({
-      'auth-token': JSON.parse(localStorage.getItem('user')).token
+      'auth-token': null
     })
   }
+
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) { 
+    this.authService.loggedIn().subscribe(result => {
+      if (result) {
+        this.options = {
+          headers: new HttpHeaders ({
+            'auth-token': JSON.parse(localStorage.getItem('user')).token
+          })
+        }
+      }
+    });
+  }
+
+  
 
   // Init the grids. Ew.
   initGrids() {
@@ -95,10 +107,7 @@ export class BoardService {
   }
 
   saveBoardProfile(userBoardProfile: UserBoardProfile) {
-    let userId = null; 
-    this.authService.currentUser$.subscribe(user => {userId = user._id});
-
-    return this.http.put(this.apiPath + this.route, { userId: userId, userBoardProfile: userBoardProfile }, this.options)
+    return this.http.put(this.apiPath + this.route, { userId: this.authService.getUserId(), userBoardProfile: userBoardProfile }, this.options)
       .pipe(map((response: any) => {
         return response;
       })

@@ -21,7 +21,7 @@
     </ng-container>
     <br>
     
-    <button routerLink='/collections' mat-raised-button class="landing-buttons" color="primary">FEN Management</button>
-    <button routerLink='/board' mat-raised-button class="landing-buttons" color="primary">Demo Board</button>
+    <button [disabled]="this.isLoggedIn === false" routerLink='collections' mat-raised-button class="landing-buttons" color="primary">FEN Management</button>
+    <button routerLink='board' mat-raised-button class="landing-buttons" color="primary">Demo Board</button>
   </div>
 </div>

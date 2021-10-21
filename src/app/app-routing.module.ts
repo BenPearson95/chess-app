@@ -14,106 +14,168 @@ import { CollectionsResolver } from './_resolvers/collections.resolver';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 const routes: Routes = [
+  // {
+  //   path: '',
+  //   component: LoginSignupComponent,
+  //   canActivate: [LoggedInGuard],
+  //   data: {
+  //     name: 'Login/Signup',
+  //     showBackButton: false,
+  //     animation: 'isLeft',
+  //   }
+  // },
+  // {
+  //   path: 'login',
+  //   redirectTo: '',
+  //   pathMatch: 'full',
+  // },
+  // {
+  //   path: '',
+    // runGuardsAndResolvers: 'always',
+    // canActivate: [AuthGuard],
+  //   children: [
+  //     {
+  //       path: 'landing',
+  //       component: LandingPageComponent,
+  //       data: {
+  //         name: 'Chess App',
+  //         showBackButton: false,
+  //       }
+  //     },
+  //     // { 
+  //     //   path: 'dashboard',
+  //     //   component: DashboardComponent,
+  //     //   data: {
+  //     //     name: 'Dashboard',
+  //     //     showBackButton: false,
+  //     //   },
+  //     // },
+  //     {
+  //       path: 'collections',
+  //       component: CollectionsComponent,
+  //       resolve: {
+  //         resolvedData: CollectionsResolver,
+  //       },
+  //       data: {
+  //         name: 'Collections',
+  //         showBackButton: true,
+  //         animation: 'isRight',
+  //       },
+  //     },
+  //     {
+  //       path: 'board',
+  //       component: BoardComponent,
+  //       data: {
+  //         name: 'The Board',
+  //         showBackButton: true,
+  //         animation: 'isRight',
+  //       },
+  //     },
+  //     {
+  //       path: 'information',
+  //       component: InformationComponent,
+  //       data: {
+  //         name: 'Information',
+  //         showBackButton: true,
+  //         animation: 'isRight',
+  //       },
+  //     },
+  //     {
+  //       path: 'account',
+  //       component: AccountComponent,
+  //       resolve: {
+  //         resolvedData: AccountResolver,
+  //       },
+  //       data: {
+  //         name: 'Information',
+  //         showBackButton: true,
+  //         animation: 'isRight',
+          
+  //       },
+  //     },
+  //     {
+  //       path: 'admin-dashboard',
+  //       component: AdminDashboardComponent,
+  //       data: {
+  //         name: 'Admin Dashboard',
+  //         showBackButton: true,
+  //         animation: 'isRight',
+  //       },
+  //     },
+      
+  //     {
+  //       path: '**',
+  //       component: LandingPageComponent, 
+  //       pathMatch: 'full',
+  //       data: {
+  //         name: 'Landing Page',
+  //         showBackButton: false,
+  //       },
+  //     },
+  //   ]
+  // },
+
+
+
   {
     path: '',
-    component: LoginSignupComponent,
-    canActivate: [LoggedInGuard],
+    component: LandingPageComponent,
     data: {
-      name: 'Login/Signup',
+      name: 'Chess App',
       showBackButton: false,
-      animation: 'isLeft',
+      // animation: 'isLeft',
     }
   },
   {
-    path: 'login',
-    redirectTo: '',
-    pathMatch: 'full',
+    path: 'board',
+    component: BoardComponent,
+    data: {
+      name: 'The Board',
+      showBackButton: true,
+      animation: 'isRight',
+    },
   },
   {
-    path: '',
+    path: 'collections',
+    component: CollectionsComponent,
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
-    children: [
-      {
-        path: 'landing',
-        component: LandingPageComponent,
-        data: {
-          name: 'Chess App',
-          showBackButton: false,
-        }
-      },
-      // { 
-      //   path: 'dashboard',
-      //   component: DashboardComponent,
-      //   data: {
-      //     name: 'Dashboard',
-      //     showBackButton: false,
-      //   },
-      // },
-      {
-        path: 'collections',
-        component: CollectionsComponent,
-        resolve: {
-          resolvedData: CollectionsResolver,
-        },
-        data: {
-          name: 'Collections',
-          showBackButton: true,
-          animation: 'isRight',
-        },
-      },
-      {
-        path: 'board',
-        component: BoardComponent,
-        data: {
-          name: 'The Board',
-          showBackButton: true,
-          animation: 'isRight',
-        },
-      },
-      {
-        path: 'information',
-        component: InformationComponent,
-        data: {
-          name: 'Information',
-          showBackButton: true,
-          animation: 'isRight',
-        },
-      },
-      {
-        path: 'account',
-        component: AccountComponent,
-        resolve: {
-          resolvedData: AccountResolver,
-        },
-        data: {
-          name: 'Information',
-          showBackButton: true,
-          animation: 'isRight',
-          
-        },
-      },
-      {
-        path: 'admin-dashboard',
-        component: AdminDashboardComponent,
-        data: {
-          name: 'Admin Dashboard',
-          showBackButton: true,
-          animation: 'isRight',
-        },
-      },
-      
-      {
-        path: '**',
-        component: LandingPageComponent, 
-        pathMatch: 'full',
-        data: {
-          name: 'Landing Page',
-          showBackButton: false,
-        },
-      },
-    ]
+    resolve: {
+      resolvedData: CollectionsResolver,
+    },
+    data: {
+      name: 'Collections',
+      showBackButton: true,
+      animation: 'isLeft',
+    },
   },
+  {
+    path: 'account',
+    component: AccountComponent,
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    resolve: {
+      resolvedData: AccountResolver,
+    },
+    data: {
+      name: 'Information',
+      showBackButton: true,
+      animation: 'isAbove',
+      
+    },
+  },
+  {
+    path: 'admin-dashboard',
+    component: AdminDashboardComponent,
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    data: {
+      name: 'Admin Dashboard',
+      showBackButton: true,
+      animation: 'isRight',
+    },
+  },
+  
   
 ];
 

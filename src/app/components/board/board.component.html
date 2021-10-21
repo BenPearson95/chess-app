@@ -99,7 +99,7 @@
 
             <mat-list-item class="custom-list-item">
               <div class="button-container">
-                <button class="interact-buttons" mat-stroked-button color="primary" [disabled]="this.saveBtnDisabled" (click)="this.saveBoardProfile()">Save</button>
+                <button class="interact-buttons" mat-stroked-button color="primary" [disabled]="this.saveBtnDisabled || !this.isLoggedIn" (click)="this.saveBoardProfile()">Save</button>
               </div>
             </mat-list-item>
           </mat-list>
@@ -140,7 +140,7 @@
         <mat-list>
           <mat-list-item class="custom-list-item">
             <div class="button-container">
-              <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.openFenCollectionsDialog()">Fen Collections</button>
+              <button [disabled]="!this.isLoggedIn" class="interact-buttons" mat-stroked-button color="primary" (click)="this.openFenCollectionsDialog()">Fen Collections</button>
               <button class="interact-buttons" mat-stroked-button color="accent" (click)="this.moveHistory()">Move History</button>
             </div>
           </mat-list-item>
