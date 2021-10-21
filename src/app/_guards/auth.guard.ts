@@ -14,14 +14,16 @@ export class AuthGuard implements CanActivate {
     private router: Router,
   ){ }
 
-  // Check to see if user is authenticated.
+  // Check to see if user is authenticated and logged in..
   canActivate(): Observable<boolean> {
     return this.AuthService.currentUser$.pipe(
       map(user => {
         if (user) {
+          // Allow them onto the route they're on.
           return true;
         } else {
-          this.router.navigate(['/login']);
+          // Reroute them to the landing page.
+          this.router.navigate(['']);
           return false;
         }
       })

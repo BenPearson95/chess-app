@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabGroup } from '@angular/material/tabs';
 import { Router } from '@angular/router';
@@ -38,6 +39,8 @@ export class LoginSignupComponent implements OnInit {
   disableBtn: boolean = false;
 
   constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    @Optional() private dialogRef: MatDialogRef<LoginSignupComponent>,
     private AuthService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
@@ -68,12 +71,12 @@ export class LoginSignupComponent implements OnInit {
 
     // Call to the User Service.
     this.AuthService.loginUser(userLogin).subscribe((result: AuthUser) => {
-      if (result) this.router.navigate(['landing']);
+      if (result) this.router.navigate(['']);
+      this.dialogRef.close();
     }, error => {
       this.loginError = error.error;
-    }, () => {
-      this.disableBtn = false;
     });
+    this.disableBtn = false;
   }
 
   // Signup Function.

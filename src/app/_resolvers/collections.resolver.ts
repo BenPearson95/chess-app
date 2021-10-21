@@ -16,12 +16,6 @@ export class CollectionsResolver implements Resolve<Array<FenCollection>> {
 
   // Resolve data into the collection component.
   resolve(): Observable<Array<FenCollection>> {
-    let userId: string = '';
-    
-    this.authService.currentUser$.subscribe((user) => {
-      userId = user._id;
-    });
-
-    return this.fenCollectionsService.getCollectionsUserById(userId);
+    return this.fenCollectionsService.getCollectionsUserById(this.authService.getUserId());
   }
 }

@@ -57,6 +57,8 @@ export class BoardComponent implements OnInit {
   pieceStyle: string;
   saveBtnDisabled: boolean = false;
 
+  isLoggedIn: boolean = false;
+
   get CoordinateLabelEnum(): typeof CoordinateLabelEnum {
     return CoordinateLabelEnum;
   }
@@ -135,42 +137,15 @@ export class BoardComponent implements OnInit {
   }
 
   initBoard() {
-    let userId;
-    this.authService.currentUser$.subscribe(user => {userId = user._id});
-
-    this.boardService.getBoardProfile(userId).subscribe((result: UserBoardProfile) => {
-      if(result) {
-        this.boardProfileFormGroup.setValue(result);
+    this.authService.loggedIn().subscribe(result => {
+      if (result) {
+        console.log('result: ', result);
+        this.isLoggedIn = true;
+        this.getBoardProfile();
       } else {
-        let boardValues: UserBoardProfile = {
-          boardSize: 800,
-          freeMode: true,
-          coordinateLabel: CoordinateLabelEnum.None,
-          coordinateSize: 24,
-          darkTileColour: '#1565c0',
-          lightTileColour: '#ffffff',
-          pieceStyle: 'leipzig',
-        }
-        this.boardProfileFormGroup.patchValue(boardValues);
+        this.isLoggedIn = false;
+        this.setBoardProfileDefault();
       }
-
-      this.updateBoardSize(this.boardProfileFormGroup.controls.boardSize.value);
-      this.changePieces(this.boardProfileFormGroup.controls.pieceStyle.value);
-    }, (err) => {
-      // if there was an error getting API board data, show default.
-      console.log(err);
-      let boardValues: UserBoardProfile = {
-        boardSize: 800,
-        freeMode: true,
-        coordinateLabel: CoordinateLabelEnum.None,
-        coordinateSize: 24,
-        darkTileColour: '#1565c0',
-        lightTileColour: '#ffffff',
-        pieceStyle: 'leipzig',
-      }
-      this.boardProfileFormGroup.patchValue(boardValues);
-    }, () => {
-      this.pageLoading = false;
     });
   }
   
@@ -368,6 +343,50 @@ export class BoardComponent implements OnInit {
       this.snackBar.open('Error saving your Board Style!', null, {duration: 2000});
       console.log(error);
     });
+  }
+
+  getBoardProfile() {
+    this.boardService.getBoardProfile(this.authService.getUserId()).subscribe((result: UserBoardProfile) => {
+      if(result) {
+        this.boardProfileFormGroup.setValue(result);
+      } else {
+        let boardValues: UserBoardProfile = {
+          boardSize: 800,
+          freeMode: true,
+          coordinateLabel: CoordinateLabelEnum.None,
+          coordinateSize: 24,
+          darkTileColour: '#1565c0',
+          lightTileColour: '#ffffff',
+          pieceStyle: 'cburnett',
+        }
+        this.boardProfileFormGroup.patchValue(boardValues);
+      }
+
+      this.updateBoardSize(this.boardProfileFormGroup.controls.boardSize.value);
+      this.changePieces(this.boardProfileFormGroup.controls.pieceStyle.value);
+    }, (err) => {
+      // if there was an error getting API board data, show default.
+      console.log(err);
+      this.setBoardProfileDefault();
+    }, () => {
+      this.pageLoading = false;
+    });
+  }
+
+  setBoardProfileDefault() {
+    let boardValues: UserBoardProfile = {
+      boardSize: 800,
+      freeMode: true,
+      coordinateLabel: CoordinateLabelEnum.None,
+      coordinateSize: 24,
+      darkTileColour: '#1565c0',
+      lightTileColour: '#ffffff',
+      pieceStyle: 'cburnett',
+    }
+    this.boardProfileFormGroup.patchValue(boardValues);
+    this.updateBoardSize(this.boardProfileFormGroup.controls.boardSize.value);
+    this.changePieces(this.boardProfileFormGroup.controls.pieceStyle.value);
+    this.pageLoading = false;
   }
 
   changePieces(pieceStyleString: string) {

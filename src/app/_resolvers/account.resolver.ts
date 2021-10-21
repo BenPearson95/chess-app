@@ -16,12 +16,6 @@ export class AccountResolver implements Resolve<Account> {
 
     // Resolve data to the account component.
   resolve(): Observable<Account> {
-    let userId: string = '';
-    
-    this.authService.currentUser$.subscribe((user) => {
-      userId = user._id;
-    });
-
-    return this.accountService.getUserById(userId);
+    return this.accountService.getUserById(this.authService.getUserId());
   }
 }

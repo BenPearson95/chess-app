@@ -18,34 +18,93 @@ export const slider =
   trigger('routeAnimations', [
     transition('* => isLeft', slideTo('left') ),
     transition('* => isRight', slideTo('right') ),
+    transition('* => isBelow', slideTo('top') ),
+    transition('* => isAbove', slideTo('top') ),
     transition('isRight => *', slideTo('left') ),
-    transition('isLeft => *', slideTo('right') )
+    transition('isLeft => *', slideTo('right') ),
+    transition('isAbove => *', slideTo('top') ),
+    transition('isBelow => *', slideTo('top') ),
   ]);
 
   // This function is utilised in the slider export.
 function slideTo(direction: any) {
   const optional = { optional: true };
-  return [
-    query(':enter, :leave', [
-      style({
-        position: 'absolute',
-        top: 64,
-        [direction]: 0,
-        width: '100%'
-      })
-    ], optional),
-    query(':enter', [
-      style({ [direction]: '-100%'})
-    ]),
-    group([
-      query(':leave', [
-        animate('1000ms ease', style({ [direction]: '100%'}))
+  console.log(direction);
+  if (direction === 'left' || direction === 'right') {
+    return [
+      query(':enter, :leave', [
+        style({
+          position: 'absolute',
+          [direction]: 0,
+          width: '100%'
+        })
       ], optional),
       query(':enter', [
-        animate('1000ms ease', style({ [direction]: '0%'}))
-      ])
-    ]),
-  ];
+        style({ 
+          [direction]: '-100%',
+      })
+      ]),
+      group([
+        query(':leave', [
+          animate('1000ms ease', style({ [direction]: '100%'}))
+        ], optional),
+        query(':enter', [
+          animate('1000ms ease', style({ [direction]: '0%'}))
+        ])
+      ]),
+    ];
+  } else if (direction === 'top') {
+    return [
+      query(':enter, :leave', [
+        style({
+          position: 'absolute',
+          [direction]: 0,
+          transform: 'translateY(64px)',
+          width: '100%',
+          overflow: 'hidden'
+        })
+      ], optional),
+      query(':enter', [
+        style({ 
+          [direction]: '-100%',
+      })
+      ]),
+      group([
+        query(':leave', [
+          animate('1000ms ease', style({ [direction]: '100%'}))
+        ], optional),
+        query(':enter', [
+          animate('1000ms ease', style({ [direction]: '0%'}))
+        ])
+      ]),
+    ];
+  } else {
+    // This is never hit, can't get slideTo('bottom') to work!!
+    return [
+      query(':enter, :leave', [
+        style({
+          position: 'absolute',
+          [direction]: 0,
+          width: '100%',
+          overflow: 'hidden'
+        })
+      ], optional),
+      query(':enter', [
+        style({ 
+          [direction]: '-100%',
+          overflow: 'hidden'
+      })
+      ]),
+      group([
+        query(':leave', [
+          animate('1000ms ease', style({ [direction]: '100%', overflow: 'hidden'}))
+        ], optional),
+        query(':enter', [
+          animate('1000ms ease', style({ [direction]: '0%', overflow: 'hidden',}))
+        ])
+      ]),
+    ];
+  }
 }
 
 // group of generic slide in animations.
