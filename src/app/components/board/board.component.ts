@@ -435,19 +435,5 @@ export class BoardComponent implements OnInit {
         }
       });
     })
-  }
-
-  // moveChange(event: MoveChange) {
-  //   // this.moveHistoryString = event.pgn.pgn
-
-  //   console.log(event);
-
-  //   const pgnString = event.pgn.pgn;
-
-  //   console.log(pgnString);
-
-  //   let moveHistoryArray: Array<string> = [];
-  // }
-
-  
+  }  
 }
