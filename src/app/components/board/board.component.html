@@ -140,8 +140,14 @@
         <mat-list>
           <mat-list-item class="custom-list-item">
             <div class="button-container">
+              <mat-slide-toggle
+              #moveHistoryToggle
+              class="move-history-slider"
+              (change)="this.moveHistory($event)">
+                Move History
+              </mat-slide-toggle>
+
               <button [disabled]="!this.isLoggedIn" class="interact-buttons" mat-stroked-button color="primary" (click)="this.openFenCollectionsDialog()">Fen Collections</button>
-              <button class="interact-buttons" mat-stroked-button color="accent" (click)="this.moveHistory()">Move History</button>
             </div>
           </mat-list-item>
           <mat-list-item class="custom-list-item">
@@ -332,16 +338,16 @@
   </div>
 </div>
 
-<div class="move-information-container" [@slideFromRight] *ngIf="this.board?.getMoveHistory().length">
+<div class="move-information-container" [@slideFromRight] *ngIf="this.showMoveHistory">
   <mat-card class="move-information-card">
     <mat-card-header>
       <mat-card-title>Move Information</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-    <app-move-history
-    [moveHistoryArray] = this.board?.getMoveHistory()>
-
-    </app-move-history>
+      <app-move-history 
+        [moveHistoryArray] = this.board?.getMoveHistory()
+        [freeMode] = this.boardProfileFormGroup.controls.freeMode.value>
+      </app-move-history>
     </mat-card-content>
   </mat-card>
 </div>

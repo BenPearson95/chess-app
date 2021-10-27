@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { HistoryMove, NgxChessBoardService, NgxChessBoardView, PieceIconInput } from 'ngx-chess-board';
@@ -9,7 +9,6 @@ import { CdkDragStart } from '@angular/cdk/drag-drop';
 import { BoardService } from 'src/app/_services/board.service';
 import { HelpComponent } from '../help/help.component';
 import { CollectionsComponent } from '../collections/collections.component';
-import { MoveHistoryComponent } from '../move-history/move-history.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatAccordion } from '@angular/material/expansion';
 import { Leipzig } from 'src/app/_models/board/piece-models/leipzig';
@@ -20,7 +19,7 @@ import { PgnManagementComponent } from 'src/app/components/pgn-management/pgn-ma
 import { UserBoardProfile } from 'src/app/_models/board/user-board-profile';
 import { CoordinateLabelEnum } from 'src/app/_models/enums/coordinate-label.enum';
 import { AuthService } from 'src/app/_services/auth.service';
-import { ResultFunc } from 'rxjs/internal/observable/generate';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-board',
@@ -38,6 +37,7 @@ export class BoardComponent implements OnInit {
   @ViewChild('board', {static: false}) board: NgxChessBoardView | undefined;
   @ViewChild('boardRef', {static: true}) boardRef: ElementRef;
   @ViewChild(MatAccordion) accordion: MatAccordion;
+  @ViewChild('moveHistoryToggle') moveHistoryToggle: MatSlideToggle;
   @Output('cdkDragStarted') started: EventEmitter<CdkDragStart>
   @Input() boardSize: number;
   @Input() freeMode: boolean;
@@ -48,6 +48,8 @@ export class BoardComponent implements OnInit {
   showCoordsInside: boolean = false;
   showLastMove: boolean = false;
   showLegalMove: boolean = false;
+  showMoveHistory: boolean = false;
+  moveHistoryString: string = null;
   reversed: boolean = false;
   moveHistoryArray: Array<HistoryMove>;
   outsideCoordNumbers: Array<Number> = [8,7,6,5,4,3,2,1];
@@ -156,6 +158,7 @@ export class BoardComponent implements OnInit {
 
   // Resets the board.
   reset() {
+    this.reversed = false;
     this.board?.reset();
   }
 
@@ -190,29 +193,13 @@ export class BoardComponent implements OnInit {
   }
 
   // Gets & displays Move History
-  moveHistory() {
-
-    this.moveHistoryArray = this.board?.getMoveHistory();
-    if (this.moveHistoryArray.length > 0) {
-      const dialogRef = this.moveHistoryDialog.open(MoveHistoryComponent, {
-        maxWidth: 600,
-        minWidth: 300,
-        minHeight: 300,
-        data: {
-          moveHistoryArray: this.moveHistoryArray
-        },
-      });
-  
-      dialogRef.updatePosition({
-        top: '50px'
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-      });
+  moveHistory(event) {
+    if(this.board?.getMoveHistory().length > 0) {
+      this.showMoveHistory = (event.checked) ? true : false;
     } else {
       this.snackBar.open('No History To Show!', 'Close' ,{duration: 3000});
-    }
-    
+      this.moveHistoryToggle.checked = false;
+    }    
   }
 
   // Opens the Fen Collection Modal. Manages return data.
@@ -449,4 +436,18 @@ export class BoardComponent implements OnInit {
       });
     })
   }
+
+  // moveChange(event: MoveChange) {
+  //   // this.moveHistoryString = event.pgn.pgn
+
+  //   console.log(event);
+
+  //   const pgnString = event.pgn.pgn;
+
+  //   console.log(pgnString);
+
+  //   let moveHistoryArray: Array<string> = [];
+  // }
+
+  
 }
