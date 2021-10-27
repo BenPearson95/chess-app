@@ -1,5 +1,18 @@
-<mat-chip-list selectable="true">
-  <mat-chip (click)="moveClick(i)" color="primary" selected="true" *ngFor="let move of this.moveHistoryArray, let i = index">
-    {{i + 1}}. {{move.move}}
-  </mat-chip>
-</mat-chip-list>
+<div class="move-container">
+  <div *ngFor="let move of algebraicMoveHistory; let i = index" class="move-row" [ngClass]="{'move-row-background': 0 !== i % 2}">
+    <div class="number-node">
+      {{i+1}}.
+    </div>
+    <div class="white-node">
+      {{move.whiteMove}}
+    </div>
+    <div class="black-node">
+      {{move.blackMove}}
+    </div>
+  </div>
+</div>
+
+<div class="free-mode-message">
+  <p>Move History will not be tracked while Free Mode is on.</p>
+</div>
+
