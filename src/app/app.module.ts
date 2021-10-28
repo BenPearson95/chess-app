@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
@@ -51,7 +50,6 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent,
     ToolBarComponent,
     BoardComponent,
     LoginSignupComponent,
