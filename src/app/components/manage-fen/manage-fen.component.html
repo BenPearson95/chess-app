@@ -1,4 +1,5 @@
 <h2 mat-dialog-title>Manage your Fen</h2>
+<div mat-dialog-content cdkScrollable>
   <form
   [formGroup]="saveCollectionForm" [@slideFromLeft]> 
     <mat-form-field appearance="outline">
@@ -27,39 +28,45 @@
     </mat-error>
     </mat-form-field>
   </form>
-<div>
-  <button [disabled]="saveCollectionForm.invalid" mat-stroked-button color="primary" (click)="this.addFen()">Add</button>
-</div>
+  <div class="manage-input-container">
+    <div class="add-button-container">
+      <button [disabled]="saveCollectionForm.invalid || this.collection.fens.length === 25" mat-stroked-button color="primary" (click)="this.addFen()">Add</button>
+    </div>
+    <div class="fen-counter-container">
+      <span *ngIf="this.collection.fens">{{this.collection.fens.length}}/25</span>
+    </div>
+  </div>
 
-<ng-container *ngIf="this.collection.fens">
-  <div *ngIf="this.collection.fens.length > 0" [@slideFromBottom]>
-    <hr>
-    <div style="width: 100%" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-      <div cdkDrag class="example-box" *ngFor="let fen of collection.fens; let i = index">
-          {{fen}}
-        <button mat-icon-button color="warn" aria-label="Delete Icon for Deleting Fen">
-          <mat-icon (click)="removeFen(i); $event.preventDefault()">delete</mat-icon>
+  <ng-container *ngIf="this.collection.fens">
+    <div *ngIf="this.collection.fens.length > 0" [@slideFromBottom]>
+      <hr>
+      <div style="width: 100%" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+        <div cdkDrag class="example-box" *ngFor="let fen of collection.fens; let i = index">
+            {{fen}}
+          <button mat-icon-button color="warn" aria-label="Delete Icon for Deleting Fen">
+            <mat-icon (click)="removeFen(i); $event.preventDefault()">delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: left;">
+        <button mat-raised-button color="primary" class="save-buttons"
+        *ngIf="data.parent === 'board'" (click)="import()">
+          Import
+        </button>
+        <button mat-raised-button color="primary" class="save-buttons"
+        (click)="saveCollection()" *ngIf="this.collection.fens.length > 1 && !data.collection" 
+        [disabled]="saveCollectionForm.controls.collectionTitle.hasError('required') || this.numOfCollections >= 20" 
+        [@slideFromLeft]>
+          Save Collection
+        </button>
+        <button mat-raised-button color="primary" class="save-buttons"
+        (click)="updateCollection()" *ngIf="this.collection.fens.length > 0 && data.collection" 
+        [disabled]="saveCollectionForm.controls.collectionTitle.hasError('required') || this.collection.fens.length > 25" 
+        [@slideFromLeft]>
+          Update Collection
         </button>
       </div>
     </div>
-    <div style="display: flex; justify-content: left;">
-      <button mat-raised-button color="primary" class="save-buttons" 
-      *ngIf="data.parent === 'board'" (click)="import()">
-        Import
-      </button>
-      <button mat-raised-button color="primary" class="save-buttons"
-      (click)="saveCollection()" *ngIf="this.collection.fens.length > 1 && !data.collection" 
-      [disabled]="saveCollectionForm.controls.collectionTitle.hasError('required')" 
-      [@slideFromLeft]>
-        Save Collection
-      </button>
-      <button mat-raised-button color="primary" class="save-buttons"
-      (click)="updateCollection()" *ngIf="this.collection.fens.length > 0 && data.collection" 
-      [disabled]="saveCollectionForm.controls.collectionTitle.hasError('required')" 
-      [@slideFromLeft]>
-        Update Collection
-      </button>
-    </div>
-  </div>
-</ng-container>
+  </ng-container>
+</div>
 

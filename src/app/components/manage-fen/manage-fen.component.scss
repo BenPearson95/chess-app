@@ -64,3 +64,18 @@
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+.manage-input-container {
+  position: relative;
+  .add-button-container {
+    width: 50%;
+    display: inline-block;
+  }
+  .fen-counter-container {
+    width: 50%;
+    display: inline-block;
+    text-align: end;
+    position: absolute;
+    bottom: 0;
+  }
+}

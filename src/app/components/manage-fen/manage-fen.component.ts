@@ -22,6 +22,7 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
 export class ManageFenComponent implements OnInit {
 
   collection: FenCollection = new FenCollection;
+  numOfCollections: number;
 
   // Saving a Fen Collection Form
   saveCollectionForm = new FormGroup({
@@ -35,7 +36,8 @@ export class ManageFenComponent implements OnInit {
     private authService: AuthService,
     private fenCollectionsService: FenCollectionsService,
     private snackBar: MatSnackBar,
-  ) { 
+  ) {
+    this.collection.fens = [];
       // How should we load in data, depending on where this modal is being openned.
       if (data.parent === 'board') {
         if (data.collection) {
@@ -48,6 +50,7 @@ export class ManageFenComponent implements OnInit {
         this.saveCollectionForm.updateValueAndValidity();
         this.checkfensLength();
       }
+      this.numOfCollections = data.numOfCollections;
    }
 
   ngOnInit() {}
@@ -98,23 +101,27 @@ export class ManageFenComponent implements OnInit {
     this.collection.userId = userId;
     this.collection.fenTitle = this.saveCollectionForm.controls.collectionTitle.value;
     this.fenCollectionsService.saveCollection(this.collection).subscribe(result => {
-      this.snackBar.open('Success!', null, {duration: 2000,});
+      this.snackBar.open('Success!', null, {duration: 2000});
       this.dialogRef.close({
         collection: this.collection
       });
     }, error => {
-      this.snackBar.open('Failure!');
+      if (error.status === 403) {
+        this.snackBar.open(error.error, null, {duration: 5000});
+      } else {
+        this.snackBar.open('General Failure, unable to save.', null, {duration: 2000});
+      }
     });
   }
 
   updateCollection() {
     this.fenCollectionsService.updateCollectionByID(this.collection).subscribe(result => {
-      this.snackBar.open('Success!', null, {duration: 2000,});
+      this.snackBar.open('Success!', null, {duration: 2000});
       this.dialogRef.close({
         collection: this.data.collection,
       });
     }, error => {
-      console.log(error);
+      this.snackBar.open(error.error, null, {duration: 2000});
     });
     
   }
