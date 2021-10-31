@@ -48,10 +48,7 @@ export class CollectionsComponent implements OnInit {
 
   // Get the Collections data from the route.
   getRouteData(data: Array<FenCollection>) {
-    this.fenCollections = [];
-    data.forEach(collection => {
-      this.fenCollections.push(collection);
-    });
+    this.fenCollections = data;
     this.populateTable();
   }
 
@@ -101,12 +98,15 @@ export class CollectionsComponent implements OnInit {
   }
 
   // Opens the Fen Management modal and handles returned data.
-  openManageFenDialog(collection?: FenCollection) {
+  openManageFenDialog(collectionTableData?: FenCollectionTableData) {
+    const collection: FenCollection = (collectionTableData) ? this.fenCollections.find(collection => collection._id === collectionTableData._id) : null;
+    const numOfCollections: number = (this.fenCollections.length) ? this.fenCollections.length : 0;
     const dialogRef = this.ManageFenDialog.open(ManageFenComponent, {
       minWidth: 700,
       data: {
         parent: 'collections',
         collection: collection,
+        numOfCollections: numOfCollections,
       },
     });
 
