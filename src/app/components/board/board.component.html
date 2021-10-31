@@ -146,9 +146,10 @@
               (change)="this.moveHistory($event)">
                 Move History
               </mat-slide-toggle>
-
+              </div>
+              </mat-list-item>
+              <mat-list-item class="custom-list-item">
               <button [disabled]="!this.isLoggedIn" class="interact-buttons" mat-stroked-button color="primary" (click)="this.openFenCollectionsDialog()">Fen Collections</button>
-            </div>
           </mat-list-item>
           <mat-list-item class="custom-list-item">
             <ng-container *ngIf="this.collection">
@@ -240,7 +241,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Div Content Board -->
 <div class="board-container">
@@ -338,6 +338,7 @@
   </div>
 </div>
 
+<!-- Move History Container -->
 <div class="move-information-container" [@slideFromRight] *ngIf="this.showMoveHistory">
   <mat-card class="move-information-card">
     <mat-card-header>
