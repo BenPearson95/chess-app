@@ -194,12 +194,7 @@ export class BoardComponent implements OnInit {
 
   // Gets & displays Move History
   moveHistory(event) {
-    if(this.board?.getMoveHistory().length > 0) {
-      this.showMoveHistory = (event.checked) ? true : false;
-    } else {
-      this.snackBar.open('No History To Show!', 'Close' ,{duration: 3000});
-      this.moveHistoryToggle.checked = false;
-    }    
+    this.showMoveHistory = (event.checked) ? true : false;  
   }
 
   // Opens the Fen Collection Modal. Manages return data.
@@ -278,8 +273,9 @@ export class BoardComponent implements OnInit {
 
   // Toggled when a mouse click up event has fired on the overlay grid for piece dragging.
   mouseUpEvent(event) {
+    const path = event.path || (event.composedPath && event.composedPath());
     if (this.boardProfileFormGroup.controls.freeMode.value) {
-      this.board?.addPiece(this.piece.piece, this.piece.colour, event.path[1].id);
+      this.board?.addPiece(this.piece.piece, this.piece.colour, path[1].id);
     }
   }
 

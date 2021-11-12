@@ -1,5 +1,4 @@
-import { Component, Inject, Input, IterableDiffers, OnInit, Optional } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Input, IterableDiffers, OnInit } from '@angular/core';
 import { HistoryMove } from 'ngx-chess-board';
 
 @Component({
@@ -31,7 +30,8 @@ export class MoveHistoryComponent implements OnInit {
     this.algebraicMoveHistory = [];
     this.moveHistoryArray.forEach((move: HistoryMove) => {
       let moveString = '';
-      moveString = (move.piece !== 'Pawn') ? moveString.concat(move.piece.charAt(0)) : moveString.concat('');
+      moveString = (move.piece === 'Knight') ? moveString.concat('N') : moveString.concat('');
+      moveString = (move.piece !== 'Pawn' && move.piece !== 'Knight') ? moveString.concat(move.piece.charAt(0)) : moveString.concat('');
       moveString = (move.x) ? moveString.concat('x') : moveString.concat('');
       moveString = moveString.concat(move.move.slice(-2));
       moveString = ((move.move === 'e1g1' && move.piece === 'King') || (move.move === 'e8g8' && move.piece === 'King')) ? '0-0' : moveString.concat('');
