@@ -134,6 +134,7 @@ ngx-chess-board::ng-deep .possible-point:hover {
 
 .move-information-card {
   max-height: 720px;
+  min-width: 380px;
   padding: 0px 0px 8px 0px;
   overflow: auto;
   mat-card-header mat-card-title {
