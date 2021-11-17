@@ -1,4 +1,4 @@
-import { animate, group, query, style, transition, trigger } from "@angular/animations";
+import { animate, group, query, state, style, transition, trigger } from "@angular/animations";
 
 // Top right welcome text when logged in.
 export const welcomeAnimation =
@@ -162,5 +162,15 @@ trigger('uncoverFromLeft', [
   ])
 ])
 
+export const fadeInOut =
+trigger('fadeInOut', [
+  state('in', style({opacity: 1})),
+  transition(':enter', [
+    style({opacity: 0}),
+    animate(600)
+  ]),
+  transition(':leave',
+    animate(600, style({opacity: 0})))
+])
 
 

@@ -46,6 +46,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { PgnManagementComponent } from './components/pgn-management/pgn-management.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     LandingPageComponent,
     PgnManagementComponent,
     LoadingSpinnerComponent,
+    PasswordResetComponent,
   ],
   imports: [
     BrowserModule,
