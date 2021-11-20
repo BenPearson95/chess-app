@@ -1,3 +1,7 @@
+<div *ngIf="this.freeMode" class="free-mode-message">
+  <p>Move History will not be tracked while Free Mode is on.</p>
+</div>
+
 <div class="move-container">
   <div *ngFor="let move of algebraicMoveHistory; let i = index" class="move-row" [ngClass]="{'move-row-background': 0 !== i % 2}">
     <div class="number-node">
@@ -11,8 +15,3 @@
     </div>
   </div>
 </div>
-
-<div *ngIf="this.freeMode" class="free-mode-message">
-  <p>Move History will not be tracked while Free Mode is on.</p>
-</div>
-

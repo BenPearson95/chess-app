@@ -1,356 +1,237 @@
-<ng-container *ngIf="this.pageLoading">
+<!-- Page Container  -->
+<div #pageContainer class="board-page-container" (window:resize)="pageContainerResize($event)">
 
-  <app-loading-spinner></app-loading-spinner>
-
-</ng-container>
-
-<ng-container *ngIf="!this.pageLoading">
-<!-- Div Content Controls -->
-<div class="board-controls-container">
-  <div>
-    <div class="example-action-buttons">
-      <button mat-button color="primary" style="font-weight: bolder;" (click)="accordion.openAll()">Expand All</button>
-      <button mat-button color="accent" (click)="accordion.closeAll()">Collapse All</button>
+  <!-- Div Content Pieces -->
+  <div class="piece-container" *ngIf="this.boardProfile.freeMode" [@uncoverFromLeft]>
+    <div cdkDropList>
+      <div 
+      cdkDrag
+      *ngFor="let piece of additionalWhitePieces; let i = index" 
+      (cdkDragStarted)="dragStarted(piece)" 
+      (cdkDragDropped)="dragStopped()"  
+      class="example-box"
+      [ngStyle]="{
+        'width.px': (this.boardProfile.boardSize / 8), 
+        'height.px': (this.boardProfile.boardSize / 8),
+        'font-size.px': (this.boardProfile.boardSize / 8)
+      }">
+        <span *ngIf="piece.pieceImgSrc.length === 1">{{piece.pieceImgSrc}}</span>
+        <img style="width: 100%; height: 100%;" *ngIf="piece.pieceImgSrc.length > 1" src={{piece.pieceImgSrc}}>
+      </div>
     </div>
-  
-    <mat-accordion class="example-headers-align" multi>
-  
-      <!-- Board Controls -->
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Board Style Options
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-
-        <form [formGroup]="boardProfileFormGroup">
-          <mat-list>
-            <mat-list-item class="custom-list-item">
-              <div class="sizing-container">
-                <p style="text-align: center; margin: 0;">Board Size</p>
-                <mat-slider formControlName="boardSize"
-                  (input)="updateBoardSize($event.value)" 
-                  class="board-size-slider"
-                  thumbLabel
-                  min="550" 
-                  max="1100" 
-                  step="10">
-                </mat-slider>
-              </div>
-            </mat-list-item>
-    
-            <mat-list-item class="custom-list-item">
-              <mat-slide-toggle formControlName="freeMode"
-              style="padding-bottom: 20px"
-              [checked]="this.boardProfileFormGroup.controls.freeMode.value"
-              >Free mode</mat-slide-toggle>
-            </mat-list-item>
-    
-            <mat-list-item class="custom-list-item">
-              <mat-form-field appearance="outline" style="margin-right: 5px;">
-                <mat-label class="custom-labels">Coordinate Labels</mat-label>
-                <mat-select formControlName="coordinateLabel">
-                  <mat-option *ngFor="let CoordinateLabel of CoordinateLabelEnum | keyvalue" [value]="CoordinateLabel.value">
-                    {{CoordinateLabel.key}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <!-- hello {{coordFontSize}} -->
-              <mat-form-field appearance="outline" *ngIf="this.boardProfileFormGroup.controls.coordinateLabel.value === CoordinateLabelEnum.Outside" [@slideFromLeft] style="margin-left: 5px; width: 70px;">
-                <mat-label class="custom-labels">Size</mat-label>
-                <mat-select formControlName="coordinateSize"
-                  >
-                  <mat-option *ngFor="let coordsize of coordFontSizes" [value]="coordsize">
-                    {{coordsize}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </mat-list-item>
-    
-            <mat-list-item class="custom-list-item">
-              <mat-card class="colour-picker-card">
-                <p style="text-align: center;">Square Colours</p>
-                <!-- <form [formGroup]="colourFormGroup" class="colour-picker-form"> -->
-                  <mat-form-field>
-                    <mat-label class="custom-labels">Dark Tile Colour</mat-label>
-                    <input formControlName="darkTileColour" type="color" matInput>
-                  </mat-form-field>
-                  <mat-form-field>
-                    <mat-label class="custom-labels">Light Tile Colour</mat-label>
-                    <input formControlName="lightTileColour" type="color" matInput>
-                  </mat-form-field>
-                <!-- </form> -->
-              </mat-card>
-            </mat-list-item>
-
-            <mat-list-item class="custom-list-item" style="margin-top: 16px;">
-              <!-- <form [formGroup]="pieceSelectFormGroup"> -->
-              <mat-form-field appearance="outline" style="margin-right: 5px;">
-                <mat-label class="custom-labels">Piece Style</mat-label>
-                <mat-select formControlName="pieceStyle" 
-                  (selectionChange)="changePieces($event.value)">
-                  <mat-option *ngFor="let piece of pieceOptions" [value]="piece.value">
-                    {{piece.viewValue}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <!-- </form> -->
-            </mat-list-item>
-
-            <mat-list-item class="custom-list-item">
-              <div class="button-container">
-                <button class="interact-buttons" mat-stroked-button color="primary" [disabled]="this.saveBtnDisabled || !this.isLoggedIn" (click)="this.saveBoardProfile()">Save</button>
-              </div>
-            </mat-list-item>
-          </mat-list>
-        </form>
-    
-      </mat-expansion-panel>
-      
-      <!-- Board State Controls -->
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Board State Controls
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        
-        <mat-list-item class="custom-list-item">
-          <div class="button-container">
-            <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.reset()">Reset</button>
-            <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.reverse()">Reverse</button>
-            <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.undo()">Undo</button>
-          </div>
-          <div class="button-container">
-            <button class="interact-buttons" mat-stroked-button color="accent" (click)="this.clearPieces()">Clear Pieces</button>
-            <button class="interact-buttons" mat-stroked-button color="accent" (click)="this.clearMarkers()">Clear Markers</button>
-          </div>
-        </mat-list-item>
-       
-      </mat-expansion-panel>
-    
-      <!-- Import FENs & PGNs -->
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            FENS and Move History
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-    
-        <mat-list>
-          <mat-list-item class="custom-list-item">
-            <div class="button-container">
-              <mat-slide-toggle
-              #moveHistoryToggle
-              class="move-history-slider"
-              (change)="this.moveHistory($event)">
-                Move History
-              </mat-slide-toggle>
-              </div>
-              </mat-list-item>
-              <mat-list-item class="custom-list-item">
-              <button [disabled]="!this.isLoggedIn" class="interact-buttons" mat-stroked-button color="primary" (click)="this.openFenCollectionsDialog()">Fen Collections</button>
-          </mat-list-item>
-          <mat-list-item class="custom-list-item">
-            <ng-container *ngIf="this.collection">
-              <div style="display: block">
-                <div *ngIf="this.collection.fens.length > 0" style="width: 100%; display: flex; justify-content: center;">
-                  <span>Navigate your Fens</span>
-                </div>
-                <div *ngIf="this.collection.fens.length > 0" style="margin-bottom: 5px;">
-                  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                    <mat-icon (click)="navigateFen('first')">first_page</mat-icon>
-                  </button>
-                  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                    <mat-icon (click)="navigateFen('previous')">chevron_left</mat-icon>
-                  </button>
-                  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                    <mat-icon (click)="navigateFen('next')">chevron_right</mat-icon>
-                  </button>
-                  <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                    <mat-icon (click)="navigateFen('last')">last_page</mat-icon>
-                  </button>
-                </div>
-                <div *ngIf="this.collection.fens.length > 0 && this.activeFenPosition" style="width: 100%; display: flex; justify-content: center;">
-                  <span>{{this.activeFenPosition}} / {{this.collection.fens.length}}</span>
-                </div>
-                <div *ngIf="this.collection.fens.length > 0 && !this.activeFenPosition" style="width: 100%; display: flex; justify-content: center;">
-                  <span> 0 / {{this.collection.fens.length}}</span>
-                </div>
-              </div>
-            </ng-container>
-          </mat-list-item>
-        </mat-list>
-        
-      </mat-expansion-panel>
-  
-      <!-- Help & Information -->
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Help & Information
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-    
-        <mat-list>
-          <mat-list-item class="custom-list-item">
-            <div class="button-container">
-              <button class="interact-buttons" mat-stroked-button color="primary" (click)="this.openHelp()">Help</button>
-            </div>
-          </mat-list-item>
-        </mat-list>
-        
-      </mat-expansion-panel>
-      
-    </mat-accordion>
-  </div>
-</div>
-
-<!-- Div Content Pieces -->
-<div class="piece-container" *ngIf="this.boardProfileFormGroup.controls.freeMode.value" [@uncoverFromLeft]>
-  <div style="float: left; width: 50%" cdkDropList>
-    <div 
-    cdkDrag
-    *ngFor="let piece of additionalWhitePieces; let i = index" 
-    (cdkDragStarted)="dragStarted(piece)" 
-    (cdkDragDropped)="dragStopped()"  
-    class="example-box"
-    [ngStyle]="{
-      'width.px': outsideCoordDiameter, 
-      'height.px': outsideCoordDiameter,
-      'font-size.px': ((outsideCoordDiameter / 5) * 4)
-    }">
+    <div cdkDropList>
+      <div 
+      cdkDrag
+      *ngFor="let piece of additionalBlackPieces; let i = index" 
+      (cdkDragStarted)="dragStarted(piece)" 
+      (cdkDragDropped)="dragStopped()"  
+      class="example-box"
+      [ngStyle]="{
+        'width.px': (this.boardProfile.boardSize / 8), 
+        'height.px': (this.boardProfile.boardSize / 8),
+        'font-size.px': (((this.boardProfile.boardSize / 8) / 5) * 4)
+      }">
       <span *ngIf="piece.pieceImgSrc.length === 1">{{piece.pieceImgSrc}}</span>
       <img style="width: 100%; height: 100%;" *ngIf="piece.pieceImgSrc.length > 1" src={{piece.pieceImgSrc}}>
+      </div>
     </div>
   </div>
-  <div style="float: left; width: 50%" cdkDropList>
-    <div 
-    cdkDrag
-    *ngFor="let piece of additionalBlackPieces; let i = index" 
-    (cdkDragStarted)="dragStarted(piece)" 
-    (cdkDragDropped)="dragStopped()"  
-    class="example-box"
-    [ngStyle]="{
-      'width.px': outsideCoordDiameter, 
-      'height.px': outsideCoordDiameter,
-      'font-size.px': ((outsideCoordDiameter / 5) * 4)
-    }">
-    <span *ngIf="piece.pieceImgSrc.length === 1">{{piece.pieceImgSrc}}</span>
-    <img style="width: 100%; height: 100%;" *ngIf="piece.pieceImgSrc.length > 1" src={{piece.pieceImgSrc}}>
-    </div>
-  </div>
-</div>
 
-<!-- Div Content Board -->
-<div class="board-container">
-  <div *ngIf="this.boardProfileFormGroup.controls.coordinateLabel.value === CoordinateLabelEnum.Outside" [@slideFromBottom] class="letter-coord-container" [ngStyle]="{'height.px': (outsideCoordDiameter / 1.75)}">
-    <ng-container *ngIf="!this.reversed">
-      <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters" [ngStyle]="{'width.px': outsideCoordDiameter}">
-        <span [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': this.boardProfileFormGroup.controls.coordinateSize.value}"> {{coord}} </span>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="this.reversed">
-      <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters | reverse" [ngStyle]="{'width.px': outsideCoordDiameter}">
-        <span [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': this.boardProfileFormGroup.controls.coordinateSize.value}"> {{coord}} </span>
-      </div>
-    </ng-container>
-  </div>
-  <div class="board-inner-container">
-    <div *ngIf="this.boardProfileFormGroup.controls.coordinateLabel.value === CoordinateLabelEnum.Outside" [@slideFromRight] class="number-coord-container">
+  <!-- Board Container  -->
+  <div class="board-container" [ngStyle]="{'width': this.boardProfile.boardSize + 'px'}">
+
+    <div *ngIf="this.boardProfile.coordinateLabel === CoordinateLabelEnum.Outside" [@slideFromBottom] class="letter-coord-container" [ngStyle]="{'height.px': this.boardProfile.coordinateSize, 'font-size.px': this.boardProfile.coordinateSize}">
       <ng-container *ngIf="!this.reversed">
-        <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers" [ngStyle]="{'height.px': outsideCoordDiameter, 'width.px': (outsideCoordDiameter / 2)}">
-          <span style="margin: 10px" [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': this.boardProfileFormGroup.controls.coordinateSize.value}"> {{coord}} </span>
+        <div [ngStyle]="{'width.px': this.boardProfile.coordinateSize}"></div>
+        <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters">
+          {{coord}}
         </div>
+        <div [ngStyle]="{'width.px': this.boardProfile.coordinateSize}"></div>
       </ng-container>
       <ng-container *ngIf="this.reversed">
-        <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers | reverse" [ngStyle]="{'height.px': outsideCoordDiameter, 'width.px': (outsideCoordDiameter / 2)}">
-          <span style="margin: 10px" [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': this.boardProfileFormGroup.controls.coordinateSize.value}"> {{coord}} </span>
+        <div [ngStyle]="{'width.px': this.boardProfile.coordinateSize}"></div>
+        <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters | reverse">
+          {{coord}}
         </div>
+        <div [ngStyle]="{'width.px': this.boardProfile.coordinateSize}"></div>
       </ng-container>
     </div>
-    <div class="container" [ngStyle]="{'height.px': this.boardProfileFormGroup.controls.boardSize.value, 'width.px': this.boardProfileFormGroup.controls.boardSize.value }">
-      <div class="box" [ngStyle]="{'height.px': this.boardProfileFormGroup.controls.boardSize.value, 'width.px': this.boardProfileFormGroup.controls.boardSize.value }">
-        <ngx-chess-board 
-          #board style="line-height: normal;"
-          [size]="this.boardProfileFormGroup.controls.boardSize.value"
-          [freeMode]="this.boardProfileFormGroup.controls.freeMode.value"
-          [showCoords]="(this.boardProfileFormGroup.controls.coordinateLabel.value === CoordinateLabelEnum.Inside )"
-          [lightTileColor]="this.boardProfileFormGroup.controls.lightTileColour.value"
-          [darkTileColor]="this.boardProfileFormGroup.controls.darkTileColour.value"
-          [sourcePointColor]="'none'"
-          [destinationPointColor]="'none'"
-          [showLastMove]="showLastMove"
-          [showLegalMoves]="showLegalMove"
-          [showActivePiece]="false"
-          [showPossibleCaptures]="false"
-          [pieceIcons]="pieces"
-          >
-          
-        </ngx-chess-board>
-      </div>
 
-      <div *ngIf="dragging" class="overlay" [ngStyle]="{'height.px': this.boardProfileFormGroup.controls.boardSize.value, 'width.px': this.boardProfileFormGroup.controls.boardSize.value }">
-        <mat-grid-list *ngIf="dragging" cols="8" rowHeight="8:8">
+    <div class="board-inner-container">
+
+      <div *ngIf="this.boardProfile.coordinateLabel === CoordinateLabelEnum.Outside" [@slideFromRight] class="number-coord-container" [ngStyle]="{'width.px': this.boardProfile.coordinateSize, 'font-size.px': this.boardProfile.coordinateSize}">
+        <ng-container *ngIf="!this.reversed">
+          <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers">
+            {{coord}} 
+          </div>
+        </ng-container>
+        <ng-container *ngIf="this.reversed">
+          <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers | reverse">
+            {{coord}}
+          </div>
+        </ng-container>
+      </div>
+      <ngx-chess-board
+        #board style="line-height: normal;"
+        [size]="(this.boardProfile.coordinateLabel === CoordinateLabelEnum.Outside) ? this.boardProfile.boardSize - ((this.boardProfile.coordinateSize + 4) * 2) : this.boardProfile.boardSize"
+        [freeMode]="this.boardProfile.freeMode"
+        [showCoords]="false"
+        [lightTileColor]="this.boardProfile.lightTileColour"
+        [darkTileColor]="this.boardProfile.darkTileColour"
+        [sourcePointColor]="'none'"
+        [destinationPointColor]="'none'"
+        [showLastMove]="false"
+        [showLegalMoves]="false"
+        [showActivePiece]="false"
+        [showPossibleCaptures]="false"
+        [pieceIcons]="this.pieces"
+        (moveChange)="this.pieceMoved()"
+        >
+      </ngx-chess-board>
+    
+      <div *ngIf="this.dragging" class="overlay" [ngStyle]="{'height.px': this.boardProfile.boardSize, 'width.px': this.boardProfile.boardSize }">
+        <mat-grid-list *ngIf="this.dragging" cols="8" rowHeight="8:8">
           <ng-container *ngIf="this.reversed">
             <mat-grid-tile 
               *ngFor="let grid of this.boardService.grids | reverse" 
-              (mouseup)="mouseUpEvent($event)" 
+              (mouseup)="this.mouseUpEvent($event)" 
               id="{{grid.coord}}">
             </mat-grid-tile>
           </ng-container>
           <ng-container *ngIf="!this.reversed">
             <mat-grid-tile 
               *ngFor="let grid of this.boardService.grids" 
-              (mouseup)="mouseUpEvent($event)" 
+              (mouseup)="this.mouseUpEvent($event)" 
               id="{{grid.coord}}">
             </mat-grid-tile>
           </ng-container>
-
         </mat-grid-list>
       </div>
+
+      <div *ngIf="this.boardProfile.coordinateLabel === CoordinateLabelEnum.Outside" [@slideFromLeft] class="number-coord-container" [ngStyle]="{'width.px': this.boardProfile.coordinateSize, 'font-size.px': this.boardProfile.coordinateSize}">
+        <ng-container *ngIf="!this.reversed">
+          <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers">
+            {{coord}} 
+          </div>
+        </ng-container>
+        <ng-container *ngIf="this.reversed">
+          <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers | reverse">
+            {{coord}}
+          </div>
+        </ng-container>
+      </div>
     </div>
-    
-    <div *ngIf="this.boardProfileFormGroup.controls.coordinateLabel.value === CoordinateLabelEnum.Outside" [@slideFromLeft] class="number-coord-container">
+
+    <div *ngIf="this.boardProfile.coordinateLabel === CoordinateLabelEnum.Outside" [@slideFromTop] class="letter-coord-container" [ngStyle]="{'height.px': this.boardProfile.coordinateSize, 'font-size.px': this.boardProfile.coordinateSize}">
       <ng-container *ngIf="!this.reversed">
-        <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers" [ngStyle]="{'height.px': outsideCoordDiameter,'width.px': (outsideCoordDiameter / 2)}">
-          <span style="margin: 10px" [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': this.boardProfileFormGroup.controls.coordinateSize.value}"> {{coord}} </span>
+        <div [ngStyle]="{'width.px': this.boardProfile.coordinateSize}"></div>
+        <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters">
+          {{coord}}
         </div>
+        <div [ngStyle]="{'width.px': this.boardProfile.coordinateSize}"></div>
       </ng-container>
       <ng-container *ngIf="this.reversed">
-        <div class="coord-container" *ngFor="let coord of this.outsideCoordNumbers | reverse" [ngStyle]="{'height.px': outsideCoordDiameter,'width.px': (outsideCoordDiameter / 2)}">
-          <span style="margin: 10px" [ngStyle]="{'line-height.px': outsideCoordDiameter, 'font-size.px': this.boardProfileFormGroup.controls.coordinateSize.value}"> {{coord}} </span>
+        <div [ngStyle]="{'width.px': this.boardProfile.coordinateSize}"></div>
+        <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters | reverse">
+          {{coord}}
         </div>
+        <div [ngStyle]="{'width.px': this.boardProfile.coordinateSize}"></div>
       </ng-container>
     </div>
   </div>
-  <div *ngIf="this.boardProfileFormGroup.controls.coordinateLabel.value === CoordinateLabelEnum.Outside" [@slideFromTop] class="letter-coord-container" [ngStyle]="{'height.px': (outsideCoordDiameter / 1.75)}">
-    <ng-container *ngIf="!this.reversed">
-      <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters" [ngStyle]="{'width.px': outsideCoordDiameter}">
-        <span [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': this.boardProfileFormGroup.controls.coordinateSize.value}"> {{coord}} </span>
+
+  <!-- Controls Container -->
+  <div class="controls-container">
+    <button mat-button color="primary" matTooltip="Board styling" (click)="this.openBoardStyleModal()">
+      <mat-icon class="material-icons-outlined">palette</mat-icon>
+    </button>
+    <button mat-button color="primary" matTooltip="Reset the Board" (click)="this.reset()">
+      <mat-icon class="material-icons-outlined">refresh</mat-icon>
+    </button>
+    <button mat-button color="primary" matTooltip="Rotate the Board" (click)="this.reverse()">
+      <mat-icon class="material-icons-outlined rotate-icon">loop</mat-icon>
+    </button>
+    <button mat-button color="primary" matTooltip="Clear all Pieces" (click)="this.clearPieces()">
+      <i class="icon icon-24 chess-app-icon-clear-piece"></i>
+    </button>
+    <button mat-button color="primary" matTooltip="Clear all Markers" (click)="this.clearMarkers()">
+      <i class="icon icon-24 chess-app-icon-clear-markers"></i>
+    </button>
+    <button *ngIf="!this.boardProfile.freeMode" mat-button color="primary" matTooltip="Toggle Free Mode" (click)="this.boardProfile.freeMode = !this.boardProfile.freeMode">
+      <mat-icon class="material-icons-outlined">lock</mat-icon>
+    </button>
+    <button *ngIf="this.boardProfile.freeMode" mat-button color="accent" matTooltip="Toggle Free Mode" (click)="this.boardProfile.freeMode = !this.boardProfile.freeMode">
+      <mat-icon class="material-icons-outlined">lock</mat-icon>
+    </button>
+    <button mat-button color="primary" matTooltip="Help & Info" (click)="this.openHelp()">
+      <mat-icon class="material-icons-outlined">help_outline</mat-icon>
+    </button>
+    <button class="bottom-button" color="primary" mat-button matTooltip="Resize the Board" (mousedown)="this.resizingHold = true" (window:mouseup)="this.resizingHold = false; this.mouseXCoord = null;">
+      <mat-icon class="material-icons-outlined">aspect_ratio</mat-icon>
+    </button>
+  </div>
+
+  <!-- Move History & Fen Container  -->
+  <div class="history-fen-container">
+
+    <div class="move-history-container">
+      <h2 class="move-history-header">Move History</h2>
+      <div class="move-history-content">
+        <app-move-history
+          [moveHistoryArray] = this.moveHistoryArray
+          [freeMode] = this.boardProfile.freeMode
+          >
+        </app-move-history>
       </div>
-    </ng-container>
-    <ng-container *ngIf="this.reversed">
-      <div class="coord-container" *ngFor="let coord of this.outsideCoordLetters  | reverse" [ngStyle]="{'width.px': outsideCoordDiameter}">
-        <span [ngStyle]="{'line-height.px': (outsideCoordDiameter / 2), 'font-size.px': this.boardProfileFormGroup.controls.coordinateSize.value}"> {{coord}} </span>
+      <div class="move-history-footer">
+        <button mat-stroked-button [disabled]="!this.moveHistoryArray.length" (click)="this.undo()">
+          <mat-icon class="back-icon">arrow_back_ios</mat-icon>
+        </button>
+        <button mat-stroked-button class="right-button" [disabled]="true">
+          <mat-icon>arrow_forward_ios</mat-icon>
+        </button>
       </div>
-    </ng-container>
+    </div>
+
+    <mat-card class="fen-management-card">
+      <mat-card-header>
+        <mat-card-title>Fen Management</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ng-container *ngIf="this.collection">
+          <div style="display: block">
+            <div *ngIf="this.collection.fens.length > 0" style="width: 100%; display: flex; justify-content: center;">
+              <span>Navigate your Fens</span>
+            </div>
+            <div *ngIf="this.collection.fens.length > 0" style="margin-bottom: 5px;">
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon (click)="navigateFen('first')">first_page</mat-icon>
+              </button>
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon (click)="navigateFen('previous')">chevron_left</mat-icon>
+              </button>
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon (click)="navigateFen('next')">chevron_right</mat-icon>
+              </button>
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon (click)="navigateFen('last')">last_page</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="this.collection.fens.length > 0 && this.activeFenPosition" style="width: 100%; display: flex; justify-content: center;">
+              <p>{{this.activeFenPosition}} / {{this.collection.fens.length}}</p>
+            </div>
+            <div *ngIf="this.collection.fens.length > 0 && !this.activeFenPosition" style="width: 100%; display: flex; justify-content: center;">
+              <p> 0 / {{this.collection.fens.length}}</p>
+            </div>
+          </div>
+        </ng-container>
+        <div>
+          <p *ngIf="!this.loggedIn">Login to access your Fens.</p>
+          <button *ngIf="this.loggedIn" class="fen-bottom-buttons" mat-stroked-button color="primary" (click)="this.openFenCollectionsDialog()">Fen Collections</button>
+          <button *ngIf="this.collection && this.collection.fens.length > 0" class="fen-bottom-buttons" mat-stroked-button color="accent" (click)="this.clearFens()">Clear</button>
+        </div>
+      </mat-card-content>
+    </mat-card> 
+
   </div>
 </div>
-
-<!-- Move History Container -->
-<div class="move-information-container" [@slideFromRight] *ngIf="this.showMoveHistory">
-  <mat-card class="move-information-card">
-    <mat-card-header>
-      <mat-card-title>Move Information</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <app-move-history 
-        [moveHistoryArray] = this.board?.getMoveHistory()
-        [freeMode] = this.boardProfileFormGroup.controls.freeMode.value>
-      </app-move-history>
-    </mat-card-content>
-  </mat-card>
-</div>
-
-</ng-container>

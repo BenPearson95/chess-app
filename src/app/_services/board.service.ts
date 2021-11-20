@@ -11,8 +11,6 @@ import { AuthService } from './auth.service';
 })
 export class BoardService {
 
-  grids: Array<Grid> = [];
-
   apiPath = environment.apiPath;
   route = 'board/';
   options = {
@@ -20,6 +18,17 @@ export class BoardService {
       'auth-token': null
     })
   }
+
+  grids: Array<Grid> = [];
+  coordFontSizes: Array<Number> = [12, 16, 20, 24, 28, 32, 36, 40];
+
+  // Vars for Piece Styles
+  pieceOptions: Array<any> = [
+    {value: 'cburnett', viewValue: 'cBurnett'},
+    {value: 'leipzig', viewValue: 'Leipzig'},
+    {value: 'merida', viewValue: 'Merida'},
+    {value: 'merida-new', viewValue: 'Merida New'}
+  ]
 
   constructor(
     private http: HttpClient,
@@ -35,8 +44,6 @@ export class BoardService {
       }
     });
   }
-
-  
 
   // Init the grids. Ew.
   initGrids() {

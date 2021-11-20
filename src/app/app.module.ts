@@ -46,6 +46,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { PgnManagementComponent } from './components/pgn-management/pgn-management.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { BoardStyleComponent } from './components/board-style/board-style.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     LandingPageComponent,
     PgnManagementComponent,
     LoadingSpinnerComponent,
+    BoardStyleComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,10 +98,11 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     MatExpansionModule,
     NgArrayPipesModule,
     MatChipsModule,
-    MatProgressSpinnerModule,
+    MatProgressSpinnerModule
   ],
   providers: [
-    { provide: LocationStrategy, useClass: PathLocationStrategy }
+    { provide: LocationStrategy, useClass: PathLocationStrategy },
+    MoveHistoryComponent
   ],
   bootstrap: [AppComponent],
 })

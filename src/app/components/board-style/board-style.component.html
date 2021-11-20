@@ -1,0 +1,58 @@
+<h2>Board Style</h2>
+
+<form class="form" [formGroup]="boardStyleFormGroup">
+
+  <mat-slide-toggle formControlName="freeMode"
+  style="padding-bottom: 20px"
+  [checked]="this.boardStyleFormGroup.controls.freeMode.value"
+  >Free mode</mat-slide-toggle>
+
+  <div>
+    <mat-form-field appearance="outline" style="margin-right: 5px;">
+      <mat-label class="custom-labels">Coordinate Labels</mat-label>
+      <mat-select formControlName="coordinateLabel">
+        <mat-option *ngFor="let CoordinateLabel of CoordinateLabelEnum | keyvalue" [value]="CoordinateLabel.value">
+          {{CoordinateLabel.key}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" *ngIf="this.boardStyleFormGroup.controls.coordinateLabel.value === CoordinateLabelEnum.Outside" [@slideFromLeft] style="margin-left: 5px; width: 70px;">
+      <mat-label class="custom-labels">Size</mat-label>
+      <mat-select formControlName="coordinateSize"
+        >
+        <mat-option *ngFor="let coordsize of this.boardService.coordFontSizes" [value]="coordsize">
+          {{coordsize}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="outline" style="margin-right: 5px;">
+    <mat-label class="custom-labels">Piece Style</mat-label>
+    <mat-select formControlName="pieceStyle">
+      <mat-option *ngFor="let piece of this.boardService.pieceOptions" [value]="piece.value">
+        {{piece.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-card class="colour-picker-card">
+    <p style="text-align: center;">Square Colours</p>
+      <mat-form-field>
+        <mat-label class="custom-labels">Dark Tile Colour</mat-label>
+        <input formControlName="darkTileColour" type="color" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label class="custom-labels">Light Tile Colour</mat-label>
+        <input formControlName="lightTileColour" type="color" matInput>
+      </mat-form-field>
+  </mat-card>
+
+  <div class="button-container">
+    <button *ngIf="this.loggedIn" class="interact-buttons" mat-stroked-button color="primary" (click)="saveStyle()">Save</button>
+    <button *ngIf="!this.loggedIn" class="interact-buttons" mat-stroked-button color="primary" (click)="saveStyle()">Apply</button>
+    <button class="interact-buttons" mat-stroked-button color="accent" (click)="close()">Close</button>
+  </div>
+</form>
