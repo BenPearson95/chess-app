@@ -37,6 +37,8 @@ export class LoginSignupComponent implements OnInit {
   userAlreadyExists = false;
   tabIndex: number = 0;
   disableBtn: boolean = false;
+  resetRequestDone: boolean = false;
+  resetRequestMessage: string = '';
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
@@ -100,6 +102,21 @@ export class LoginSignupComponent implements OnInit {
     }, () => {
       this.disableBtn = false;
     });
+  }
+
+  //Request Password Reset
+  requestPasswordReset() {
+    if (this.loginForm.controls.email.valid) {
+      this.AuthService.requestPasswordReset(this.loginForm.controls.email.value).subscribe(result => {
+        console.log(result);
+        this.resetRequestMessage = result.message;
+        this.resetRequestDone = true;
+      }, err => {
+        this.snackBar.open('There was an error processing the request, please try again later.', null, {duration: 3000})
+      })
+    } else {
+      this.snackBar.open('Please provide a valid email address in the form above', null, {duration: 3000})
+    }
   }
 
 }

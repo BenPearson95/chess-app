@@ -47,6 +47,7 @@ import { PgnManagementComponent } from './components/pgn-management/pgn-manageme
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { BoardStyleComponent } from './components/board-style/board-style.component';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { BoardStyleComponent } from './components/board-style/board-style.compon
     PgnManagementComponent,
     LoadingSpinnerComponent,
     BoardStyleComponent,
+    PasswordResetComponent,
   ],
   imports: [
     BrowserModule,

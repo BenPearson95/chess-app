@@ -55,6 +55,24 @@ export class AuthService {
     return this.http.post(this.apiPath + this.authRoute + 'signup', userSignup);
   }
 
+  // Reset the Users Password
+  resetPassword(resetPasswordObject: any) {
+    return this.http.post(this.apiPath + this.authRoute + 'forgotten-password-reset', resetPasswordObject).pipe(
+      map((response: any) => {         
+          return response;
+      })
+    );
+  }
+
+  // Request password reset link
+  requestPasswordReset(email: string) {
+    return this.http.post(this.apiPath + this.authRoute + 'forgotten-password-request', {email: email}).pipe(
+      map((response: any) => {
+        return response;
+      })
+    )
+  }
+
   getUserId() {
     let userId: string;
     this.currentUser$.subscribe(user => {
