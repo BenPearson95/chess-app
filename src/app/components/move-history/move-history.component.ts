@@ -15,7 +15,9 @@ export class MoveHistoryComponent implements OnInit {
 
   iterableDiffer;
 
-  constructor(private iterableDiffers: IterableDiffers) { 
+  constructor(
+    private iterableDiffers: IterableDiffers
+  ) { 
     this.iterableDiffer = iterableDiffers.find([]).create(null);
   }
 

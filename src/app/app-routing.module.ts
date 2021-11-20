@@ -8,6 +8,7 @@ import { AuthGuard } from './_guards/auth.guard';
 import { AccountResolver } from './_resolvers/account.resolver';
 import { CollectionsResolver } from './_resolvers/collections.resolver';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { BoardResolver } from './_resolvers/board.resolver';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 
 const routes: Routes = [
@@ -30,6 +31,9 @@ const routes: Routes = [
   {
     path: 'board',
     component: BoardComponent,
+    resolve: {
+      resolvedData: BoardResolver,
+    },
     data: {
       name: 'The Board',
       showBackButton: true,

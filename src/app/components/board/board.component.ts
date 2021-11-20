@@ -1,25 +1,22 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
-import { HistoryMove, NgxChessBoardService, NgxChessBoardView, PieceIconInput } from 'ngx-chess-board';
+import { NgxChessBoardService, NgxChessBoardView, PieceIconInput } from 'ngx-chess-board';
 import { slideFromBottom, slideFromLeft, slideFromRight, slideFromTop, uncoverFromLeft } from 'src/app/_animations/animations';
 import { FenCollection } from 'src/app/_models/board/fen-collection';
 import { AdditionalPiece } from 'src/app/_models/board/additional-piece';
-import { CdkDragStart } from '@angular/cdk/drag-drop';
 import { BoardService } from 'src/app/_services/board.service';
 import { HelpComponent } from '../help/help.component';
 import { CollectionsComponent } from '../collections/collections.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatAccordion } from '@angular/material/expansion';
 import { Leipzig } from 'src/app/_models/board/piece-models/leipzig';
 import { Cburnett } from 'src/app/_models/board/piece-models/cburnett';
 import { Merida } from 'src/app/_models/board/piece-models/merida';
 import { MeridaNew } from 'src/app/_models/board/piece-models/merida-new';
-import { PgnManagementComponent } from 'src/app/components/pgn-management/pgn-management.component';
 import { UserBoardProfile } from 'src/app/_models/board/user-board-profile';
 import { CoordinateLabelEnum } from 'src/app/_models/enums/coordinate-label.enum';
 import { AuthService } from 'src/app/_services/auth.service';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { BoardStyleComponent } from 'src/app/components/board-style/board-style.component';
+import { MoveHistoryComponent } from '../move-history/move-history.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-board',
@@ -33,60 +30,54 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
     uncoverFromLeft,
   ],
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements AfterViewInit {
+
+  @HostListener('window:mousemove', ['$event'])
+  
+  onMouseMove(event: MouseEvent){
+     this.changeBoardSize(event.clientX);
+  }
+
+  @ViewChild('pageContainer') pageContainer: ElementRef;
   @ViewChild('board', {static: false}) board: NgxChessBoardView | undefined;
-  @ViewChild('boardRef', {static: true}) boardRef: ElementRef;
-  @ViewChild(MatAccordion) accordion: MatAccordion;
-  @ViewChild('moveHistoryToggle') moveHistoryToggle: MatSlideToggle;
-  @Output('cdkDragStarted') started: EventEmitter<CdkDragStart>
-  @Input() boardSize: number;
-  @Input() freeMode: boolean;
 
-  // General board variables
-  showCoords: boolean = true;
-  showCoordsOutside: boolean = false;
-  showCoordsInside: boolean = false;
-  showLastMove: boolean = false;
-  showLegalMove: boolean = false;
-  showMoveHistory: boolean = false;
-  moveHistoryString: string = null;
-  reversed: boolean = false;
-  moveHistoryArray: Array<HistoryMove>;
-  outsideCoordNumbers: Array<Number> = [8,7,6,5,4,3,2,1];
-  outsideCoordLetters: Array<string> = ['a','b','c','d','e','f','g','h'];
-  outsideCoordDiameter: number;
-  coordFontSizes: Array<Number> = [12, 16, 20, 24, 28, 32, 36, 40];
-  pieceStyle: string;
-  saveBtnDisabled: boolean = false;
+  public boardProfile: UserBoardProfile = {
+    boardSize: 1100,
+    freeMode: true,
+    coordinateLabel: CoordinateLabelEnum.Inside,
+    coordinateSize: 16,
+    darkTileColour: '#1565c0',
+    lightTileColour: '#ffffff',
+    pieceStyle: 'cburnett',
+  };
 
-  isLoggedIn: boolean = false;
+  // Board Resizing vars
+  private maxBoardSize: number;
+  public boardContainerSize: number = this.boardProfile.boardSize;
+  private resizingDifference: number = 0;
+  public resizingHold: boolean = false;
+  public mouseXCoord: number;
+
+  public reversed: boolean = false;
+
+  public outsideCoordNumbers: Array<number> = [8,7,6,5,4,3,2,1];
+  public outsideCoordLetters: Array<string> = ['a','b','c','d','e','f','g','h'];
 
   get CoordinateLabelEnum(): typeof CoordinateLabelEnum {
     return CoordinateLabelEnum;
   }
-
-  boardProfileFormGroup: FormGroup = new FormGroup({
-    boardSize: new FormControl(),
-    freeMode: new FormControl(),
-    coordinateLabel: new FormControl(),
-    coordinateSize: new FormControl(),
-    darkTileColour: new FormControl(),
-    lightTileColour: new FormControl(),
-    pieceStyle: new FormControl()
-  });
   
   // Fen variables.
-  collection: FenCollection;
-  activeFen: string;
-  activeFenPosition: number;
+  public collection: FenCollection;
+  private activeFen: string;
+  public activeFenPosition: number;
 
   // Piece Dragging variables.
-  grids: Array<number> = [];
-  piece: AdditionalPiece = {
+  public piece: AdditionalPiece = {
     pieceID: null, piece: null, colour: null, pieceImgSrc: ''
   }
 
-  additionalWhitePieces: Array<AdditionalPiece> = [
+  public additionalWhitePieces: Array<AdditionalPiece> = [
     {pieceID: 'wk', piece: 1, colour: 1, pieceImgSrc: '♔'},
     {pieceID: 'wq', piece: 2, colour: 1, pieceImgSrc: '♕'},
     {pieceID: 'wb', piece: 3, colour: 1, pieceImgSrc: '♗'},
@@ -94,7 +85,7 @@ export class BoardComponent implements OnInit {
     {pieceID: 'wr', piece: 5, colour: 1, pieceImgSrc: '♖'},
     {pieceID: 'wp', piece: 6, colour: 1, pieceImgSrc: '♙'}
   ];
-  additionalBlackPieces: Array<AdditionalPiece> = [
+  public additionalBlackPieces: Array<AdditionalPiece> = [
     {pieceID: 'bk', piece: 1, colour: 2, pieceImgSrc: '♚'},
     {pieceID: 'bq', piece: 2, colour: 2, pieceImgSrc: '♛'},
     {pieceID: 'bb', piece: 3, colour: 2, pieceImgSrc: '♝'},
@@ -103,57 +94,116 @@ export class BoardComponent implements OnInit {
     {pieceID: 'bp', piece: 6, colour: 2, pieceImgSrc: '♟'},
   ];
 
+  public pieces: PieceIconInput = null;
+
   // Var toggle for when piece is being dragged onto board in freemode.
-  dragging: boolean;
+  public dragging: boolean = false;
 
-  // Vars for Piece Styles
-  pieceOptions: Array<any> = [
-    {value: 'cburnett', viewValue: 'cBurnett'},
-    {value: 'leipzig', viewValue: 'Leipzig'},
-    {value: 'merida', viewValue: 'Merida'},
-    {value: 'merida-new', viewValue: 'Merida New'}
-  ]
+  public moveHistoryArray = [];
 
-  pieces: PieceIconInput = null;
-
-  pageLoading: boolean = true;
+  public loggedIn: boolean = false; 
 
   constructor(
     private ngxChessBoardService: NgxChessBoardService,
-    private fenAndPgnDialog: MatDialog,
-    private moveHistoryDialog: MatDialog,
     public boardService: BoardService,
-    public helpDialog: MatDialog,
-    private snackBar: MatSnackBar,
+    public matDialog: MatDialog,
     private authService: AuthService,
+    public moveHistoryComponent: MoveHistoryComponent,
+    private activatedRoute: ActivatedRoute,
   ) {
-    this.initBoard();
     this.boardService.initGrids();
+    this.authService.loggedIn().subscribe(result => {this.loggedIn = (result) ?  true : false});
+    this.setBoardProfile(this.activatedRoute.snapshot.data.resolvedData);
+    this.changePieces(this.boardProfile.pieceStyle);
   }
 
-  ngOnInit() {
-    // A change has been detected, allow a save.
-    this.boardProfileFormGroup.valueChanges.subscribe(value => {
-      this.saveBtnDisabled = false;
-    });
+  ngAfterViewInit() {
+    this.processBoardSize();
   }
 
-  initBoard() {
-    this.authService.loggedIn().subscribe(result => {
-      if (result) {
-        this.isLoggedIn = true;
-        this.getBoardProfile();
+  // Resize of the page container.
+  pageContainerResize(event) {
+    console.log('pageContainerResize');
+    this.maxBoardSize = (event.target.innerHeight - 64 - 32);
+    if (this.maxBoardSize <= this.boardProfile.boardSize && this.maxBoardSize >= 500) {
+      this.boardProfile.boardSize = this.maxBoardSize;
+
+      if (this.boardProfile.coordinateLabel === this.CoordinateLabelEnum.Outside) {
+        this.boardProfile.boardSize = this.boardProfile.boardSize - ((this.boardProfile.coordinateSize + 4) * 2);
       } else {
-        this.isLoggedIn = false;
-        this.setBoardProfileDefault();
+        this.boardProfile.boardSize = this.boardProfile.boardSize;
+      }
+    }
+  }
+
+  // General process of setting the Board size.
+  processBoardSize() {
+    this.maxBoardSize = this.pageContainer.nativeElement.offsetHeight;
+    if (this.boardProfile.boardSize > this.maxBoardSize) {
+      setTimeout(() => {
+        this.boardProfile.boardSize = this.pageContainer.nativeElement.offsetHeight;
+      });
+    }
+  }
+
+  changeBoardSize(mouseXCoord: number) {
+    
+    if (this.resizingHold) {
+      if(!this.mouseXCoord) {
+        this.mouseXCoord = mouseXCoord;
+      } else {
+        console.log('changeBoardSize');
+        // This counts up the coords
+        this.resizingDifference = this.resizingDifference + (mouseXCoord - this.mouseXCoord)
+        // When we hit +20, we resize the board by +10 pixels.
+        if(this.resizingDifference >= 20) {
+          if(((this.boardProfile.boardSize + (this.resizingDifference / 2)) <= this.maxBoardSize) &&
+          ((this.boardProfile.boardSize + (this.resizingDifference / 2)) >= 500)) {
+            this.boardProfile.boardSize = this.boardProfile.boardSize + (this.resizingDifference / 2);
+            this.resizingDifference = 0;
+          }
+          // When we hit -20, we resize the board by -10 pixels.
+        } else if(this.resizingDifference <= -20) {
+          if(((this.boardProfile.boardSize + (this.resizingDifference / 2)) <= this.maxBoardSize) &&
+          ((this.boardProfile.boardSize + (this.resizingDifference / 2)) >= 500)) {
+            this.boardProfile.boardSize = this.boardProfile.boardSize + (this.resizingDifference / 2);
+            this.resizingDifference = 0;
+          }
+        } 
+      }
+      this.mouseXCoord = mouseXCoord;
+      // Reset the resizing difference to 0 if it is more than 21 or less than -21, this is for when the above two ifs() are not hit.
+      if (this.resizingDifference >= 21 || this.resizingDifference <= -21) this.resizingDifference = 0;
+    }
+  }
+
+  openBoardStyleModal() {
+    const dialogRef = this.matDialog.open(BoardStyleComponent, {
+      minWidth: 400,
+      position: {
+        top: '',
+        bottom: '',
+        left: '',
+        right: ''
+      },
+      data: {
+        boardProfile: this.boardProfile,
+        loggedIn: this.loggedIn,
       }
     });
-  }
-  
-  // Called from the Slider HTML, updates the Chessboard size.
-  updateBoardSize(eventValue) {
-    this.boardProfileFormGroup.controls.boardSize.setValue(eventValue);
-    this.outsideCoordDiameter = (this.boardProfileFormGroup.controls.boardSize.value / 8);
+
+    dialogRef.afterClosed().subscribe((result: UserBoardProfile) => {
+      if(result) {
+        this.changePieces(result.pieceStyle);
+        this.boardProfile = result;
+
+        if (this.boardProfile.coordinateLabel === this.CoordinateLabelEnum.Outside) {
+          this.processBoardSize();
+        }
+
+        this.setFen();
+      }
+    });
   }
 
   // Resets the board.
@@ -183,32 +233,31 @@ export class BoardComponent implements OnInit {
   // Undos 1 move.
   undo() {
     this.board?.undo();
+    this.moveHistoryArray.pop();
   }
 
   // Sets the board position using the current activeFen variable.
   setFen() {
     if (this.activeFen) {
+      this.moveHistoryArray = [];
       this.board?.setFEN(this.activeFen.toString());
     }
   }
 
-  // Gets & displays Move History
-  moveHistory(event) {
-    this.showMoveHistory = (event.checked) ? true : false;  
-  }
-
   // Opens the Fen Collection Modal. Manages return data.
   openFenCollectionsDialog() {
-    const dialogRef = this.fenAndPgnDialog.open(CollectionsComponent, {
+    const dialogRef = this.matDialog.open(CollectionsComponent, {
       minWidth: 900,
+      position: {
+        top: '',
+        bottom: '',
+        left: '',
+        right: '',
+      },
       data: {
         parent: 'board',
         collection: this.collection,
       },
-    });
-
-    dialogRef.updatePosition({
-      top: '50px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -223,24 +272,6 @@ export class BoardComponent implements OnInit {
         if (this.collection.fens.length > 0) this.activeFen = this.collection.fens[0];
         this.activeFenPosition = 1;
         this.setFen();
-      }
-    });
-  }
-
-  // Handles import a PGN into the board.
-  openPGNDialog() {
-    const dialogRef = this.fenAndPgnDialog.open(PgnManagementComponent, {
-      minWidth: 900,
-      
-    });
-
-    dialogRef.updatePosition({
-      top: '50px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.board.setPGN(result.pgn);
       }
     });
   }
@@ -271,10 +302,16 @@ export class BoardComponent implements OnInit {
     this.setFen();
   }
 
+  clearFens() {
+    this.activeFen = null;
+    this.collection.fens = [];
+    this.reset();
+  }
+
   // Toggled when a mouse click up event has fired on the overlay grid for piece dragging.
   mouseUpEvent(event) {
     const path = event.path || (event.composedPath && event.composedPath());
-    if (this.boardProfileFormGroup.controls.freeMode.value) {
+    if (this.boardProfile.freeMode) {
       this.board?.addPiece(this.piece.piece, this.piece.colour, path[1].id);
     }
   }
@@ -295,85 +332,21 @@ export class BoardComponent implements OnInit {
   }
 
   openHelp() {
-    const dialogRef = this.helpDialog.open(HelpComponent, {
+    const dialogRef = this.matDialog.open(HelpComponent, {
       minWidth: 700,
-      minHeight: 700
-    });
-
-    dialogRef.updatePosition({
-      top: '50px',
+      minHeight: 700,
+      position: {
+        top: '',
+        bottom: '',
+        left: '',
+        right: ''
+      }
     });
 
     dialogRef.afterClosed().subscribe();
   }
 
-  saveBoardProfile() {
-    this.saveBtnDisabled = true;
-    const userBoardProfile: UserBoardProfile = {
-      boardSize: this.boardProfileFormGroup.controls.boardSize.value,
-      freeMode: this.boardProfileFormGroup.controls.freeMode.value,
-      coordinateLabel: this.boardProfileFormGroup.controls.coordinateLabel.value,
-      coordinateSize: this.boardProfileFormGroup.controls.coordinateSize.value,
-      darkTileColour: this.boardProfileFormGroup.controls.darkTileColour.value,
-      lightTileColour: this.boardProfileFormGroup.controls.lightTileColour.value,
-      pieceStyle: this.boardProfileFormGroup.controls.pieceStyle.value,
-    }
-    this.boardService.saveBoardProfile(userBoardProfile).subscribe(result => {
-      this.snackBar.open('Board Style successfully saved.', null, {duration: 2000});
-    }, (error) => {
-      this.saveBtnDisabled = false;
-      this.snackBar.open('Error saving your Board Style!', null, {duration: 2000});
-      console.log(error);
-    });
-  }
-
-  getBoardProfile() {
-    this.boardService.getBoardProfile(this.authService.getUserId()).subscribe((result: UserBoardProfile) => {
-      if(result) {
-        this.boardProfileFormGroup.setValue(result);
-      } else {
-        let boardValues: UserBoardProfile = {
-          boardSize: 800,
-          freeMode: true,
-          coordinateLabel: CoordinateLabelEnum.None,
-          coordinateSize: 24,
-          darkTileColour: '#1565c0',
-          lightTileColour: '#ffffff',
-          pieceStyle: 'cburnett',
-        }
-        this.boardProfileFormGroup.patchValue(boardValues);
-      }
-
-      this.updateBoardSize(this.boardProfileFormGroup.controls.boardSize.value);
-      this.changePieces(this.boardProfileFormGroup.controls.pieceStyle.value);
-    }, (err) => {
-      // if there was an error getting API board data, show default.
-      console.log(err);
-      this.setBoardProfileDefault();
-    }, () => {
-      this.pageLoading = false;
-    });
-  }
-
-  setBoardProfileDefault() {
-    let boardValues: UserBoardProfile = {
-      boardSize: 800,
-      freeMode: true,
-      coordinateLabel: CoordinateLabelEnum.None,
-      coordinateSize: 24,
-      darkTileColour: '#1565c0',
-      lightTileColour: '#ffffff',
-      pieceStyle: 'cburnett',
-    }
-    this.boardProfileFormGroup.patchValue(boardValues);
-    this.updateBoardSize(this.boardProfileFormGroup.controls.boardSize.value);
-    this.changePieces(this.boardProfileFormGroup.controls.pieceStyle.value);
-    this.pageLoading = false;
-  }
-
   changePieces(pieceStyleString: string) {
-    this.boardProfileFormGroup.value.pieceStyle = pieceStyleString;
-    this.pieceStyle = pieceStyleString;
     switch (pieceStyleString) {
       case 'leipzig':
         this.pieces = new Leipzig;
@@ -415,6 +388,12 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  setBoardProfile(boardProfileRouteData: UserBoardProfile) {
+    if (boardProfileRouteData) {
+      this.boardProfile = boardProfileRouteData;
+    }
+  }
+
   updateDraggableIcons() {
     Object.entries(this.pieces).forEach(piece => {
       let newPieceID: string = piece[1].substring(piece[1].length - 6, piece[1].length - 4);
@@ -431,5 +410,9 @@ export class BoardComponent implements OnInit {
         }
       });
     })
-  }  
+  } 
+  
+  pieceMoved() {
+    this.moveHistoryArray = this.board.getMoveHistory();
+  }
 }
