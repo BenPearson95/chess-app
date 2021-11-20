@@ -8,6 +8,7 @@ import { AuthGuard } from './_guards/auth.guard';
 import { AccountResolver } from './_resolvers/account.resolver';
 import { CollectionsResolver } from './_resolvers/collections.resolver';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 
 const routes: Routes = [
 
@@ -33,6 +34,13 @@ const routes: Routes = [
       name: 'The Board',
       showBackButton: true,
       animation: 'isRight',
+    },
+  },
+  {
+    path: 'password-reset',
+    component: PasswordResetComponent,
+    data: {
+      name: 'Reset Password',
     },
   },
   {

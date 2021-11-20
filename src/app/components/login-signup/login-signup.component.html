@@ -5,7 +5,7 @@
         <div style="text-align: center; margin-top: 24px">
           <img src="../../../assets/logo 137x150.png" alt="">
         </div>
-        <form [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
+        <form [formGroup]="loginForm">
           <mat-card-content class="card-content-container">
             <p>
               <mat-form-field appearance="outline">
@@ -37,13 +37,15 @@
             </mat-error>
           </mat-card-content>
           <mat-card-actions class="button-container">
-            <button [disabled]="loginForm.invalid || this.disableBtn" type="submit" mat-raised-button color="primary">Login</button>
+            <p><button [disabled]="loginForm.invalid || this.disableBtn" type="submit" mat-raised-button color="primary" (click)="loginSubmit()">Login</button></p>
+            <div><button *ngIf="!this.resetRequestDone" mat-button color="accent" (click)="requestPasswordReset()">Reset Password</button></div>
+            <p *ngIf="this.resetRequestDone">{{this.resetRequestMessage}}</p>
           </mat-card-actions>
         </form>
       </mat-tab>
 
       <mat-tab label="Signup"> 
-        <form [formGroup]="signupForm" (ngSubmit)="signupSubmit()">
+        <form [formGroup]="signupForm">
           <mat-card-content class="card-content-container">
             <p>
               <mat-form-field appearance="outline">
@@ -114,12 +116,11 @@
           </mat-card-content>
         
           <mat-card-actions class="button-container">
-            <button [disabled]="this.signupForm.invalid || this.disableBtn" type="submit" mat-raised-button color="primary">Signup</button>
+            <button [disabled]="this.signupForm.invalid || this.disableBtn" type="submit" mat-raised-button color="primary" (click)="signupSubmit()">Signup</button>
           </mat-card-actions>
         </form>
       </mat-tab>
     </mat-tab-group>   
-    
   </mat-card>
 </div>
 
