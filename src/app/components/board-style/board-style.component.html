@@ -4,8 +4,9 @@
 
   <mat-slide-toggle formControlName="freeMode"
   style="padding-bottom: 20px"
-  [checked]="this.boardStyleFormGroup.controls.freeMode.value"
-  >Free mode</mat-slide-toggle>
+  [checked]="this.boardStyleFormGroup.controls.freeMode.value">
+    Free mode
+  </mat-slide-toggle>
 
   <div>
     <mat-form-field appearance="outline" style="margin-right: 5px;">
@@ -19,8 +20,7 @@
 
     <mat-form-field appearance="outline" *ngIf="this.boardStyleFormGroup.controls.coordinateLabel.value === CoordinateLabelEnum.Outside" [@slideFromLeft] style="margin-left: 5px; width: 70px;">
       <mat-label class="custom-labels">Size</mat-label>
-      <mat-select formControlName="coordinateSize"
-        >
+      <mat-select formControlName="coordinateSize">
         <mat-option *ngFor="let coordsize of this.boardService.coordFontSizes" [value]="coordsize">
           {{coordsize}}
         </mat-option>
