@@ -38,7 +38,6 @@ export class PasswordResetComponent implements OnInit {
       } else {
         this.router.navigate(['/landing-page']);
       }
-      
     })
   }
 
@@ -64,5 +63,4 @@ export class PasswordResetComponent implements OnInit {
       this.disableBtn = false;
     });
   }
-
 }
