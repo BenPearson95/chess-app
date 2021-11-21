@@ -75,7 +75,7 @@
         #board style="line-height: normal;"
         [size]="(this.boardProfile.coordinateLabel === CoordinateLabelEnum.Outside) ? this.boardProfile.boardSize - ((this.boardProfile.coordinateSize + 4) * 2) : this.boardProfile.boardSize"
         [freeMode]="this.boardProfile.freeMode"
-        [showCoords]="false"
+        [showCoords]="(this.boardProfile.coordinateLabel === CoordinateLabelEnum.Inside) ? true : false"
         [lightTileColor]="this.boardProfile.lightTileColour"
         [darkTileColor]="this.boardProfile.darkTileColour"
         [sourcePointColor]="'none'"
