@@ -3,9 +3,6 @@
   <button (click)="openFeedback()" style="margin: 4px; color: white" mat-fab color="accent">
     <mat-icon>campaign</mat-icon>
   </button>
-  <!-- <button (click)="openHelp()" style="margin: 4px" mat-fab color="accent">
-    <mat-icon>help_outline</mat-icon>
-  </button> -->
 </div>
 <div [@routeAnimations]="prepareRoute(outlet)">
   <router-outlet #outlet="outlet"></router-outlet>
