@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "~11.2.5",
     "@angular/router": "~11.2.5",
     "angular-resize-event": "^3.0.2",
-    "ngx-chess-board": "^2.1.17",
+    "ngx-chess-board": "^2.1.18",
     "ngx-pipes": "^2.7.5",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

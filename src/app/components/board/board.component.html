@@ -194,9 +194,28 @@
     </div>
 
     <mat-card class="fen-management-card">
-      <mat-card-header>
-        <mat-card-title>Fen Management</mat-card-title>
-      </mat-card-header>
+
+      <h2>Fen Management
+        <div class="fen-button-container">
+          <button class="fen-header-buttons" mat-button color="primary" matTooltip="Save current Fen" [matMenuTriggerFor]="saveFenMenu">
+            <mat-icon class="material-icons-outlined">save</mat-icon>
+          </button>
+          <mat-menu #saveFenMenu="matMenu">
+            <button mat-menu-item [cdkCopyToClipboard]="this.board?.getFEN()" (click)="this.savedFenToClipboard(this.board?.getFEN())">
+              <mat-icon color="primary" class="material-icons-outlined">content_copy</mat-icon>
+              <span>Copy to Clipboard</span>
+            </button>
+            <button [disabled]="!this.loggedIn" mat-menu-item (click)="this.openFenCollectionsDialog('board-save')">
+              <mat-icon color="primary" class="material-icons-outlined">playlist_add_circle</mat-icon>
+              <span>Save to Collection</span>
+            </button>
+          </mat-menu>
+          <button class="fen-header-buttons" mat-button color="primary" matTooltip="Import a Fen" (click)="this.openImportSingleFen()">
+            <mat-icon class="material-icons">input</mat-icon>
+          </button>
+        </div>
+      </h2>
+      
       <mat-card-content>
         <ng-container *ngIf="this.collection">
           <div style="display: block">
@@ -226,8 +245,7 @@
           </div>
         </ng-container>
         <div>
-          <p *ngIf="!this.loggedIn">Login to access your Fens.</p>
-          <button *ngIf="this.loggedIn" class="fen-bottom-buttons" mat-stroked-button color="primary" (click)="this.openFenCollectionsDialog()">Fen Collections</button>
+          <button [disabled]="!this.loggedIn" class="fen-bottom-buttons" mat-stroked-button color="primary" (click)="this.openFenCollectionsDialog('board')">Fen Collections</button>
           <button *ngIf="this.collection && this.collection.fens.length > 0" class="fen-bottom-buttons" mat-stroked-button color="accent" (click)="this.clearFens()">Clear</button>
         </div>
       </mat-card-content>

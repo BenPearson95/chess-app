@@ -7,6 +7,7 @@ import { FenCollectionsService } from 'src/app/_services/fen-collections.service
 import { AuthService } from 'src/app/_services/auth.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, } from '@angular/material/dialog';
 import { ManageFenComponent } from '../manage-fen/manage-fen.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-collections',
@@ -35,12 +36,13 @@ export class CollectionsComponent implements OnInit {
     private fenCollectionsService: FenCollectionsService,
     private authService: AuthService,
     public ManageFenDialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(){
     if (this.data) {
       this.parent = this.data.parent;
-      if (this.data.parent === 'board') this.getCollectionsByUserID();
+      if (this.data.parent === 'board' || this.data.parent === 'board-save') this.getCollectionsByUserID();
     } else {
       this.getRouteData(this.activatedRoute.snapshot.data.resolvedData);
     }
@@ -123,6 +125,17 @@ export class CollectionsComponent implements OnInit {
   loadCollection(collection) {
     this.dialogRef.close({
       collection: collection,
+    });
+  }
+
+  // Saves a Fen copied from the Board
+  saveCopiedFen(collection: FenCollection) {
+    collection.fens.push({fenString: this.data.fenString});
+    this.fenCollectionsService.updateCollectionByID(collection).subscribe(result => {
+      this.snackBar.open(this.data.fenString + ' has been saved to ' + collection.fenTitle, null, {duration: 4000});
+      this.dialogRef.close();
+    }, error => {
+      this.snackBar.open('There was an error in saving your fen.', null, {duration: 3000});
     });
   }
 }

@@ -17,6 +17,9 @@ import { AuthService } from 'src/app/_services/auth.service';
 import { BoardStyleComponent } from 'src/app/components/board-style/board-style.component';
 import { MoveHistoryComponent } from '../move-history/move-history.component';
 import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Fen } from 'src/app/_models/fens/fen';
+import { ImportSingleFenComponent } from '../import-single-fen/import-single-fen.component';
 
 @Component({
   selector: 'app-board',
@@ -69,7 +72,7 @@ export class BoardComponent implements AfterViewInit {
   
   // Fen variables.
   public collection: FenCollection;
-  private activeFen: string;
+  private activeFen: Fen;
   public activeFenPosition: number;
 
   // Piece Dragging variables.
@@ -110,6 +113,7 @@ export class BoardComponent implements AfterViewInit {
     private authService: AuthService,
     public moveHistoryComponent: MoveHistoryComponent,
     private activatedRoute: ActivatedRoute,
+    private snackBar: MatSnackBar,
   ) {
     this.boardService.initGrids();
     this.authService.loggedIn().subscribe(result => {this.loggedIn = (result) ?  true : false});
@@ -240,12 +244,22 @@ export class BoardComponent implements AfterViewInit {
   setFen() {
     if (this.activeFen) {
       this.moveHistoryArray = [];
-      this.board?.setFEN(this.activeFen.toString());
+      this.board?.setFEN(this.activeFen.fenString.toString());
     }
   }
 
+  // Saves the current Fen to the users Clipboard
+  savedFenToClipboard(fen: string) {    
+    this.snackBar.open(fen + ' has been saved to the clipboard', null, {duration: 3000});
+  }
+
   // Opens the Fen Collection Modal. Manages return data.
-  openFenCollectionsDialog() {
+  openFenCollectionsDialog(parent: string) {
+    let fenString: string = null;
+    if (parent === 'board-save') {
+      fenString = this.board?.getFEN();
+    }
+    
     const dialogRef = this.matDialog.open(CollectionsComponent, {
       minWidth: 900,
       position: {
@@ -255,8 +269,9 @@ export class BoardComponent implements AfterViewInit {
         right: '',
       },
       data: {
-        parent: 'board',
+        parent: parent,
         collection: this.collection,
+        fenString: fenString,
       },
     });
 
@@ -279,7 +294,8 @@ export class BoardComponent implements AfterViewInit {
   // Fen Navigation after a collection has been loaded in.
   navigateFen(direction: string) {
     let activeFenIndex = 0;
-    if (direction === 'previous' || direction === 'next') activeFenIndex = this.collection.fens.findIndex(fa => fa === this.activeFen);
+    if (direction === 'previous' || direction === 'next') activeFenIndex = this.collection.fens.findIndex(fen => fen._id === this.activeFen._id);
+    console.log('activeFenIndex: ', activeFenIndex);
     switch (direction) {
       case 'first':
         this.activeFen = this.collection.fens[0];
@@ -289,7 +305,6 @@ export class BoardComponent implements AfterViewInit {
         break;
       case 'next':
         if (this.collection.fens.length !== this.activeFenPosition ) this.activeFen = this.collection.fens[activeFenIndex + 1];
-        
         break;
       case 'last':
         const lastIndex = this.collection.fens.length - 1;
@@ -298,8 +313,12 @@ export class BoardComponent implements AfterViewInit {
       default:
         break;
     }
-    this.activeFenPosition = this.collection.fens.findIndex(fen => fen === this.activeFen) + 1;
+                        //   this.collection.fens.findIndex(fen => fen._id === this.activeFen._id);
+                        console.log()
+    this.activeFenPosition = this.collection.fens.findIndex(fen => fen._id === this.activeFen._id) + 1;
     this.setFen();
+    
+    console.log('activeFenPosition: ', this.activeFenPosition);
   }
 
   clearFens() {
@@ -344,6 +363,24 @@ export class BoardComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe();
+  }
+
+  openImportSingleFen() {
+    const dialogRef = this.matDialog.open(ImportSingleFenComponent, {
+      minWidth: 500,
+      minHeight: 'auto',
+      position: {
+        top: '',
+        bottom: '',
+        left: '',
+        right: ''
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) this.activeFen = { fenString: result };
+      this.setFen();
+    });
   }
 
   changePieces(pieceStyleString: string) {

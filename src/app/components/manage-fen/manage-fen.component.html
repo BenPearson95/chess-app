@@ -42,7 +42,7 @@
       <hr>
       <div style="width: 100%" cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
         <div cdkDrag class="example-box" *ngFor="let fen of collection.fens; let i = index">
-            {{fen}}
+            {{fen.fenString}}
           <button mat-icon-button color="warn" aria-label="Delete Icon for Deleting Fen">
             <mat-icon (click)="removeFen(i); $event.preventDefault()">delete</mat-icon>
           </button>

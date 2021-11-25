@@ -48,6 +48,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { BoardStyleComponent } from './components/board-style/board-style.component';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { ImportSingleFenComponent } from './components/import-single-fen/import-single-fen.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,7 @@ import { PasswordResetComponent } from './components/password-reset/password-res
     LoadingSpinnerComponent,
     BoardStyleComponent,
     PasswordResetComponent,
+    ImportSingleFenComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,7 +103,8 @@ import { PasswordResetComponent } from './components/password-reset/password-res
     MatExpansionModule,
     NgArrayPipesModule,
     MatChipsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ClipboardModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: PathLocationStrategy },

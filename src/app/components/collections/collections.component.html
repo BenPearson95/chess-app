@@ -5,7 +5,7 @@
     </mat-card-header>
     <mat-card-content style="overflow: auto;">
       <div>
-        <button class="add-button" [disabled]="this.fenCollections.length >= 20" mat-stroked-button color="primary" (click)="openManageFenDialog()">Add Collection</button>
+        <button class="add-button" *ngIf="!(this.parent === 'board-save')" [disabled]="this.fenCollections.length >= 20" mat-stroked-button color="primary" (click)="openManageFenDialog()">Add Collection</button>
         <div class="max-collections-msg" *ngIf="this.fenCollections.length >= 20">
           You have hit the maximum amount of Fen Collections, that is 20. To add anymore you will need to delete existing Collections.
         </div>
@@ -28,13 +28,13 @@
         <ng-container matColumnDef="options" stickyEnd>
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell style="text-align: center;" *matCellDef="let element">
-            <button class="collection-buttons" mat-icon-button color="primary" aria-label="Edit Icon for Editing Collection"
+            <button class="collection-buttons" *ngIf="!(this.parent === 'board-save')" mat-icon-button color="primary" aria-label="Edit Icon for Editing Collection"
               matTooltip="Edit the Collection.">
               <mat-icon (click)="$event.stopPropagation(); openManageFenDialog(element);">
                 edit
               </mat-icon>
             </button>
-            <button class="collection-buttons" *ngIf="!(this.parent === 'board')" mat-icon-button color="warn" 
+            <button class="collection-buttons" *ngIf="!(this.parent === 'board' || this.parent === 'board-save')" mat-icon-button color="warn" 
               aria-label="Delete Icon for Deleting Collection"
               matTooltip="Delete the Collection.">
               <mat-icon (click)="$event.stopPropagation(); removeCollection(element);">
@@ -48,6 +48,13 @@
                 input
               </mat-icon>
             </button> 
+            <button class="collection-buttons" *ngIf="this.parent === 'board-save'" mat-icon-button color="primary" 
+              aria-label="Save the fen"
+              matTooltip="Save the fen.">
+              <mat-icon (click)="$event.stopPropagation(); saveCopiedFen(element);">
+                save
+              </mat-icon>
+            </button> 
           </td>
         </ng-container>
 
@@ -57,7 +64,7 @@
             <div class="example-element-detail"
                 [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
               <div>
-                <p style="margin-left: 20px;" *ngFor="let string of row.fens">{{string}}</p>
+                <p style="margin-left: 20px;" *ngFor="let fen of row.fens">{{fen.fenString}}</p>
               </div>
             </div>
           </td>

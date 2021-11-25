@@ -1,0 +1,17 @@
+<h2>Import a Fen</h2>
+
+<form class="form" [formGroup]="this.importFenFormGroup">
+  <div>
+    <mat-form-field class="form-field" appearance="outline">
+      <mat-label>Fen</mat-label>
+      <input formControlName="fenString" type="text" matInput>
+      <mat-error class="input-error-fix" *ngIf="this.importFenFormGroup.controls.fenString.hasError('required')">
+        You need to provide a fen.
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <button [disabled]="this.importFenFormGroup.invalid" type="submit" mat-raised-button color="primary" (click)="importFenSubmit()">Import</button>
+    <button class="close-button" type="submit" mat-raised-button color="primary" (click)="close()">Close</button>
+  </div>
+</form>
