@@ -313,8 +313,6 @@ export class BoardComponent implements AfterViewInit {
       default:
         break;
     }
-                        //   this.collection.fens.findIndex(fen => fen._id === this.activeFen._id);
-                        console.log()
     this.activeFenPosition = this.collection.fens.findIndex(fen => fen._id === this.activeFen._id) + 1;
     this.setFen();
     
