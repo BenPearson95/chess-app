@@ -102,6 +102,19 @@
       height: calc(220px - 32px);
       bottom: 0;
 
+      mat-card-header-text {
+        margin: 0;
+      }
+
+      .fen-button-container {
+        position: absolute;
+
+        .fen-header-buttons {
+          padding: 0px 8px;
+          min-width: 24px;
+        }
+      }
+
       mat-card-content {
         height: 152px;
         display: flex;

@@ -38,7 +38,7 @@ export class ManageFenComponent implements OnInit {
     private snackBar: MatSnackBar,
   ) {
     this.collection.fens = [];
-      // How should we load in data, depending on where this modal is being openned.
+      // How should we load in data, depending on where this modal is being opened.
       if (data.parent === 'board') {
         if (data.collection) {
           this.collection = data.collection;
@@ -59,7 +59,7 @@ export class ManageFenComponent implements OnInit {
   addFen() {
     if (this.saveCollectionForm.controls.fenstring.valid) {
       if (!this.collection.fens) this.collection.fens = [];
-      this.collection.fens.push(this.saveCollectionForm.controls.fenstring.value) 
+      this.collection.fens.push({fenString: this.saveCollectionForm.controls.fenstring.value}) 
       this.saveCollectionForm.controls.fenstring.reset();
       this.saveCollectionForm.updateValueAndValidity();
       this.checkfensLength();
