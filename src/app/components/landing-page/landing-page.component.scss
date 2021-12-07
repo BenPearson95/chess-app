@@ -1,23 +1,26 @@
 .page-container {
-  height: calc(100vh - 96px);
-  text-align: center;
-  width: 50%;
-  margin: auto;
-  justify-content: center;
-  color: #1565c0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 16px;
 
-  .logo-container {
+  .logo {
+    max-width: 500px;
+    max-height: 500px;
+    width: 50%;
     height: 50%;
-  } img {
-    max-height: 100%;
+    padding: 16px;
+    object-fit: contain;
   }
 
   .text-buttons-container {
+    color: #1565c0;
     font-size: 1.4rem;
-    text-align: center;
     font-weight: bolder;
+    text-align: center;
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+    max-width: 570px;
+    margin: auto;
 
     .landing-buttons {
       margin: 5px;

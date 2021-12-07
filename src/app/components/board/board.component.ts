@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { MatDialog} from '@angular/material/dialog';
 import { NgxChessBoardService, NgxChessBoardView, PieceIconInput } from 'ngx-chess-board';
-import { slideFromBottom, slideFromLeft, slideFromRight, slideFromTop, uncoverFromLeft } from 'src/app/_animations/animations';
+import { slideFromBottom, slideFromLeft, slideFromRight, slideFromTop, uncoverPiecesFromLeft } from 'src/app/_animations/animations';
 import { FenCollection } from 'src/app/_models/board/fen-collection';
 import { AdditionalPiece } from 'src/app/_models/board/additional-piece';
 import { BoardService } from 'src/app/_services/board.service';
@@ -30,7 +30,7 @@ import { ImportSingleFenComponent } from '../import-single-fen/import-single-fen
     slideFromBottom, 
     slideFromLeft,
     slideFromRight,
-    uncoverFromLeft,
+    uncoverPiecesFromLeft,
   ],
 })
 export class BoardComponent implements AfterViewInit {
