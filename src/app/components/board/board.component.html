@@ -2,7 +2,7 @@
 <div #pageContainer class="board-page-container" (window:resize)="pageContainerResize($event)">
 
   <!-- Div Content Pieces -->
-  <div class="piece-container" *ngIf="this.boardProfile.freeMode" [@uncoverFromLeft]>
+  <div class="piece-container" *ngIf="this.boardProfile.freeMode" [@uncoverPiecesFromLeft]>
     <div cdkDropList>
       <div 
       cdkDrag
