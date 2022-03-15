@@ -108,7 +108,6 @@ export class LoginSignupComponent implements OnInit {
   requestPasswordReset() {
     if (this.loginForm.controls.email.valid) {
       this.AuthService.requestPasswordReset(this.loginForm.controls.email.value).subscribe(result => {
-        console.log(result);
         this.resetRequestMessage = result.message;
         this.resetRequestDone = true;
       }, err => {
