@@ -114,6 +114,7 @@ export class BoardComponent implements AfterViewInit {
     public moveHistoryComponent: MoveHistoryComponent,
     private activatedRoute: ActivatedRoute,
     private snackBar: MatSnackBar,
+    private elementRef: ElementRef,
   ) {
     this.boardService.initGrids();
     this.authService.loggedIn().subscribe(result => {this.loggedIn = (result) ?  true : false});
@@ -123,11 +124,20 @@ export class BoardComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.processBoardSize();
+
+    let elements: NodeList = this.elementRef.nativeElement.querySelectorAll('.board-row');
+    (elements[0].childNodes[0] as HTMLElement).style.borderTopLeftRadius = '4px';
+    (elements[0].childNodes[7] as HTMLElement).style.borderTopRightRadius = '4px';
+    (elements[7].childNodes[0] as HTMLElement).style.borderBottomLeftRadius = '4px';
+    (elements[7].childNodes[7] as HTMLElement).style.borderBottomRightRadius = '4px';
+  }
+
+  ngAfterContentChecked(): void {
+    
   }
 
   // Resize of the page container.
   pageContainerResize(event) {
-    console.log('pageContainerResize');
     this.maxBoardSize = (event.target.innerHeight - 64 - 32);
     if (this.maxBoardSize <= this.boardProfile.boardSize && this.maxBoardSize >= 500) {
       this.boardProfile.boardSize = this.maxBoardSize;
@@ -156,7 +166,6 @@ export class BoardComponent implements AfterViewInit {
       if(!this.mouseXCoord) {
         this.mouseXCoord = mouseXCoord;
       } else {
-        console.log('changeBoardSize');
         // This counts up the coords
         this.resizingDifference = this.resizingDifference + (mouseXCoord - this.mouseXCoord)
         // When we hit +20, we resize the board by +10 pixels.
@@ -295,7 +304,6 @@ export class BoardComponent implements AfterViewInit {
   navigateFen(direction: string) {
     let activeFenIndex = 0;
     if (direction === 'previous' || direction === 'next') activeFenIndex = this.collection.fens.findIndex(fen => fen._id === this.activeFen._id);
-    console.log('activeFenIndex: ', activeFenIndex);
     switch (direction) {
       case 'first':
         this.activeFen = this.collection.fens[0];
@@ -315,8 +323,6 @@ export class BoardComponent implements AfterViewInit {
     }
     this.activeFenPosition = this.collection.fens.findIndex(fen => fen._id === this.activeFen._id) + 1;
     this.setFen();
-    
-    console.log('activeFenPosition: ', this.activeFenPosition);
   }
 
   clearFens() {
