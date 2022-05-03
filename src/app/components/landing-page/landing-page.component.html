@@ -1,30 +1,35 @@
 <div class="page-container">
-  
-  <img class="logo" src="../../../assets/logo.png" alt="Chess-App Logo">
 
-  <div class="text-buttons-container">
-    <p>
-      Chess-App looks to provide you with a simplistic App to help teach, train and demonstrate chess.
-    </p> 
-    <br>
+  <div class="page-content">
 
-    <ng-container [ngSwitch]="this.randomNumber">
-      <p *ngSwitchCase="1">
-        Add FENs to a Collection, and import them into the Board during a demo. This can greatly help plan demonstations in advance.
-      </p>
-      <p *ngSwitchCase="2">
-        You can save your Board Style Options so they're ready for when you return!
-      </p>
-      <p *ngSwitchCase="3">
-        Use the bullhorn button in the bottom left of the screen to give us any feedback.
-      </p>
-      <p *ngSwitchDefault>
-        
-      </p>
-    </ng-container>
-    <br>
-    
-    <button [disabled]="this.isLoggedIn === false" routerLink='/collections' mat-raised-button class="landing-buttons" color="primary">FEN Management</button>
-    <button routerLink='/board' mat-raised-button class="landing-buttons" color="primary">Demo Board</button>
+    <img @fadeInOut class="logo" src="../../../assets/landing-logo.png" (load)="this.logoLoaded()" alt="Chess-App Logo">
+
+    <div @fadeInOut *ngIf="this.imageLoaded" class="text-buttons-container">
+      <p>
+        Chess-App looks to provide you with a simplistic App to help teach, train and demonstrate chess.
+      </p> 
+      <br>
+
+      <ng-container [ngSwitch]="this.randomNumber">
+        <p *ngSwitchCase="1">
+          Add FENs to a Collection, and import them into the Board during a demo. This can greatly help plan demonstations in advance.
+        </p>
+        <p *ngSwitchCase="2">
+          You can save your Board Style Options so they're ready for when you return!
+        </p>
+        <p *ngSwitchCase="3">
+          Use the bullhorn button in the bottom left of the screen to give us any feedback.
+        </p>
+        <p *ngSwitchDefault>
+          
+        </p>
+      </ng-container>
+      <br>
+      
+      <button [disabled]="this.isLoggedIn === false" routerLink='/collections' mat-raised-button class="landing-buttons" color="primary">FEN Management</button>
+      <button routerLink='/board' mat-raised-button class="landing-buttons" color="primary">Demo Board</button>
+    </div>
+
   </div>
+    
 </div>

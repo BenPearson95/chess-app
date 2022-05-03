@@ -1,10 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, NavigationEnd, Router } from '@angular/router';
-import { welcomeAnimation } from '../../_animations/animations';
+import { fadeInOut, welcomeAnimation } from '../../_animations/animations';
 import { AuthService } from '../../_services/auth.service';
 import { filter } from 'rxjs/operators';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginSignupComponent } from '../login-signup/login-signup.component';
 
@@ -14,7 +13,8 @@ import { LoginSignupComponent } from '../login-signup/login-signup.component';
   templateUrl: './tool-bar.component.html',
   styleUrls: ['./tool-bar.component.scss'],
   animations: [
-    welcomeAnimation
+    welcomeAnimation,
+    fadeInOut
   ]
 })
 
