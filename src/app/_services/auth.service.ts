@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { AuthUser } from '../_models/user/auth-user';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { AccountType } from '../_models/enums/account-type.enum'
 
 @Injectable({
   providedIn: 'root'
@@ -88,6 +89,16 @@ export class AuthService {
   loggedIn(): Observable<boolean> {
     return this.currentUser$.pipe(map((authUser: AuthUser) => {
       if(authUser) {
+        return true;
+      } else {
+        return false;
+      }
+    }));    
+  }
+
+  isAdmin(): Observable<boolean> {
+    return this.currentUser$.pipe(map((authUser: AuthUser) => {
+      if(authUser.accountType === AccountType.Admin) {
         return true;
       } else {
         return false;

@@ -1,0 +1,43 @@
+.feedback-title-container {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 150px;
+}
+
+.feedback-panel-content {
+  display: flex;
+  justify-content: space-evenly;
+
+  div {
+    width: 50%;
+
+    .feedback-button-container {
+      width: 100%;
+      display: flex;
+      justify-content: end;
+    
+      button {
+        margin: 8px;
+      }
+    }
+
+    p {
+      overflow: scroll
+    }
+  }
+
+  .form-container {
+    display: flex;
+    align-items: center;
+
+    form {
+      width: 100%;
+
+      mat-form-field {
+        width: 100%;
+      }
+    }
+  }
+}
+

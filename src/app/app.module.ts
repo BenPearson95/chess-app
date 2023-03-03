@@ -50,6 +50,8 @@ import { BoardStyleComponent } from './components/board-style/board-style.compon
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ImportSingleFenComponent } from './components/import-single-fen/import-single-fen.component';
+import { AdminFeedbackComponent } from './components/admin-dashboard/admin-feedback/admin-feedback.component';
+import { AdminUsersComponent } from './components/admin-dashboard/admin-users/admin-users.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +73,8 @@ import { ImportSingleFenComponent } from './components/import-single-fen/import-
     BoardStyleComponent,
     PasswordResetComponent,
     ImportSingleFenComponent,
+    AdminUsersComponent,
+    AdminFeedbackComponent
   ],
   imports: [
     BrowserModule,

@@ -1,1 +1,26 @@
-<p>admin-dashboard works!</p>
+<div class="page-container">
+  <div class="chip-list-container">
+
+    <mat-chip-list class="admin-chip-list">
+        <mat-chip [selected]="this.selectedSection === this.AdminSection.Users" (click)="this.selectedSection = this.AdminSection.Users">Users</mat-chip>
+        <mat-chip [selected]="this.selectedSection === this.AdminSection.Feedback" (click)="this.selectedSection = this.AdminSection.Feedback">Feedback</mat-chip>
+        <mat-chip disabled>Collections</mat-chip>
+    </mat-chip-list>
+
+  </div>
+
+  <div class="section-container">
+    <mat-tab-group dynamicHeight [selectedIndex]="this.selectedSection" animationDuration="1000ms">
+      <mat-tab>
+        <div>
+          <app-admin-users [users]="this.users"></app-admin-users>
+        </div>
+      </mat-tab>
+      <mat-tab> 
+        <div>
+          <app-admin-feedback [feedbacks]="this.feedbacks"></app-admin-feedback>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

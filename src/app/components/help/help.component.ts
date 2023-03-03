@@ -7,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HelpComponent implements OnInit {
   panelOpenState = false;
+  disableAnimation = false;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.disableAnimation = false);
   }
 
 }

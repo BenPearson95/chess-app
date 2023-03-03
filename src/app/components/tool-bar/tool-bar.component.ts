@@ -51,6 +51,10 @@ export class ToolBarComponent implements OnInit {
     setInterval(() => {
       this.timeOfDayMessage();
     }, 60000);
+
+    this.authService.currentUser$.subscribe(user => {
+      console.log(user);
+    });
   }
 
   // Used in the retrieval of page title. Gets child routes.

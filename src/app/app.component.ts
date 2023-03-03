@@ -38,11 +38,10 @@ export class AppComponent {
     
   }
 
-  
-
   openFeedback() {
     const dialogRef = this.feedbackDialog.open(FeedbackComponent, {
       minWidth: 700,
+      autoFocus: false
     });
 
     dialogRef.updatePosition({

@@ -5,7 +5,7 @@ export class Feedback {
     public _id: string,
     public feedbackType: FeedbackType,
     public feedbackText: string,
-    public userEmail: string,
+    public userId: string,
     public dateTime: Date,
   ) {}
 }

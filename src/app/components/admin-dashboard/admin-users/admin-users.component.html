@@ -1,0 +1,14 @@
+<mat-accordion class="example-headers-align" multi hideToggle>
+  <mat-expansion-panel *ngFor="let user of this.users">
+
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{user.firstname}} {{user.surname}}
+      </mat-panel-title>
+      <mat-panel-description style="justify-content: end;">
+        {{user.signupDate | date:'dd MMMM yyyy HH:mm'}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <p>{{user.email}}</p>
+  </mat-expansion-panel>
+</mat-accordion>
