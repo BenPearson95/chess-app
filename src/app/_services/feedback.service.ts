@@ -21,12 +21,30 @@ export class FeedbackService {
     })
   }
 
-  // Save a Fen Collection
+  // Save Feedback
   saveFeedback(feedback: Feedback) {
     return this.http.post(this.apiPath + this.route, feedback, this.options)
       .pipe(map((response: any) => {
         return response;
       })
+    );
+  }
+
+  // Delete Feedback
+  deleteFeedback(feedbackId: string) {
+    return this.http.delete(this.apiPath + this.route + `${feedbackId}`, this.options)
+      .pipe(map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  // Get Feedback
+  getFeedback() {
+    return this.http.get(this.apiPath + this.route, this.options)
+    .pipe( map((response: any) => {
+      return response;
+    })
     );
   }
 }

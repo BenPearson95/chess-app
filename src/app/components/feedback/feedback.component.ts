@@ -36,17 +36,17 @@ export class FeedbackComponent implements OnInit {
   // Submit the Feedback
   feedbackSubmit() {
 
-    let userEmail: string; 
+    let userId: string; 
     
     this.authService.currentUser$.subscribe(user => {
-      userEmail = user.email
+      userId = user._id
     });
 
     const feedbackPayload: Feedback = {
       _id: null,
       feedbackType: this.feedbackFormGroup.controls.feedbackType.value,
       feedbackText: this.feedbackFormGroup.controls.feedbackText.value,
-      userEmail: userEmail,
+      userId: userId,
       dateTime: null,
     }
 

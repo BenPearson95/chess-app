@@ -10,10 +10,9 @@ import { CollectionsResolver } from './_resolvers/collections.resolver';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { BoardResolver } from './_resolvers/board.resolver';
 import { PasswordResetComponent } from './components/password-reset/password-reset.component';
+import { AdminResolver } from './_resolvers/admin.resolver';
 
 const routes: Routes = [
-
-
 
   {
     path: '',
@@ -81,6 +80,9 @@ const routes: Routes = [
     component: AdminDashboardComponent,
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
+    resolve: {
+      resolvedData: AdminResolver,
+    },
     data: {
       name: 'Admin Dashboard',
       showBackButton: true,

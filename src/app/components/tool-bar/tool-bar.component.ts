@@ -46,7 +46,7 @@ export class ToolBarComponent implements OnInit {
 
     this.timeOfDayMessage();
 
-    // Checks every minute for the time of day to update automatically, 
+    // Checks every hour(?) for the time of day to update automatically, 
     // not requiring a browser refresh (Toolbar is never init twice).
     setInterval(() => {
       this.timeOfDayMessage();

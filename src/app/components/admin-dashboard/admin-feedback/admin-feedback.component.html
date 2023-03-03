@@ -1,0 +1,42 @@
+<mat-accordion class="example-headers-align" multi hideToggle>
+  <mat-expansion-panel *ngFor="let feedback of this.feedbacks; let i = index">
+
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="feedback-title-container">
+          {{feedback.feedbackText}}
+        </div>  
+      </mat-panel-title>
+      <mat-panel-description style="justify-content: end;">
+        <ng-container [ngSwitch]="feedback.feedbackType">
+          <mat-icon color="error" *ngSwitchCase="FeedbackType.Bug">bug_report</mat-icon>
+          <mat-icon color="accent" *ngSwitchCase="FeedbackType.Feedback">feedback</mat-icon>
+          <mat-icon color="primary" *ngSwitchCase="FeedbackType.Message">message</mat-icon>
+        </ng-container>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="feedback-panel-content">
+      <div>
+        <small>{{feedback.dateTime | date:'dd MMMM yyyy HH:mm'}}</small>
+        <p>{{feedback.feedbackText}}</p>
+      </div>
+      <div class="form-container">
+        <form [formGroup]="this.feedbackForms[i]" (ngSubmit)="this.submitReply(this.feedbackForms[i])">
+          <mat-form-field cdkTextareaAutosize appearance="fill">
+            <mat-label>Reply</mat-label>
+            <textarea matInput
+            formControlName="replyText"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"></textarea>
+          </mat-form-field>
+
+          <div class="feedback-button-container">
+            <button color="warn" mat-raised-button (click)="this.deleteFeedback(feedback._id)">Delete</button>
+            <button submit [disabled]="this.feedbackForms[i].controls.replyText.value === null || this.feedbackForms[i].controls.replyText.value === ''" color="primary" mat-raised-button>Send</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

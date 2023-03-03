@@ -1,0 +1,49 @@
+.page-container {
+  max-width: 1146px;
+  margin: auto;
+
+  .chip-list-container {
+    margin-top: 56px;
+    margin-bottom: 56px;
+
+    mat-chip {
+      min-width: 150px;
+      font-size: 20px;
+      justify-content: center;
+      transition: background-color 1s ease;
+      user-select: none;
+    }
+  }
+
+  .section-container {
+    display: flex;
+    justify-content: center;
+    min-height: calc(100vh - 224px);
+    padding-bottom: 16px;
+
+    mat-tab-group {
+      width: 100%;
+      justify-content: center;
+
+      div {
+        padding: 0px 16px 0px 16px;
+      }
+    }
+  }
+}
+
+::ng-deep .mat-tab-header {
+  display: none!important;
+}
+
+::ng-deep .admin-chip-list > .mat-chip-list-wrapper {
+  justify-content: space-evenly;
+
+  .mat-standard-chip {
+    background-color: transparent;
+  }
+
+  .mat-standard-chip:hover {
+    cursor: pointer;
+  }
+}
