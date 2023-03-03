@@ -114,10 +114,15 @@
 
       .fen-button-container {
         position: absolute;
+        width: calc(100% - 32px);
 
         .fen-header-buttons {
           padding: 0px 8px;
           min-width: 24px;
+        }
+
+        .fen-help-button {
+          float: right;
         }
       }
 
