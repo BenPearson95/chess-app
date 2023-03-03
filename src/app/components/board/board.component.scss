@@ -97,6 +97,11 @@
       }
     }
 
+    .help-card {
+      height: calc((100% - 32px) - (220px + 32px));
+      overflow: scroll;
+    }
+
     .fen-management-card {
       position: absolute;
       width: calc(100% - 32px);
