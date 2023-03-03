@@ -20,6 +20,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Fen } from 'src/app/_models/fens/fen';
 import { ImportSingleFenComponent } from '../import-single-fen/import-single-fen.component';
+import { VideoPlayerComponent } from '../video-player/video-player.component';
 
 @Component({
   selector: 'app-board',
@@ -296,6 +297,19 @@ export class BoardComponent implements AfterViewInit {
         if (this.collection.fens.length > 0) this.activeFen = this.collection.fens[0];
         this.activeFenPosition = 1;
         this.setFen();
+      }
+    });
+  }
+
+  openVideoPlayer() {
+    this.matDialog.open(VideoPlayerComponent, {
+      minWidth: 1250,
+      minHeight: 750,
+      position: {
+        top: '',
+        bottom: '',
+        left: '',
+        right: '',
       }
     });
   }

@@ -52,6 +52,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ImportSingleFenComponent } from './components/import-single-fen/import-single-fen.component';
 import { AdminFeedbackComponent } from './components/admin-dashboard/admin-feedback/admin-feedback.component';
 import { AdminUsersComponent } from './components/admin-dashboard/admin-users/admin-users.component';
+import { VideoPlayerComponent } from './components/video-player/video-player.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { AdminUsersComponent } from './components/admin-dashboard/admin-users/ad
     PasswordResetComponent,
     ImportSingleFenComponent,
     AdminUsersComponent,
-    AdminFeedbackComponent
+    AdminFeedbackComponent,
+    VideoPlayerComponent
   ],
   imports: [
     BrowserModule,
