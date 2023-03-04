@@ -89,7 +89,7 @@
         >
       </ngx-chess-board>
     
-      <div *ngIf="this.dragging" class="overlay" [ngStyle]="{'height.px': this.boardProfile.boardSize, 'width.px': this.boardProfile.boardSize }">
+      <div *ngIf="this.dragging" class="overlay" [ngStyle]="{'height.px': (this.boardProfile.coordinateLabel === CoordinateLabelEnum.Outside) ? this.boardProfile.boardSize - ((this.boardProfile.coordinateSize + 4) * 2) : this.boardProfile.boardSize, 'width.px': (this.boardProfile.coordinateLabel === CoordinateLabelEnum.Outside) ? this.boardProfile.boardSize - ((this.boardProfile.coordinateSize + 4) * 2) : this.boardProfile.boardSize }">
         <mat-grid-list *ngIf="this.dragging" cols="8" rowHeight="8:8">
           <ng-container *ngIf="this.reversed">
             <mat-grid-tile 

@@ -99,7 +99,7 @@
 
     .help-card {
       height: calc((100% - 32px) - (220px + 32px));
-      overflow: scroll;
+      overflow: overlay;
     }
 
     .fen-management-card {
